@@ -10,6 +10,17 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: http
 
+  # ClickHouse MCP Server
+  # This service runs the ClickHouse MCP server.
+  clickhouse-mcp-server:
+    image: mcp/clickhouse
+    ports:
+      - "8082:8082"
+    env_file:
+      - clickhouse.env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
   # Ollama Check
   # This service checks if Ollama is running before the core service starts.
   ollama-check:
