@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: druid-mcp-server
+  labels:
+    app: druid-mcp-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: druid-mcp-server
+  template:
+    metadata:
+      labels:
+        app: druid-mcp-server
+    spec:
+      containers:
+        - name: druid-mcp-server
+          image: iunera/druid-mcp-server:latest
+          imagePullPolicy: Always
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "http"
+            - name: SERVER_PORT
+              value: "8080"
+          envFrom:
+            - configMapRef:
+                name: druid-env
+---
+# Service for Druid MCP Server (ClusterIP). If the app connects via service discovery, this exposes it within the cluster.
+apiVersion: v1
+kind: Service
+metadata:
+  name: druid-mcp-server
+spec:
+  selector:
+    app: druid-mcp-server
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080

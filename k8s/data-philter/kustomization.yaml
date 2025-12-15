@@ -1,0 +1,111 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Default namespace for all resources
+namespace: data-philter
+
+resources:
+  - namespace.yaml
+  - druid-mcp-server.yaml
+  - philter-pvc.yaml
+  - philter.yaml
+
+configMapGenerator:
+  # Druid MCP Server environment configured directly (no external .env links)
+  - name: druid-env
+    literals:
+
+      # Druid MCP Server settings
+
+      # DRUID_AUTH_USERNAME
+      # The username for authenticating with your Druid cluster.
+      #
+      # - DRUID_AUTH_USERNAME=
+
+      # DRUID_AUTH_PASSWORD
+      # The password for authenticating with your Druid cluster.
+      #
+      # - DRUID_AUTH_PASSWORD=
+
+      # DRUID_ROUTER_URL
+      # The URL of your Druid router (e.g., https://druid.example.com).
+      #
+      # - DRUID_ROUTER_URL=
+
+      # DRUID_SSL_ENABLED
+      # Set to `true` to enable SSL/TLS for the connection to Druid, or `false` to disable it.
+      #
+      # - DRUID_SSL_ENABLED=
+
+      # DRUID_EXTENSION_DRUID_BASIC_SECURITY_ENABLED
+      # Set to `true` if your Druid cluster uses the basic security extension.
+      #
+      # - DRUID_EXTENSION_DRUID_BASIC_SECURITY_ENABLED=false
+
+      # DRUID_MCP_SECURITY_OAUTH2_ENABLED
+      # Set to `true` to enable OAuth2 security for the MCP server.
+      #
+      # - DRUID_MCP_SECURITY_OAUTH2_ENABLED=false
+
+      # DRUID_MCP_READONLY_ENABLED
+      # Set to `true` to enable read-only mode, which prevents any changes to your Druid cluster.
+      # By default, the server runs in read-only mode to prevent accidental changes to your Druid cluster.
+      #
+      # - DRUID_MCP_READONLY_ENABLED=true
+
+      - DRUID_AUTH_USERNAME=admin
+      - DRUID_AUTH_PASSWORD=password
+      - DRUID_ROUTER_URL=http://druid-iuneradruid-router.druid.svc.cluster.local:8888
+      - DRUID_SSL_ENABLED=false
+      - DRUID_EXTENSION_DRUID_BASIC_SECURITY_ENABLED=false
+      - DRUID_MCP_SECURITY_OAUTH2_ENABLED=false
+      - DRUID_MCP_READONLY_ENABLED=true
+
+  # Philter application environment configured directly (no external .env links)
+  - name: philter-app-env
+    literals:
+       # Philter Server settings
+
+        # IUNERA_MODEL_TYPE
+        #
+        # Specifies the AI model to be used by the application, based on the Aura model tier system.
+        # Each tier is fine-tuned for specific use cases, from complex reasoning to simple pattern-matching.
+        #
+        # Possible values are:
+        #
+        #   - "ollama-m" (Medium Tier) The Reasoning Workhorse:
+        #     - Model: iunera/aura-m (based on granite:7b-a1b-h, 7B parameters)
+        #     - Use Case: Your primary "workhorse" model for complex, multi-step tasks and conversations that require chat history context.
+        #     - Requires: A GPU-based system or a Macbook with an M-series chip and at least 8GB of memory.
+        #
+        #   - "ollama-l" (Large Model):
+        #     - Uses the iunera/aura-l Model which is based on the phi4:14b model.
+        #     - A more powerful model with advanced reasoning capabilities, recommended for complex queries and production environments.
+        #     - Requires a GPU-based system or a Macbook with an M-series chip and at least 16GB of memory.
+        #
+        #   - "ollama-xl" (Extra Large Model):
+        #     - Uses the gpt-oss:20b model.
+        #     - Recommended for heavy workloads and advanced reasoning on capable hardware.
+        #     - Recommended on a Macbook with an Apple M‑series chip and at least 64GB of unified memory (or strong GPU setup).
+        #
+        #   - "openai" (OpenAI Model):
+        #     - Uses the OpenAI API to access their models.
+        #     - Requires an OpenAI API key to be set in the SPRING_AI_OPENAI_API_KEY variable.
+        #
+        # - IUNERA_MODEL_TYPE=
+        
+        # SPRING_AI_OPENAI_API_KEY
+        #
+        # Your OpenAI API key. Required only when IUNERA_MODEL_TYPE is set to "openai".
+        #
+        # - SPRING_AI_OPENAI_API_KEY=REPLACE_WITH_YOUR_OPENAI_API_KEY
+
+        # SPRING_AI_OLLAMA_BASE_URL
+        #
+        # The base URL for your Ollama server instance. Adjust if you have Ollama running on a different host.
+        # Default is http://host.docker.internal:11434
+        #
+        # -SPRING_AI_OLLAMA_BASE_URL=http://host.docker.internal:11434
+
+      - IUNERA_MODEL_TYPE=ollama-xl
+      - SPRING_AI_OLLAMA_BASE_URL=http://ollama-external-service.ai.svc.cluster.local:11434

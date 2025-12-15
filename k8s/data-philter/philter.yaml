@@ -1,0 +1,53 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: philter
+  labels:
+    app: philter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: philter
+  template:
+    metadata:
+      labels:
+        app: philter
+    spec:
+      containers:
+        - name: philter
+          image: iunera/philter:latest
+          imagePullPolicy: Always
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "docker"
+            - name: SERVER_PORT
+              value: "4000"
+          envFrom:
+            - configMapRef:
+                name: philter-app-env
+          ports:
+            - containerPort: 4000
+              name: http
+          volumeMounts:
+            - name: philter-data
+              mountPath: /data
+      volumes:
+        - name: philter-data
+          persistentVolumeClaim:
+            claimName: philter-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: philter
+spec:
+  type: NodePort
+  selector:
+    app: philter
+  ports:
+    - name: http
+      port: 4000
+      targetPort: 4000
+      nodePort: 30400
