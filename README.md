@@ -140,6 +140,12 @@ The installer will set up a complete Druid cluster and open the Druid console at
 
 For instructions on how to uninstall data-philter and its components, please refer to the [uninstall.md](docs/uninstall.md) guide.
 
+## Kubernetes deployment
+
+Want to run data-philter on Kubernetes? See the dedicated guide with Kustomize instructions and example manifests:
+
+- [k8s/README.md](k8s/README.md)
+
 ## Roadmap
 
 We are actively working on expanding data-philter to support more databases and LLMs. Our current roadmap includes:

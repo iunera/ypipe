@@ -1,0 +1,30 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Default namespace for all resources
+namespace: data-philter
+
+resources:
+  - data-philter
+
+#configMapGenerator:
+#  - name: druid-env
+#    behavior: replace
+#    literals:
+#      # see k8s/data-philter/kustomization.yaml for details
+#
+#      - DRUID_AUTH_USERNAME=admin
+#      - DRUID_AUTH_PASSWORD=password
+#      - DRUID_ROUTER_URL=http://druid-iuneradruid-router.druid.svc.cluster.local:8888
+#      - DRUID_SSL_ENABLED=false
+#      - DRUID_EXTENSION_DRUID_BASIC_SECURITY_ENABLED=false
+#      - DRUID_MCP_SECURITY_OAUTH2_ENABLED=false
+#      - DRUID_MCP_READONLY_ENABLED=true
+#
+#  - name: data-philter-app-env
+#    behavior: replace
+#    literals:
+#      # see k8s/data-philter/kustomization.yaml for details
+#
+#      - IUNERA_MODEL_TYPE=ollama-xl
+#      - SPRING_AI_OLLAMA_BASE_URL=http://ollama-external-service.ai.svc.cluster.local:11434
