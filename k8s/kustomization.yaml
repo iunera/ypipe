@@ -8,7 +8,6 @@ resources:
   - data-philter
 
 #configMapGenerator:
-#  # Druid MCP Server environment configured directly (no external .env links)
 #  - name: druid-env
 #    behavior: replace
 #    literals:
@@ -22,8 +21,7 @@ resources:
 #      - DRUID_MCP_SECURITY_OAUTH2_ENABLED=false
 #      - DRUID_MCP_READONLY_ENABLED=true
 #
-#  # Philter application environment configured directly (no external .env links)
-#  - name: philter-app-env
+#  - name: data-philter-app-env
 #    behavior: replace
 #    literals:
 #      # see k8s/data-philter/kustomization.yaml for details

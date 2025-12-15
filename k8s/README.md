@@ -6,8 +6,8 @@ This folder contains Kubernetes manifests and a Kustomize configuration to deplo
 
 - Namespace: `data-philter`
 - Deployment + Service: `druid-mcp-server` (ClusterIP)
-- Deployment + Service: `philter` (NodePort `30400`)
-- PersistentVolumeClaim: `philter-data` (1Gi) mounted at `/data`
+- Deployment + Service: `data-philter` (NodePort `30400`)
+- PersistentVolumeClaim: `data-philter-data` (1Gi) mounted at `/data`
 - ConfigMaps generated via Kustomize for application settings
 
 ## Prerequisites
@@ -32,12 +32,12 @@ kubectl get all -n data-philter
 
 Access the app:
 
-- The `philter` Service is exposed as NodePort `30400`. If your cluster nodes are reachable, open:
+- The `data-philter` Service is exposed as NodePort `30400`. If your cluster nodes are reachable, open:
   - http://<node-ip>:30400
 - Alternatively, port-forward locally:
 
 ```bash
-kubectl -n data-philter port-forward svc/philter 4000:4000
+kubectl -n data-philter port-forward svc/data-philter 4000:4000
 # Then open http://localhost:4000
 ```
 
@@ -67,7 +67,7 @@ You can apply the base deployment file directly, but note that ConfigMaps are no
 kubectl apply -f k8s/deployment.yaml
 ```
 
-If you skip Kustomize, you must also create the ConfigMaps that Kustomize would generate (`druid-env` and `philter-app-env`).
+If you skip Kustomize, you must also create the ConfigMaps that Kustomize would generate (`druid-env` and `data-philter-app-env`).
 
 ## Configuration
 
@@ -80,7 +80,7 @@ If you skip Kustomize, you must also create the ConfigMaps that Kustomize would 
 - Images
   - The deployments use the images:
     - `iunera/druid-mcp-server:latest`
-    - `iunera/philter:latest`
+    - `iunera/data-philter:latest`
   - You can pin versions by editing `k8s/deployment.yaml` or by using a Kustomize `images` transform in `k8s/kustomization.yaml`.
 
 ## Common operations
@@ -88,14 +88,14 @@ If you skip Kustomize, you must also create the ConfigMaps that Kustomize would 
 Check rollout status:
 
 ```bash
-kubectl -n data-philter rollout status deploy/philter
+kubectl -n data-philter rollout status deploy/data-philter
 kubectl -n data-philter rollout status deploy/druid-mcp-server
 ```
 
 View logs:
 
 ```bash
-kubectl -n data-philter logs deploy/philter -f
+kubectl -n data-philter logs deploy/data-philter -f
 kubectl -n data-philter logs deploy/druid-mcp-server -f
 ```
 

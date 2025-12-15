@@ -7,11 +7,10 @@ namespace: data-philter
 resources:
   - namespace.yaml
   - druid-mcp-server.yaml
-  - philter-pvc.yaml
-  - philter.yaml
+  - data-philter-pvc.yaml
+  - data-philter.yaml
 
 configMapGenerator:
-  # Druid MCP Server environment configured directly (no external .env links)
   - name: druid-env
     literals:
 
@@ -61,10 +60,9 @@ configMapGenerator:
       - DRUID_MCP_SECURITY_OAUTH2_ENABLED=false
       - DRUID_MCP_READONLY_ENABLED=true
 
-  # Philter application environment configured directly (no external .env links)
-  - name: philter-app-env
+  - name: data-philter-app-env
     literals:
-       # Philter Server settings
+       # data-philter Server settings
 
         # IUNERA_MODEL_TYPE
         #
