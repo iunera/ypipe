@@ -291,12 +291,12 @@ configure_mcp_choice() {
     log "🔧 Step 3.6: Configuring analytics backend (PHILTER_MCP_SERVER)..."
     PHILTER_CHOICE=""
     while :; do
-        printf "Choose analytics backend (none/druid/clickhouse/all) [none]: "
+        printf "Choose analytics backend (druid/clickhouse/all) [none]: "
         read -r PHILTER_CHOICE < /dev/tty || PHILTER_CHOICE=""
         PHILTER_CHOICE=$(printf "%s" "$PHILTER_CHOICE" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | tr '[:upper:]' '[:lower:]')
-        PHILTER_CHOICE=${PHILTER_CHOICE:-none}
+        PHILTER_CHOICE=${PHILTER_CHOICE:-all}
         case "$PHILTER_CHOICE" in
-            none|druid|clickhouse|all|"druid,clickhouse"|"clickhouse,druid")
+            druid|clickhouse|all|"druid,clickhouse"|"clickhouse,druid")
                 export PHILTER_MCP_SERVER="$PHILTER_CHOICE"
                 break
                 ;;
