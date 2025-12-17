@@ -362,21 +362,39 @@ configure_env_file() {
                         # interactive: show accumulated comment block (if any)
                         if [ -n "$comment_block" ]; then
                             printf "\n"
-                            printf "%s" "$comment_block" | while IFS= read -r cline || [ -n "$cline" ]; do
+                            printf "%b" "$comment_block" | while IFS= read -r cline || [ -n "$cline" ]; do
                                 # remove leading '# ' for rest part
                                 rest=$(printf "%s" "$cline" | sed 's/^#[[:space:]]*//;s/[[:space:]]*$//')
                                 printf "%b\n" "${BOLD}#${NC}${rest}"
                             done
                         fi
 
-                        # prompt loop that trims input and confirms empty values
+                        # derive default from comment block if pattern '# Default: value' exists (last one wins)
+                        default_from_comment=""
+                        if printf "%b" "$comment_block" | grep -i '^[[:space:]]*#[[:space:]]*Default:' >/dev/null 2>&1; then
+                            default_from_comment=$(printf "%b" "$comment_block" \
+                                | grep -i '^[[:space:]]*#[[:space:]]*Default:' \
+                                | tail -n1 \
+                                | sed 's/^[[:space:]]*#[[:space:]]*Default:[[:space:]]*//;s/[[:space:]]*$//')
+                        fi
+
+                        # prompt loop that trims input and confirms empty values (Enter accepts default if available)
                         while :; do
-                            printf "%s: " "$key"
+                            if [ -n "$default_from_comment" ]; then
+                                printf "%s [%s]: " "$key" "$default_from_comment"
+                            else
+                                printf "%s: " "$key"
+                            fi
                             read -r user_value < /dev/tty || user_value=""
                             # trim leading/trailing whitespace
                             user_value=$(printf "%s" "$user_value" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
                             if [ -n "$user_value" ]; then
                                 printf "%s=%s\n" "$key" "$user_value" >> "$TMP_ENV"
+                                break
+                            fi
+                            # If user pressed Enter and a default exists, use it
+                            if [ -z "$user_value" ] && [ -n "$default_from_comment" ]; then
+                                printf "%s=%s\n" "$key" "$default_from_comment" >> "$TMP_ENV"
                                 break
                             fi
                             # empty after trim -> ask for confirmation
@@ -391,7 +409,7 @@ configure_env_file() {
                             fi
                             # otherwise, re-display comment block (if any) and prompt again
                             if [ -n "$comment_block" ]; then
-                                printf "%s" "$comment_block" | while IFS= read -r cline || [ -n "$cline" ]; do
+                                printf "%b" "$comment_block" | while IFS= read -r cline || [ -n "$cline" ]; do
                                     rest=$(printf "%s" "$cline" | sed 's/^#[[:space:]]*//;s/[[:space:]]*$//')
                                     printf "%b\n" "${BOLD}#${NC}${rest}"
                                 done
