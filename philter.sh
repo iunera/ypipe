@@ -18,11 +18,12 @@ cd "$SCRIPT_DIR"
 
 usage() {
   cat <<USAGE
-Usage: $(basename "$0") start|stop
+Usage: $(basename "$0") start|stop|restart
 
 Commands:
   start   Start Data Philter stack with configured backends
   stop    Stop all Data Philter services (all profiles)
+  restart Stop all services (all profiles) and start again with configured backends
 
 This script reads configuration from app.env and sets COMPOSE_PROFILES accordingly.
 USAGE
@@ -130,8 +131,20 @@ case "$CMD" in
     log "Stopping all Data Philter services (all profiles)"
     COMPOSE_PROFILES="*" docker compose down
     ;;
+  restart)
+    log "Restarting Data Philter: stopping all services, then starting with configured backends"
+    COMPOSE_PROFILES="*" docker compose down || true
+    if [ -n "$PROFILES" ]; then
+      log "Starting Data Philter with profiles: $PROFILES"
+      COMPOSE_PROFILES="$PROFILES" docker compose up -d
+    else
+      log "Starting Data Philter without optional backends"
+      docker compose up -d
+    fi
+    open_browser "http://localhost:${SERVER_PORT:-4000}"
+    ;;
   -h|--help|help|*)
     usage
-    [ "$CMD" = "start" ] || [ "$CMD" = "stop" ] || exit 2
+    [ "$CMD" = "start" ] || [ "$CMD" = "stop" ] || [ "$CMD" = "restart" ] || exit 2
     ;;
 esac
