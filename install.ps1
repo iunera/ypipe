@@ -656,11 +656,9 @@ function Main {
     # Step 6: Start services via native philter.ps1
     Write-Log "🔧 Step 6: Starting services via philter.ps1..."
     $philterPs1Path = Join-Path (Get-Location) "philter.ps1"
-    if (-not (Test-Path $philterPs1Path)) {
-        Write-Info "Downloading philter.ps1..."
-        if (-not (Invoke-DownloadFile $script:PHILTER_PS1_URL $philterPs1Path)) {
-            Write-ErrorAndExit "Failed to download philter.ps1."
-        }
+    Write-Info "Downloading philter.ps1..."
+    if (-not (Invoke-DownloadFile $script:PHILTER_PS1_URL $philterPs1Path)) {
+        Write-ErrorAndExit "Failed to download philter.ps1."
     }
     # Unblock in case file is marked from internet zone
     try { Unblock-File -Path $philterPs1Path -ErrorAction SilentlyContinue } catch {}
