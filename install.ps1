@@ -75,7 +75,8 @@ $script:APP_ENV_TEMPLATE_URL = "$script:BASE_URL/app.env_template"
 $script:DRUID_ENV_TEMPLATE_URL = "$script:BASE_URL/druid.env_template"
 # New URLs introduced in install.sh changes
 $script:CLICKHOUSE_ENV_TEMPLATE_URL = "$script:BASE_URL/clickhouse.env_template"
-$script:PHILTER_SH_URL = "$script:BASE_URL/philter.sh"
+# Prefer native PowerShell lifecycle script
+$script:PHILTER_PS1_URL = "$script:BASE_URL/philter.ps1"
 
 $script:TMP_FILES = @()
 $script:CREATED_ENV_FILES = @()
@@ -457,36 +458,6 @@ function Download-DockerCompose {
 }
 #endregion
 
-#region Readiness and Browser Helpers
-function Wait-ForBackend {
-    param (
-        [Parameter(Mandatory=$true)][string]$BaseUrl,
-        [int]$TimeoutSeconds = 120,
-        [int]$IntervalSeconds = 2
-    )
-
-    $healthUrl = "$BaseUrl/actuator/health"
-    $waited = 0
-    Write-Info "Waiting for backend to become available at $BaseUrl (timeout: ${TimeoutSeconds}s)..."
-
-    while ($waited -lt $TimeoutSeconds) {
-        try {
-            # Use Invoke-WebRequest; on connection refused it throws quickly. We don't fail the script.
-            $resp = Invoke-WebRequest -Uri $healthUrl -UseBasicParsing -Method Get -ErrorAction Stop
-            if ($resp -and $resp.StatusCode -ge 200 -and $resp.StatusCode -lt 300) {
-                Write-Log "Backend is up!"
-                return
-            }
-        } catch {
-            # ignore and retry after interval
-        }
-        Start-Sleep -Seconds $IntervalSeconds
-        $waited += $IntervalSeconds
-    }
-
-    # Timed out — warn but continue
-    Write-Host -ForegroundColor Yellow "Backend did not become ready within ${TimeoutSeconds}s. You may need to wait a bit longer."
-}
 #endregion
 
 function Show-Usage {
@@ -682,46 +653,25 @@ function Main {
     Write-Log "🔧 Step 5: Downloading docker-compose.yml..."
     Download-DockerCompose
 
-    # Step 6: Start services via philter.sh (delegates profiles, readiness, and browser open)
-    Write-Log "🔧 Step 6: Starting services via philter.sh..."
-    $philterPath = Join-Path (Get-Location) "philter.sh"
-    if (-not (Invoke-DownloadFile $script:PHILTER_SH_URL $philterPath)) {
-        Write-ErrorAndExit "Failed to download philter.sh."
+    # Step 6: Start services via native philter.ps1
+    Write-Log "🔧 Step 6: Starting services via philter.ps1..."
+    $philterPs1Path = Join-Path (Get-Location) "philter.ps1"
+    if (-not (Test-Path $philterPs1Path)) {
+        Write-Info "Downloading philter.ps1..."
+        if (-not (Invoke-DownloadFile $script:PHILTER_PS1_URL $philterPs1Path)) {
+            Write-ErrorAndExit "Failed to download philter.ps1."
+        }
     }
+    # Unblock in case file is marked from internet zone
+    try { Unblock-File -Path $philterPs1Path -ErrorAction SilentlyContinue } catch {}
 
-    # Try to run philter.sh using bash, wsl, or fall back to docker compose
-    $startedViaPhilter = $false
-    if (Get-Command bash -ErrorAction SilentlyContinue) {
-        try {
-            Write-Info "Running philter.sh using bash..."
-            & bash "$philterPath" start
-            if ($LASTEXITCODE -eq 0) { $startedViaPhilter = $true }
-        } catch { }
-    } elseif (Get-Command wsl -ErrorAction SilentlyContinue) {
-        try {
-            Write-Info "Running philter.sh using WSL sh..."
-            & wsl sh -lc "'$(wslpath -a $(Resolve-Path $philterPath)))' start" 2>$null
-            if ($LASTEXITCODE -eq 0) { $startedViaPhilter = $true }
-        } catch { }
-    }
-
-    if (-not $startedViaPhilter) {
-        Write-Info "Fallback: starting services with 'docker compose up -d'..."
-        docker compose up -d
-        Write-Log "Services started in the background."
-        Write-Info "You can check the status with 'docker ps'."
+    # Invoke native lifecycle script (handles profiles, readiness, and browser)
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $philterPs1Path start
+    if ($LASTEXITCODE -ne 0) {
+        Write-ErrorAndExit "Failed to start services via philter.ps1."
     }
 
     Write-Log "✅ Installation complete!"
-    Write-Info "You can now access the application at http://localhost:4000"
-    # Wait for backend readiness before opening the browser (up to 120s)
-    try {
-        Wait-ForBackend -BaseUrl "http://localhost:4000" -TimeoutSeconds 120 -IntervalSeconds 2
-    } catch {
-        # If readiness check fails (unexpected), continue to attempt opening the browser
-    }
-    Write-Log "Opening http://localhost:4000 in your default browser..."
-    Start-Process "http://localhost:4000"
 
     $script:INSTALL_OK = $true
 }
