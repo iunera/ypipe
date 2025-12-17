@@ -23,10 +23,11 @@ set -eu
 # Defaults
 DATA_PHILTER_DIR="$HOME/.data-philter"
 # TODO change the URLs to main branch when ready
-BASE_URL="https://raw.githubusercontent.com/iunera/data-philter/refs/heads/main"
+BASE_URL="https://raw.githubusercontent.com/iunera/data-philter/refs/heads/clickhouse-support"
 URL="$BASE_URL/docker-compose.yml"
 APP_ENV_TEMPLATE_URL="$BASE_URL/app.env_template"
 DRUID_ENV_TEMPLATE_URL="$BASE_URL/druid.env_template"
+PHILTER_SH_URL="$BASE_URL/philter.sh"
 TMP_FILES=""
 CREATED_ENV_FILES=""
 INSTALL_OK=0
@@ -514,74 +515,23 @@ if ! download_file "$URL" docker-compose.yml; then
     die "Failed to download docker-compose.yml from $URL"
 fi
 
-# Step 6: Start services
-log "🔧 Step 6: Starting services..."
-$DOCKER_CMD compose up -d
+# Step 6: Start services using philter.sh (delegates profiles, readiness, and browser open)
+log "🔧 Step 6: Starting services via philter.sh..."
 
-log "Services started in the background."
-info "You can check the status with '$DOCKER_CMD ps'."
+# Ensure philter.sh exists (download if running from curl | sh without repo checkout)
+if [ ! -f "./philter.sh" ]; then
+    log "philter.sh not found locally — downloading it..."
+    if ! download_file "$PHILTER_SH_URL" philter.sh; then
+        die "Failed to download philter.sh from $PHILTER_SH_URL"
+    fi
+fi
+
+# Ensure philter.sh is executable
+chmod +x ./philter.sh || true
+
+./philter.sh start
 
 log "✅ Installation complete!"
-info "You can now access the application at http://localhost:4000"
-
-open_browser() {
-    URL=$1
-
-    # Wait for backend to be ready before opening the browser
-    # Try for up to 120 seconds
-    WAIT_TIMEOUT=120
-    WAIT_INTERVAL=2
-    waited=0
-
-    info "Waiting for backend to become available at $URL (timeout: ${WAIT_TIMEOUT}s)..."
-    while [ $waited -lt $WAIT_TIMEOUT ]; do
-        if command -v curl >/dev/null 2>&1; then
-            if curl -fsS -o /dev/null "$URL/actuator/health" >/dev/null 2>&1; then
-                log "Backend is up!"
-                break
-            fi
-        elif command -v wget >/dev/null 2>&1; then
-            if wget -q --spider "$URL" >/dev/null 2>&1; then
-                log "Backend is up!"
-                break
-            fi
-        else
-            # Neither curl nor wget available; do a simple grace wait once
-            if [ $waited -eq 0 ]; then
-                info "curl/wget not found — waiting 10s before opening the browser..."
-            fi
-            sleep 10 || true
-            waited=$((waited + 10))
-            break
-        fi
-        sleep $WAIT_INTERVAL || true
-        waited=$((waited + WAIT_INTERVAL))
-    done
-
-    if [ $waited -ge $WAIT_TIMEOUT ]; then
-        err "Backend did not become ready within ${WAIT_TIMEOUT}s. You may need to wait a bit longer."
-    fi
-
-    OS=$(uname -s)
-    case "$OS" in
-        Linux)
-            if command -v xdg-open >/dev/null 2>&1; then
-                xdg-open "$URL" >/dev/null 2>&1 &
-                log "Opening $URL in your default browser..."
-            else
-                info "Could not find xdg-open. Please open $URL manually."
-            fi
-            ;;
-        Darwin)
-            open "$URL" >/dev/null 2>&1 &
-            log "Opening $URL in your default browser..."
-            ;;
-        *)
-            info "Unsupported OS for automatic browser opening. Please open $URL manually."
-            ;;
-    esac
-}
-
-open_browser "http://localhost:4000"
+info "If the browser did not open automatically, navigate to http://localhost:4000"
 
 INSTALL_OK=1
