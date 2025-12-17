@@ -76,7 +76,7 @@ $script:DRUID_ENV_TEMPLATE_URL = "$script:BASE_URL/druid.env_template"
 # New URLs introduced in install.sh changes
 $script:CLICKHOUSE_ENV_TEMPLATE_URL = "$script:BASE_URL/clickhouse.env_template"
 # Prefer native PowerShell lifecycle script
-$script:PHILTER_PS1_URL = "$script:BASE_URL/run.ps1"
+$script:RUNSCRIPT_URL = "$script:BASE_URL/run.ps1"
 
 $script:TMP_FILES = @()
 $script:CREATED_ENV_FILES = @()
@@ -657,7 +657,7 @@ function Main {
     Write-Log "🔧 Step 6: Starting services via run.ps1..."
     $philterPs1Path = Join-Path (Get-Location) "run.ps1"
     Write-Info "Downloading run.ps1..."
-    if (-not (Invoke-DownloadFile $script:PHILTER_PS1_URL $philterPs1Path)) {
+    if (-not (Invoke-DownloadFile $script:RUNSCRIPT_URL $philterPs1Path)) {
         Write-ErrorAndExit "Failed to download run.ps1."
     }
     # Unblock in case file is marked from internet zone
