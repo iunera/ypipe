@@ -69,10 +69,13 @@ function Ensure-Directory {
 #region Globals and State
 # Use script-scope variables for state management
 $script:DATA_PHILTER_DIR = Join-Path $HOME ".data-philter"
-$script:BASE_URL = "https://raw.githubusercontent.com/iunera/data-philter/refs/heads/main"
+$script:BASE_URL = "https://raw.githubusercontent.com/iunera/data-philter/refs/heads/clickhouse-support"
 $script:URL = "$script:BASE_URL/docker-compose.yml"
 $script:APP_ENV_TEMPLATE_URL = "$script:BASE_URL/app.env_template"
 $script:DRUID_ENV_TEMPLATE_URL = "$script:BASE_URL/druid.env_template"
+# New URLs introduced in install.sh changes
+$script:CLICKHOUSE_ENV_TEMPLATE_URL = "$script:BASE_URL/clickhouse.env_template"
+$script:PHILTER_SH_URL = "$script:BASE_URL/philter.sh"
 
 $script:TMP_FILES = @()
 $script:CREATED_ENV_FILES = @()
@@ -203,6 +206,25 @@ function Remove-KeyFromTemplate {
         }
     }
 }
+# Set or replace an env key in a file (append if missing)
+function Set-OrReplaceKeyInFile {
+    param (
+        [Parameter(Mandatory=$true)][string]$TargetFile,
+        [Parameter(Mandatory=$true)][string]$Key,
+        [Parameter(Mandatory=$true)][string]$Value
+    )
+    if (-not (Test-Path $TargetFile)) {
+        Set-Content -Path $TargetFile -Value ("$Key=$Value") -NoNewline
+        return
+    }
+    $content = Get-Content -Raw -ErrorAction SilentlyContinue $TargetFile
+    if ($content -match "(?m)^$([regex]::Escape($Key))=") {
+        $updated = [regex]::Replace($content, "(?m)^$([regex]::Escape($Key))=.*$", "$Key=$Value")
+        Set-Content -Path $TargetFile -Value $updated
+    } else {
+        Add-Content -Path $TargetFile -Value ("$Key=$Value")
+    }
+}
 #endregion
 
 #region Environment File Configuration
@@ -247,7 +269,14 @@ function Configure-EnvFile {
                         if (-not ([string]::IsNullOrEmpty($presetValue))) {
                             Add-Content -Path $tmpEnv -Value "$key=$presetValue"
                         } else {
+                            # Try to extract default value from comment block (line with 'Default: value')
+                            $defaultFromComment = $null
                             if (-not ([string]::IsNullOrWhiteSpace($commentBlock))) {
+                                $commentBlock.Split("`n") | ForEach-Object {
+                                    if ($_ -match "^[\s#]*Default:\s*(.+)$") {
+                                        $defaultFromComment = $matches[1].Trim()
+                                    }
+                                }
                                 Write-Host ""
                                 $commentBlock.Split("`n") | ForEach-Object {
                                     if (-not ([string]::IsNullOrWhiteSpace($_))) {
@@ -259,12 +288,20 @@ function Configure-EnvFile {
                             }
 
                             while ($true) {
-                                Write-Host "${key}: " -NoNewline
+                                if ($null -ne $defaultFromComment -and $defaultFromComment -ne "") {
+                                    Write-Host ("${key} [{0}]: " -f $defaultFromComment) -NoNewline
+                                } else {
+                                    Write-Host "${key}: " -NoNewline
+                                }
                                 $userValue = Read-Host
                                 $userValue = $userValue.Trim()
 
                                 if (-not ([string]::IsNullOrWhiteSpace($userValue))) {
                                     Add-Content -Path $tmpEnv -Value "$key=$userValue"
+                                    break
+                                }
+                                if (-not $userValue -and $null -ne $defaultFromComment -and $defaultFromComment -ne "") {
+                                    Add-Content -Path $tmpEnv -Value "$key=$defaultFromComment"
                                     break
                                 }
 
@@ -395,6 +432,22 @@ function Download-Templates {
     $script:TMP_FILES = $script:TMP_FILES | Where-Object { $_ -ne $tmpAppTemplate -and $_ -ne $tmpDruidTemplate }
 }
 
+# Optionally download ClickHouse template when required
+function Download-ClickHouseTemplateIfNeeded {
+    param(
+        [Parameter(Mandatory=$true)][bool]$Needed
+    )
+    if (-not $Needed) { return }
+    Write-Log "ClickHouse selected — downloading template and configuring clickhouse.env..."
+    $tmpClickTemplate = Join-Path $env:TEMP "clickhouse.env_template"
+    $script:TMP_FILES += $tmpClickTemplate
+    if (-not (Invoke-DownloadFile $script:CLICKHOUSE_ENV_TEMPLATE_URL $tmpClickTemplate)) {
+        Write-ErrorAndExit "Failed to download clickhouse.env_template."
+    }
+    Move-Item $tmpClickTemplate "clickhouse.env_template" -Force
+    $script:TMP_FILES = $script:TMP_FILES | Where-Object { $_ -ne $tmpClickTemplate }
+}
+
 function Download-DockerCompose {
     Write-Log "🔧 Downloading docker-compose.yml..."
     $dockerComposePath = Join-Path $script:DATA_PHILTER_DIR "docker-compose.yml"
@@ -451,7 +504,7 @@ function Main {
     Set-Location $script:DATA_PHILTER_DIR
 
     # Record which env files already existed before we start creating any
-    $envFilesToCheck = @("app.env", "druid.env")
+    $envFilesToCheck = @("app.env", "druid.env", "clickhouse.env")
     foreach ($f in $envFilesToCheck) {
         if (Test-Path $f) {
             $script:EXISTING_ENV_FILES += (Join-Path $script:DATA_PHILTER_DIR $f)
@@ -577,10 +630,51 @@ function Main {
         }
     }
 
+    # Step 3.6: Choose analytics backend (PHILTER_MCP_SERVER)
+    Write-Log "🔧 Step 3.6: Configuring analytics backend (PHILTER_MCP_SERVER)..."
+    $script:PHILTER_MCP_SERVER = $null
+    while ($true) {
+        Write-Host "Choose analytics backend (druid/clickhouse/all) [all]: " -NoNewline
+        $choice = Read-Host
+        if ([string]::IsNullOrWhiteSpace($choice)) { $choice = "all" }
+        $choice = $choice.Trim().ToLower()
+        if ($choice -in @("druid","clickhouse","all","druid,clickhouse","clickhouse,druid")) {
+            $script:PHILTER_MCP_SERVER = $choice
+            $env:PHILTER_MCP_SERVER = $choice
+            # Persist immediately if app.env already exists
+            if (Test-Path "app.env") {
+                Set-OrReplaceKeyInFile -TargetFile "app.env" -Key "PHILTER_MCP_SERVER" -Value $choice
+            }
+            break
+        } else {
+            Write-Info "Invalid choice. Please enter one of: druid, clickhouse, all."
+        }
+    }
+
+    # Ensure PHILTER_MCP_SERVER is present in existing app.env if user chose to keep it
+    if (Test-Path "app.env") {
+        Set-OrReplaceKeyInFile -TargetFile "app.env" -Key "PHILTER_MCP_SERVER" -Value ($env:PHILTER_MCP_SERVER)
+    }
+
     # Step 4: Configure environment files
     Write-Log "🔧 Step 4: Configuring environment files..."
     Configure-EnvFile "app.env_template" "app.env"
     Configure-EnvFile "druid.env_template" "druid.env"
+
+    # If user selected clickhouse backend, download and configure clickhouse.env similar to druid
+    $needsClickhouse = $false
+    switch ($env:PHILTER_MCP_SERVER) {
+        "clickhouse" { $needsClickhouse = $true }
+        "all" { $needsClickhouse = $true }
+        "druid,clickhouse" { $needsClickhouse = $true }
+        "clickhouse,druid" { $needsClickhouse = $true }
+        default { }
+    }
+    if ($needsClickhouse) {
+        Download-ClickHouseTemplateIfNeeded -Needed $true
+        Configure-EnvFile "clickhouse.env_template" "clickhouse.env"
+        Remove-Item "clickhouse.env_template" -ErrorAction SilentlyContinue
+    }
 
     Remove-Item "app.env_template", "druid.env_template" -ErrorAction SilentlyContinue
 
@@ -588,12 +682,35 @@ function Main {
     Write-Log "🔧 Step 5: Downloading docker-compose.yml..."
     Download-DockerCompose
 
-    # Step 6: Start services
-    Write-Log "🔧 Step 6: Starting services..."
-    docker compose up -d
+    # Step 6: Start services via philter.sh (delegates profiles, readiness, and browser open)
+    Write-Log "🔧 Step 6: Starting services via philter.sh..."
+    $philterPath = Join-Path (Get-Location) "philter.sh"
+    if (-not (Invoke-DownloadFile $script:PHILTER_SH_URL $philterPath)) {
+        Write-ErrorAndExit "Failed to download philter.sh."
+    }
 
-    Write-Log "Services started in the background."
-    Write-Info "You can check the status with 'docker ps'."
+    # Try to run philter.sh using bash, wsl, or fall back to docker compose
+    $startedViaPhilter = $false
+    if (Get-Command bash -ErrorAction SilentlyContinue) {
+        try {
+            Write-Info "Running philter.sh using bash..."
+            & bash "$philterPath" start
+            if ($LASTEXITCODE -eq 0) { $startedViaPhilter = $true }
+        } catch { }
+    } elseif (Get-Command wsl -ErrorAction SilentlyContinue) {
+        try {
+            Write-Info "Running philter.sh using WSL sh..."
+            & wsl sh -lc "'$(wslpath -a $(Resolve-Path $philterPath)))' start" 2>$null
+            if ($LASTEXITCODE -eq 0) { $startedViaPhilter = $true }
+        } catch { }
+    }
+
+    if (-not $startedViaPhilter) {
+        Write-Info "Fallback: starting services with 'docker compose up -d'..."
+        docker compose up -d
+        Write-Log "Services started in the background."
+        Write-Info "You can check the status with 'docker ps'."
+    }
 
     Write-Log "✅ Installation complete!"
     Write-Info "You can now access the application at http://localhost:4000"
