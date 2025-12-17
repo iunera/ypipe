@@ -291,13 +291,18 @@ configure_mcp_choice() {
     log "🔧 Step 3.6: Configuring analytics backend (PHILTER_MCP_SERVER)..."
     PHILTER_CHOICE=""
     while :; do
-        printf "Choose analytics backend (druid/clickhouse/all) [none]: "
+        printf "Choose analytics backend (druid/clickhouse/all) [all]: "
         read -r PHILTER_CHOICE < /dev/tty || PHILTER_CHOICE=""
         PHILTER_CHOICE=$(printf "%s" "$PHILTER_CHOICE" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | tr '[:upper:]' '[:lower:]')
         PHILTER_CHOICE=${PHILTER_CHOICE:-all}
         case "$PHILTER_CHOICE" in
             druid|clickhouse|all|"druid,clickhouse"|"clickhouse,druid")
                 export PHILTER_MCP_SERVER="$PHILTER_CHOICE"
+                # Persist the choice into app.env immediately (like configure_model_choice)
+                # so that subsequent steps and future runs have the value.
+                if [ -f "app.env" ]; then
+                    set_or_replace_key_in_file "app.env" "PHILTER_MCP_SERVER" "$PHILTER_CHOICE"
+                fi
                 break
                 ;;
             *)
@@ -441,7 +446,7 @@ ensure_dir "$DATA_PHILTER_DIR"
 cd "$DATA_PHILTER_DIR" || die "Failed to enter directory $DATA_PHILTER_DIR"
 
 # Record which env files already existed before we start creating any
-for f in app.env druid.env; do
+for f in app.env druid.env clickhouse.env; do
     if [ -f "$f" ]; then
         EXISTING_ENV_FILES="$EXISTING_ENV_FILES $f"
         # Ask user whether to recreate (overwrite) or keep the existing file
