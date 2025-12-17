@@ -28,7 +28,7 @@ URL="$BASE_URL/docker-compose.yml"
 APP_ENV_TEMPLATE_URL="$BASE_URL/app.env_template"
 DRUID_ENV_TEMPLATE_URL="$BASE_URL/druid.env_template"
 CLICKHOUSE_ENV_TEMPLATE_URL="$BASE_URL/clickhouse.env_template"
-PHILTER_SH_URL="$BASE_URL/philter.sh"
+RUNSCRIPT_URL="$BASE_URL/run.sh"
 TMP_FILES=""
 CREATED_ENV_FILES=""
 INSTALL_OK=0
@@ -610,20 +610,20 @@ if ! download_file "$URL" docker-compose.yml; then
     die "Failed to download docker-compose.yml from $URL"
 fi
 
-# Step 6: Start services using philter.sh (delegates profiles, readiness, and browser open)
+# Step 6: Start services using run.sh (delegates profiles, readiness, and browser open)
 log "🔧 Step 6: Starting services via philter.sh..."
 
 
 log "philter.sh installing..."
-if ! download_file "$PHILTER_SH_URL" philter.sh; then
-    die "Failed to download philter.sh from $PHILTER_SH_URL"
+if ! download_file "$RUNSCRIPT_URL" run.sh; then
+    die "Failed to download philter.sh from $RUNSCRIPT_URL"
 fi
 
 
-# Ensure philter.sh is executable
-chmod +x ./philter.sh || true
+# Ensure run.sh is executable
+chmod +x ./run.sh || true
 
-./philter.sh start
+./run.sh start
 
 log "✅ Installation complete!"
 info "If the browser did not open automatically, navigate to http://localhost:4000"

@@ -76,7 +76,7 @@ $script:DRUID_ENV_TEMPLATE_URL = "$script:BASE_URL/druid.env_template"
 # New URLs introduced in install.sh changes
 $script:CLICKHOUSE_ENV_TEMPLATE_URL = "$script:BASE_URL/clickhouse.env_template"
 # Prefer native PowerShell lifecycle script
-$script:PHILTER_PS1_URL = "$script:BASE_URL/philter.ps1"
+$script:PHILTER_PS1_URL = "$script:BASE_URL/run.ps1"
 
 $script:TMP_FILES = @()
 $script:CREATED_ENV_FILES = @()
@@ -653,12 +653,12 @@ function Main {
     Write-Log "🔧 Step 5: Downloading docker-compose.yml..."
     Download-DockerCompose
 
-    # Step 6: Start services via native philter.ps1
-    Write-Log "🔧 Step 6: Starting services via philter.ps1..."
-    $philterPs1Path = Join-Path (Get-Location) "philter.ps1"
-    Write-Info "Downloading philter.ps1..."
+    # Step 6: Start services via native run.ps1
+    Write-Log "🔧 Step 6: Starting services via run.ps1..."
+    $philterPs1Path = Join-Path (Get-Location) "run.ps1"
+    Write-Info "Downloading run.ps1..."
     if (-not (Invoke-DownloadFile $script:PHILTER_PS1_URL $philterPs1Path)) {
-        Write-ErrorAndExit "Failed to download philter.ps1."
+        Write-ErrorAndExit "Failed to download run.ps1."
     }
     # Unblock in case file is marked from internet zone
     try { Unblock-File -Path $philterPs1Path -ErrorAction SilentlyContinue } catch {}
@@ -666,7 +666,7 @@ function Main {
     # Invoke native lifecycle script (handles profiles, readiness, and browser)
     & powershell -NoProfile -ExecutionPolicy Bypass -File $philterPs1Path start
     if ($LASTEXITCODE -ne 0) {
-        Write-ErrorAndExit "Failed to start services via philter.ps1."
+        Write-ErrorAndExit "Failed to start services via run.ps1."
     }
 
     Write-Log "✅ Installation complete!"

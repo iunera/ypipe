@@ -1,4 +1,4 @@
-# philter.ps1 — Manage Data Philter services on Windows (start/stop/restart/status/logs/pull/down)
+# run.ps1 — Manage Data Philter services on Windows (start/stop/restart/status/logs/pull/down)
 
 param(
     [Parameter(Position=0)]
