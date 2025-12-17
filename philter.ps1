@@ -31,7 +31,7 @@ function Ensure-Docker {
     }
 }
 
-function Get-Profiles {
+function Set-ComposeProfiles {
     # Determine compose profiles based on PHILTER_MCP_SERVER
     $profiles = @()
     $mcp = $env:PHILTER_MCP_SERVER
@@ -49,19 +49,10 @@ function Get-Profiles {
         default { }
     }
 
-    # Determine model profile: optional, for parity we expose as env to app; docker-compose may not use a profile here
-    return $profiles
-}
-
-function ComposeArgs {
-    param([string[]]$Profiles)
-    $args = @('-f', $COMPOSE_FILE)
-    if ($Profiles -and $Profiles.Count -gt 0) {
-        $args += @('--profile')
-        # docker compose supports multiple --profile flags
-        foreach ($p in $Profiles) { $args += $p }
+    # Set COMPOSE_PROFILES environment variable
+    if ($profiles -and $profiles.Count -gt 0) {
+        $env:COMPOSE_PROFILES = $profiles -join ','
     }
-    return ,$args
 }
 
 function Wait-ForBackend([string]$BaseUrl='http://localhost:4000', [int]$TimeoutSeconds=120, [int]$IntervalSeconds=2){
@@ -87,13 +78,12 @@ function Ensure-LocationAndFiles {
 
 Ensure-Docker
 Ensure-LocationAndFiles
-$profiles = Get-Profiles
-$composeArgs = ComposeArgs -Profiles $profiles
+Set-ComposeProfiles
 
 switch ($command) {
     'start' {
         Write-Log "Starting Data Philter services..."
-        & docker compose @composeArgs up -d
+        & docker compose -f $COMPOSE_FILE up -d
         if ($LASTEXITCODE -ne 0) { Write-ErrExit "Failed to start services." }
         Wait-ForBackend -BaseUrl 'http://localhost:4000' -TimeoutSeconds 120 -IntervalSeconds 2
         try { Start-Process 'http://localhost:4000' } catch { }
@@ -101,31 +91,31 @@ switch ($command) {
     }
     'stop' {
         Write-Log "Stopping services..."
-        & docker compose @composeArgs stop
+        & docker compose -f $COMPOSE_FILE stop
         if ($LASTEXITCODE -ne 0) { Write-ErrExit "Failed to stop services." }
         Write-Log "Services stopped."
     }
     'restart' {
         Write-Log "Restarting services..."
-        & docker compose @composeArgs restart
+        & docker compose -f $COMPOSE_FILE restart
         if ($LASTEXITCODE -ne 0) { Write-ErrExit "Failed to restart services." }
         Wait-ForBackend -BaseUrl 'http://localhost:4000' -TimeoutSeconds 120 -IntervalSeconds 2
         Write-Log "Services restarted."
     }
     'status' {
-        & docker compose @composeArgs ps
+        & docker compose -f $COMPOSE_FILE ps
     }
     'logs' {
-        $args = @('logs','-f')
+        $args = @('-f', $COMPOSE_FILE, 'logs', '-f')
         if ($service) { $args += $service }
-        & docker compose @composeArgs @args
+        & docker compose @args
     }
     'pull' {
         Write-Log "Pulling latest images..."
-        & docker compose @composeArgs pull
+        & docker compose -f $COMPOSE_FILE pull
     }
     'down' {
         Write-Log "Stopping and removing containers, networks, and volumes (not data volumes unless defined)."
-        & docker compose @composeArgs down
+        & docker compose -f $COMPOSE_FILE down
     }
 }
