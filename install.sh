@@ -27,6 +27,7 @@ BASE_URL="https://raw.githubusercontent.com/iunera/data-philter/refs/heads/click
 URL="$BASE_URL/docker-compose.yml"
 APP_ENV_TEMPLATE_URL="$BASE_URL/app.env_template"
 DRUID_ENV_TEMPLATE_URL="$BASE_URL/druid.env_template"
+CLICKHOUSE_ENV_TEMPLATE_URL="$BASE_URL/clickhouse.env_template"
 PHILTER_SH_URL="$BASE_URL/philter.sh"
 TMP_FILES=""
 CREATED_ENV_FILES=""
@@ -179,6 +180,27 @@ remove_key_from_template() {
     fi
 }
 
+# Set or replace an ENV key in a target file (portable, uses temp file)
+set_or_replace_key_in_file() {
+    target_file=$1
+    key=$2
+    value=$3
+    if [ ! -f "$target_file" ]; then
+        printf "%s=%s\n" "$key" "$value" > "$target_file"
+        return 0
+    fi
+    if grep -q "^${key}=" "$target_file" 2>/dev/null; then
+        TMP_SR=$(mktemp)
+        TMP_FILES="$TMP_FILES $TMP_SR"
+        sed "s|^${key}=.*|${key}=${value}|" "$target_file" > "$TMP_SR"
+        mv "$TMP_SR" "$target_file"
+        # remove from TMP_FILES list since moved
+        TMP_FILES=$(printf "%s" "$TMP_FILES" | sed "s# $TMP_SR##g")
+    else
+        printf "%s=%s\n" "$key" "$value" >> "$target_file"
+    fi
+}
+
 # New: encapsulate model provider selection + setup in its own function
 configure_model_choice() {
     log "🔧 Step 3.5: Configuring AI Model Type..."
@@ -262,6 +284,27 @@ configure_model_choice() {
             fi
             ;;
     esac
+}
+
+# Prompt user which analytics backend(s) to enable and export PHILTER_MCP_SERVER
+configure_mcp_choice() {
+    log "🔧 Step 3.6: Configuring analytics backend (PHILTER_MCP_SERVER)..."
+    PHILTER_CHOICE=""
+    while :; do
+        printf "Choose analytics backend (none/druid/clickhouse/all) [none]: "
+        read -r PHILTER_CHOICE < /dev/tty || PHILTER_CHOICE=""
+        PHILTER_CHOICE=$(printf "%s" "$PHILTER_CHOICE" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | tr '[:upper:]' '[:lower:]')
+        PHILTER_CHOICE=${PHILTER_CHOICE:-none}
+        case "$PHILTER_CHOICE" in
+            none|druid|clickhouse|all|"druid,clickhouse"|"clickhouse,druid")
+                export PHILTER_MCP_SERVER="$PHILTER_CHOICE"
+                break
+                ;;
+            *)
+                err "Invalid choice. Please enter one of: none, druid, clickhouse, all."
+                ;;
+        esac
+    done
 }
 
 configure_env_file() {
@@ -501,10 +544,39 @@ if [ "${SKIP_MODEL_CONFIG}" -ne 1 ]; then
     configure_model_choice
 fi
 
+# Step 3.6: Choose analytics backend (PHILTER_MCP_SERVER)
+configure_mcp_choice
+
+# Ensure PHILTER_MCP_SERVER is present in existing app.env if user chose to keep it
+if [ -f "app.env" ]; then
+    set_or_replace_key_in_file "app.env" "PHILTER_MCP_SERVER" "${PHILTER_MCP_SERVER:-}"
+fi
+
 # Step 4: Configure environment files
 log "🔧 Step 4: Configuring environment files..."
+# Exported PHILTER_MCP_SERVER will be picked up and populated into app.env
 configure_env_file app.env_template app.env
 configure_env_file druid.env_template druid.env
+
+# If user selected clickhouse backend, download and configure clickhouse.env similar to druid
+NEEDS_CLICKHOUSE=0
+case "${PHILTER_MCP_SERVER:-}" in
+    clickhouse|all|"druid,clickhouse"|"clickhouse,druid")
+        NEEDS_CLICKHOUSE=1
+        ;;
+esac
+if [ "$NEEDS_CLICKHOUSE" -eq 1 ]; then
+    log "ClickHouse selected — downloading template and configuring clickhouse.env..."
+    TMP_CLICKHOUSE_TEMPLATE=$(mktemp)
+    TMP_FILES="$TMP_FILES $TMP_CLICKHOUSE_TEMPLATE"
+    if ! download_file "$CLICKHOUSE_ENV_TEMPLATE_URL" "$TMP_CLICKHOUSE_TEMPLATE"; then
+        die "Failed to download clickhouse.env_template from $CLICKHOUSE_ENV_TEMPLATE_URL"
+    fi
+    mv "$TMP_CLICKHOUSE_TEMPLATE" clickhouse.env_template
+    TMP_FILES=$(printf "%s" "$TMP_FILES" | sed "s# $TMP_CLICKHOUSE_TEMPLATE##g")
+    configure_env_file clickhouse.env_template clickhouse.env
+    rm -f clickhouse.env_template || true
+fi
 
 # remove templates
 rm -f app.env_template druid.env_template
