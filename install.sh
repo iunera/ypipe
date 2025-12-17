@@ -518,13 +518,12 @@ fi
 # Step 6: Start services using philter.sh (delegates profiles, readiness, and browser open)
 log "🔧 Step 6: Starting services via philter.sh..."
 
-# Ensure philter.sh exists (download if running from curl | sh without repo checkout)
-if [ ! -f "./philter.sh" ]; then
-    log "philter.sh not found locally — downloading it..."
-    if ! download_file "$PHILTER_SH_URL" philter.sh; then
-        die "Failed to download philter.sh from $PHILTER_SH_URL"
-    fi
+
+log "philter.sh installing..."
+if ! download_file "$PHILTER_SH_URL" philter.sh; then
+    die "Failed to download philter.sh from $PHILTER_SH_URL"
 fi
+
 
 # Ensure philter.sh is executable
 chmod +x ./philter.sh || true
