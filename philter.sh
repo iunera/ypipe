@@ -85,17 +85,17 @@ open_browser() {
     esac
 }
 
-# Load app.env if present to get PHILTER_BACKENDS (export variables)
+# Load app.env if present to get PHILTER_MCP_SERVER (export variables)
 if [ -f "app.env" ]; then
   # shellcheck disable=SC2046
   set -a && . ./app.env && set +a || true
 fi
 
-# Map PHILTER_BACKENDS -> COMPOSE_PROFILES
+# Map PHILTER_MCP_SERVER -> COMPOSE_PROFILES
 # Accepted values (case-insensitive): none, druid, clickhouse, all, druid,clickhouse
 to_lower() { printf "%s" "$1" | tr '[:upper:]' '[:lower:]'; }
 
-BACKENDS=$(to_lower "${PHILTER_BACKENDS:-}")
+BACKENDS=$(to_lower "${PHILTER_MCP_SERVER:-}")
 case "$BACKENDS" in
   ""|none)
     PROFILES=""
@@ -110,7 +110,7 @@ case "$BACKENDS" in
     PROFILES="clickhouse"
     ;;
   *)
-    err "Unknown PHILTER_BACKENDS value: '$PHILTER_BACKENDS'. Expected one of: none, druid, clickhouse, all."
+    err "Unknown PHILTER_MCP_SERVER value: '$PHILTER_MCP_SERVER'. Expected one of: none, druid, clickhouse, all."
     PROFILES=""
     ;;
 esac
