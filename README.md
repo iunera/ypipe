@@ -128,6 +128,9 @@ IUNERA_MODEL_TYPE=ollama-m # or ollama-l, ollama-xl, or openai
 
 Once the services are running, you can start querying your Apache Druid or [ClickHouse](https://clickhouse.com/) databases using natural language through the web interface.
 
+[![Data Philter: Your Local-First Copilot for Databases and Time Series](https://img.youtube.com/vi/tTlgX83NcB0/0.jpg)](https://www.youtube.com/watch?v=tTlgX83NcB0)
+
+
 ## Development Druid installation
 For development and testing, a complete local Apache Druid cluster can be installed using the [druid-local-cluster-installer](https://github.com/iunera/druid-local-cluster-installer).
 This setup is designed to work seamlessly with Data Philter.
