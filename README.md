@@ -46,6 +46,8 @@ You can have Data Philter running on your local machine in minutes.
 
 We provide an automated script to handle the setup of environment variables and containers.
 
+> **Note:** This project is under active development. If the container fails to start, you may need to re-run the installation script. In such cases, you can preserve your existing environment files.
+
 **macOS / Linux:**
 ```bash
 curl -sL https://raw.githubusercontent.com/iunera/data-philter/main/install.sh | sh
