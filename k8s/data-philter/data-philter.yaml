@@ -21,7 +21,8 @@ spec:
           imagePullPolicy: Always
           env:
             - name: SPRING_PROFILES_ACTIVE
-              value: "docker"
+              # append 'clickhouse' for clickhouse support
+              value: "docker,druid"
             - name: SERVER_PORT
               value: "4000"
           envFrom:
