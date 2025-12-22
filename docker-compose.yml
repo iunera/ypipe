@@ -46,6 +46,7 @@ services:
     image: iunera/philter:dev-0.1.0 #TODO latest
     pull_policy: always
     environment:
+      # COMPOSE_PROFILE values: druid, clickhouse
       SPRING_PROFILES_ACTIVE: "docker,${COMPOSE_PROFILES}"
     env_file:
       - app.env
