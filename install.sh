@@ -23,7 +23,7 @@ set -eu
 # Defaults
 DATA_PHILTER_DIR="$HOME/.data-philter"
 # TODO change the URLs to main branch when ready
-BASE_URL="https://raw.githubusercontent.com/iunera/data-philter/refs/heads/clickhouse-support"
+BASE_URL="https://raw.githubusercontent.com/iunera/data-philter/refs/heads/main"
 URL="$BASE_URL/docker-compose.yml"
 APP_ENV_TEMPLATE_URL="$BASE_URL/app.env_template"
 DRUID_ENV_TEMPLATE_URL="$BASE_URL/druid.env_template"

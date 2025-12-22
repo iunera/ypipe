@@ -69,7 +69,7 @@ function Ensure-Directory {
 #region Globals and State
 # Use script-scope variables for state management
 $script:DATA_PHILTER_DIR = Join-Path $HOME ".data-philter"
-$script:BASE_URL = "https://raw.githubusercontent.com/iunera/data-philter/refs/heads/clickhouse-support"
+$script:BASE_URL = "https://raw.githubusercontent.com/iunera/data-philter/refs/heads/main"
 $script:URL = "$script:BASE_URL/docker-compose.yml"
 $script:APP_ENV_TEMPLATE_URL = "$script:BASE_URL/app.env_template"
 $script:DRUID_ENV_TEMPLATE_URL = "$script:BASE_URL/druid.env_template"
