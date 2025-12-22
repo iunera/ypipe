@@ -3,12 +3,30 @@ services:
   # Druid MCP Server
   # This service runs the Druid MCP server, which is the backend that connects to Druid.
   druid-mcp-server:
+    profiles:
+      - druid
     image: iunera/druid-mcp-server:latest
     pull_policy: always
     env_file:
       - druid.env
     environment:
       SPRING_PROFILES_ACTIVE: http
+    networks:
+      - philter-net
+
+  # ClickHouse MCP Server
+  # This service runs the ClickHouse MCP server.
+  clickhouse-mcp-server:
+    profiles:
+      - clickhouse
+    image: mcp/clickhouse
+    pull_policy: always
+    env_file:
+      - clickhouse.env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - philter-net
 
   # Ollama Check
   # This service checks if Ollama is running before the core service starts.
@@ -19,14 +37,17 @@ services:
       - "host.docker.internal:host-gateway"
     env_file:
       - app.env
+    networks:
+      - philter-net
 
   # Philter
-  # This is the main application, the "philter". It depends on the `druid-mcp-server` and on the `ollama-check` service.
+  # This is the main application, the "philter". It depends on the `druid-mcp-server` and on the `ollama-check` service if their profiles are active
   philter:
     image: iunera/philter:latest
     pull_policy: always
     environment:
-      SPRING_PROFILES_ACTIVE: docker
+      # COMPOSE_PROFILE values: druid, clickhouse
+      SPRING_PROFILES_ACTIVE: "docker,${COMPOSE_PROFILES}"
     env_file:
       - app.env
     volumes:
@@ -36,9 +57,19 @@ services:
     depends_on:
       druid-mcp-server:
         condition: service_started
+        required: false
+      clickhouse-mcp-server:
+        condition: service_started
+        required: false
       ollama-check:
         condition: service_completed_successfully
     restart: unless-stopped
+    networks:
+      - philter-net
 
 volumes:
   philter_data:
+
+networks:
+  philter-net:
+    driver: bridge

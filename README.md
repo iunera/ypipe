@@ -1,172 +1,122 @@
-# Data Philter
+# Data Philter: Sovereign AI for Natural Language to SQL (NL2SQL) Analytics
 
-**Data Philter** is designed and developed by the [Apache Druid experts](https://www.iunera.com/apache-druid-ai-consulting-europe/) at [iunera](https://www.iunera.com) to simplify your interaction with Apache Druid. Running completely locally, this AI-powered gateway allows users to choose between Ollama or OpenAI models. It abstracts away the complexity of [Apache Druid](https://druid.apache.org/), making it an ideal tool for data scientists, site reliability engineers, and data engineers. By default, the connection to Apache Druid is established in "readonly mode" via the [Apache Druid MCP Server](https://github.com/iunera/druid-mcp-server), ensuring data safety. Data Philter empowers you to analyze data using simple, natural language, turning complex data exploration into an intuitive conversation. Stop writing arduous queries and start unlocking insights with ease. It leverages the robust power of the [Apache Druid MCP Server](https://github.com/iunera/druid-mcp-server) to provide a seamless and intelligent interface to your data. Future enhancements will include support for additional databases.
+Data Philter is a local-first conversational interface for your enterprise data. It serves as a sovereign AI gateway that translates Natural Language to SQL (NL2SQL), enabling data scientists, site reliability engineers (SREs), and business analysts to query complex databases like Apache Druid and ClickHouse using plain English.
 
-**Please note:** Data Philter is currently in an early development stage. While functional, it is actively being improved, and features may evolve rapidly. We welcome feedback and contributions!
+Unlike cloud-based solutions that require sending your sensitive schema and data to external providers, Data Philter operates entirely within your infrastructure. By leveraging Local LLM technology and the Model Context Protocol (MCP), it ensures that your data remains private, secure, and under your complete control.
 
-With its "Local-First" architecture, data-philter ensures your sensitive data always remains secure within your own infrastructure, giving you full control and peace of mind. Connect to a growing number of databases, starting with Apache Druid, and create a unified, powerful data landscape. The intuitive user interface, powered by the MCP Server, makes data exploration feel as natural as a conversation, yet delivers the deep insights you need. Accelerate your decision-making processes, uncover the hidden potential in your data, and gain a competitive edge.
+## Why Data Philter?
 
-## Prerequisites
+In the era of Generative AI, data privacy is paramount. Data Philter addresses the critical need for "Sovereign AI"—artificial intelligence that you own and operate.
 
-To get started with data-philter, you'll need:
+*   **Natural Language to SQL (NL2SQL):** Democratize data access by allowing team members to ask questions like "Show me the top 5 revenue sources from last week" and instantly receive accurate SQL-generated results.
+*   **Privacy-First & Local-First:** Designed to run completely offline or within your VPC. Your data never leaves your environment.
+*   **Model Context Protocol (MCP) Standard:** Built on the robust MCP standard, ensuring standardized, reliable communication between the AI reasoning engine and your database drivers.
+*   **Database Agnostic:** Currently supports high-performance OLAP databases including Apache Druid and ClickHouse, with an extensible architecture for future integrations.
+*   **Safe Execution:** Default "Read-Only" mode ensures that AI-generated queries cannot accidentally modify or delete data, providing a safe sandbox for exploration.
 
-- [Docker](https://www.docker.com) and Docker Compose installed.
-- Access to an existing Apache Druid cluster (Router URL and credentials). You will provide these via druid.env in the installer.
-  - If you don't have an existing cluster, you can use the [Development Druid installation](#development-druid-installation).
+## Key Features
 
-## Quick Start
+*   **Local LLM Integration:** Seamlessly integrates with Ollama to run open-weight models like Llama 3, Phi-4, or iunera's fine-tuned `aura` models directly on your hardware (CPU or GPU).
+*   **Hybrid AI Capability:** Offers the flexibility to switch between local models for maximum privacy and OpenAI's API for cases where external model reasoning is preferred.
+*   **Apache Druid Native:** Deep integration with Apache Druid via the dedicated [Druid MCP Server](https://github.com/iunera/druid-mcp-server), supporting complex aggregations and time-series analysis.
+*   **ClickHouse Support:** First-class support for ClickHouse, enabling fast analytical queries on massive datasets.
+*   **Docker-Native Deployment:** Deploys in minutes using standard Docker Compose or Kubernetes workflows, fitting naturally into modern DevOps pipelines.
 
-![Data Philter Installation GIF](assets/images/dataphilterinstall.gif)
+## Architecture Overview
 
-[Watch the video introduction on YouTube](https://www.youtube.com/watch?v=tTlgX83NcB0)
+Data Philter acts as an intelligent orchestration layer between the user and your data infrastructure.
+
+1.  **User Interface:** The user submits a natural language query via the web interface.
+2.  **Reasoning Engine (LLM):** The system uses a Local LLM (via Ollama) or an external provider to interpret the intent.
+3.  **MCP Translation:** The core application utilizes the Model Context Protocol to translate the intent into a precise database query (e.g., Druid JSON-based query or ClickHouse SQL).
+4.  **Execution & Safety:** The query is executed against the database in a read-only context.
+5.  **Response Generation:** The raw data is formatted and presented back to the user, often with an explanation of how the result was derived.
+
+## Quick Start Guide
+
+You can have Data Philter running on your local machine in minutes.
+
+### Prerequisites
+
+*   **Docker** and **Docker Compose** installed.
+*   Access to an existing **Apache Druid** or **ClickHouse** cluster.
+*   (Optional) **Ollama** installed locally if you intend to use local models.
 
 ### Automatic Installation
 
-#### macOS / Linux
+We provide an automated script to handle the setup of environment variables and containers.
 
-```sh
+> **Note:** This project is under active development. If the container fails to start, you may need to re-run the installation script. In such cases, you can preserve your existing environment files.
+
+**macOS / Linux:**
+```bash
 curl -sL https://raw.githubusercontent.com/iunera/data-philter/main/install.sh | sh
 ```
 
-#### Windows
-
-```shell
+**Windows (PowerShell):**
+```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/iunera/data-philter/main/install.ps1' | Select-Object -ExpandProperty Content | Invoke-Expression"
 ```
 
-To update Data Philter to a newer version, simply re-run the appropriate installer script (macOS/Linux or Windows).
-
 ### Manual Installation
 
-1.  **Clone the repository:**
+For users who prefer granular control or need to integrate into existing compose files:
+
+1.  **Clone the Repository:**
     ```bash
     git clone https://github.com/iunera/data-philter.git
     cd data-philter
     ```
-2.  **Configure your environment:**
-    - Configure the `druid.env` file with the access details for your Druid Cluster.
-3.  **Start the services:**
+
+2.  **Configure Environment:**
+    Create a `.env` file or modify the provided templates (`druid.env_template`, `clickhouse.env_template`) to include your database credentials.
+
+3.  **Launch Services:**
     ```bash
     docker compose up -d
     ```
-4.  **Access the application:**
-    - Open your web browser and navigate to http://localhost:4000. No login is required.
 
-**Note**: Docker Images can be found here:
-* [philter](https://hub.docker.com/r/iunera/philter)
-* [druid-mcp-server](https://hub.docker.com/r/iunera/druid-mcp-server)
+4.  **Access the Interface:**
+    Navigate to `http://localhost:4000` in your web browser.
 
-## Key Features
-*   **Natural Language Querying:** Ask questions in plain English and get results from your database.
-*   **Local-First Architecture:** Runs completely locally to keep your data secure.
-*   **Easy Setup:** Get up and running quickly with our Docker-based setup.
-*   **Apache Druid Support:** The first supported database is Apache Druid, with more to come.
-*   **Powered by MCP Server:** Utilizes the robust and extensible [MCP Server](https://github.com/iunera/druid-mcp-server) for AI-driven data interaction.
-*   **Flexible AI Model Support:** Supports local Ollama models (e.g., `iunera/aura-m`, `iunera/aura-l`) and OpenAI.
-    *   `iunera/aura-m`: [https://ollama.com/iunera/aura-m](https://ollama.com/iunera/aura-m)
-    *   `iunera/aura-l`: [https://ollama.com/iunera/aura-l](https://ollama.com/iunera/aura-l)
-*   **Safe by Default:** Establishes a "readonly" connection to Apache Druid to prevent accidental data changes.
+## Configuration and AI Models
 
-## Configuration 
+Data Philter is highly configurable to suit your hardware capabilities and privacy requirements. Configuration is managed via the `app.env` file.
 
-### Apache Druid MCP Server
+### Choosing Your AI Model
 
-The `druid.env` file contains the settings for connecting the [druid-mcp-server](https://github.com/iunera/druid-mcp-server) to your Apache Druid cluster. Here is a description of each variable:
+The `IUNERA_MODEL_TYPE` variable controls the reasoning engine:
 
-*   `DRUID_AUTH_USERNAME`: The username for authenticating with your Druid cluster.
-*   `DRUID_AUTH_PASSWORD`: The password for authenticating with your Druid cluster.
-*   `DRUID_ROUTER_URL`: The URL of your Druid router (e.g., `https://druid.example.com`).
-*   `DRUID_SSL_ENABLED`: Set to `true` to enable SSL/TLS for the connection to Druid, or `false` to disable it.
-*   `DRUID_EXTENSION_DRUID_BASIC_SECURITY_ENABLED`: Set to `true` if your Druid cluster uses the basic security extension.
-*   `DRUID_MCP_SECURITY_OAUTH2_ENABLED`: Set to `true` to enable OAuth2 security for the MCP server.
-*   `DRUID_MCP_READONLY_ENABLED`: Set to `true` to enable read-only mode, which prevents any changes to your Druid cluster. By default, the server runs in read-only mode to prevent accidental changes to your Druid cluster.
+*   **`ollama-m` (Medium Tier):** Uses `iunera/aura-m`. Ideal for Macbooks with M-series chips (8GB+ RAM). Balances speed and reasoning.
+*   **`ollama-l` (Large Tier):** Uses `iunera/aura-l`. Recommended for production use cases requiring complex SQL generation. Requires 16GB+ RAM.
+*   **`ollama-xl` (Extra Large):** Uses enterprise-grade open models (20B+ params). Requires significant hardware resources (64GB+ RAM or dedicated GPUs).
+*   **`openai`:** Connects to OpenAI's API. Requires a valid API key set in `SPRING_AI_OPENAI_API_KEY`.
 
-Make sure to customize these settings to match your Druid environment.
+### Database Connection Security
 
-## App
+Security is configured via specific environment files (e.g., `druid.env`). Key parameters include:
 
-The `data-philter` application can be configured using the `app.env` file. One of the key settings is `IUNERA_MODEL_TYPE`, which allows you to choose the AI model you want to use. It specifies the AI model to be used by the application, based on the Aura model tier system. Each tier is fine-tuned for specific use cases, from complex reasoning to simple pattern-matching.
+*   `DRUID_SSL_ENABLED`: Enforce TLS/SSL encryption for all data in transit.
+*   `DRUID_MCP_READONLY_ENABLED`: Strictly enforces read-only permissions at the application level.
+*   `DRUID_AUTH_USERNAME` / `PASSWORD`: Standard authentication credentials.
 
-There are four modes available:
+## Kubernetes Deployment
 
-*   **`ollama-m` (Medium Tier) The Reasoning Workhorse:**
-    *   This mode uses the `iunera/aura-m` model (based on `granite:7b-a1b-h`, 7B parameters).
-    *   It is your primary "workhorse" model for complex, multi-step tasks and conversations that require chat history context.
-    *   It requires a GPU-based system or a Macbook with an M-series chip and at least 8GB of memory.
+For enterprise-scale deployments, Data Philter is fully compatible with Kubernetes. We provide Kustomize manifests to streamline deployment to your cluster.
 
-*   **`ollama-l` (Large Model):**
-    *   This mode uses the `iunera/aura-l` model, which is based on the `phi4:14b` model.
-    *   It is a more powerful model with advanced reasoning capabilities, recommended for complex queries and production environments.
-    *   It requires a GPU-based system or a Macbook with an M-series chip and at least 16GB of memory.
-
-*   **`ollama-xl` (Extra Large Model):**
-    *   Uses the `gpt-oss:20b` model.
-    *   Recommended for heavy workloads and advanced reasoning on capable hardware.
-    *   Recommended on a Macbook with an Apple M‑series chip and at least 64GB of unified memory (or strong GPU setup).
-
-*   **`openai` (OpenAI Model):**
-    *   This mode uses the OpenAI API to access their models.
-    *   You must provide your OpenAI API key in the `SPRING_AI_OPENAI_API_KEY` variable in the `app.env` file.
-
-When using one of the `ollama` models, you can also configure the `SPRING_AI_OLLAMA_BASE_URL` to point to your Ollama server instance. By default, it is set to `http://host.docker.internal:11434`.
-
-To change the model, simply edit the `IUNERA_MODEL_TYPE` variable in the `app.env` file:
-
-```bash
-IUNERA_MODEL_TYPE=ollama-m # or ollama-l, ollama-xl, or openai
-```
-
-## Usage
-
-Once the services are running, you can start querying your Apache Druid database using natural language through the MCP Server interface.
-
-## Development Druid installation
-For development and testing, a complete local Apache Druid cluster can be installed using the [druid-local-cluster-installer](https://github.com/iunera/druid-local-cluster-installer).
-This setup is designed to work seamlessly with Data Philter.
-
-### Quick Installation (macOS / Linux)
-```bash
-curl -sL https://raw.githubusercontent.com/iunera/druid-local-cluster-installer/main/install.sh | sh
-```
-
-### Quick Installation (Windows)
-```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/iunera/druid-local-cluster-installer/main/install.ps1' | Select-Object -ExpandProperty Content | Invoke-Expression"
-```
-
-The installer will set up a complete Druid cluster and open the Druid console at `http://localhost:8888`. The default credentials are `admin`/`password`.
-
-## Uninstall
-
-For instructions on how to uninstall data-philter and its components, please refer to the [uninstall.md](docs/uninstall.md) guide.
-
-## Kubernetes deployment
-
-Want to run data-philter on Kubernetes? See the dedicated guide with Kustomize instructions and example manifests:
-
-- [k8s/README.md](k8s/README.md)
+Refer to the [Kubernetes Deployment Guide](k8s/README.md) for detailed instructions on configuring PersistentVolumes, Services, and Ingress resources.
 
 ## Roadmap
 
-We are actively working on expanding data-philter to support more databases and LLMs. Our current roadmap includes:
+We are committed to expanding the capabilities of Data Philter to support the evolving data landscape:
 
-
-- **Advanced Exporting UI**: Export your results as markdown.
-- **Canvas Feature**: A canvas for data exploration and visualization.
-- **Clickhouse Integration**: Integration of Clickhouse as a supported database.
-- **Gemini Integration**: Integration of Gemini as a supported LLM.
-- **Claude Integration**: Integration of Claude as a supported LLM.
-- **Enhanced Query Capabilities**: Improving the natural language processing capabilities for more complex queries.
-
-## Contributing
-
-We welcome contributions! If you would like to contribute, please feel free to create a pull request. Please see our contributing guidelines for more information.
+*   **Advanced Visualization:** Integration of a canvas-based UI for plotting data points and generating charts on the fly.
+*   **Expanded Database Support:** Upcoming native support for InfluxDB and TimescaleDB to broaden time-series analysis capabilities.
+*   **Report Generation:** Automated export of analysis sessions into Markdown or PDF reports.
 
 ## License
 
-This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
-
----
+This project is open-source software licensed under the **Apache License 2.0**. See the [LICENSE](LICENSE) file for more information.
 
 ## About iunera
 
@@ -176,7 +126,7 @@ iunera specializes in:
 - **Model Context Protocol (MCP) Solutions**: Advanced MCP server implementations for various data systems
 - **Custom AI Development**: Tailored AI solutions for enterprise needs
 
-As veterans in Apache Druid iunera deployed and maintained a large number of solutions based on [Apache Druid](https://druid.apache.org/) in productive enterprise grade scenarios.
+As veterans in Apache Druid iunera deployed and maintained a large number of solutions based on [Apache Druid](https://druid.apache.org/) in productive enterprise grade scenarios. Read more on our [blog](https://www.iunera.com/kraken/).
 
 ### Need Expert Apache Druid Consulting?
 
@@ -205,5 +155,4 @@ Need help? Let us know!
 
 ---
 
-*© 2025 [iunera](https://www.iunera.com). Licensed under the Apache License 2.0.*
-
+For commercial support, custom feature development, or architectural consulting, please visit [www.iunera.com](https://www.iunera.com) or contact our team directly.

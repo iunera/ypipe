@@ -27,6 +27,8 @@ BASE_URL="https://raw.githubusercontent.com/iunera/data-philter/refs/heads/main"
 URL="$BASE_URL/docker-compose.yml"
 APP_ENV_TEMPLATE_URL="$BASE_URL/app.env_template"
 DRUID_ENV_TEMPLATE_URL="$BASE_URL/druid.env_template"
+CLICKHOUSE_ENV_TEMPLATE_URL="$BASE_URL/clickhouse.env_template"
+RUNSCRIPT_URL="$BASE_URL/run.sh"
 TMP_FILES=""
 CREATED_ENV_FILES=""
 INSTALL_OK=0
@@ -178,6 +180,27 @@ remove_key_from_template() {
     fi
 }
 
+# Set or replace an ENV key in a target file (portable, uses temp file)
+set_or_replace_key_in_file() {
+    target_file=$1
+    key=$2
+    value=$3
+    if [ ! -f "$target_file" ]; then
+        printf "%s=%s\n" "$key" "$value" > "$target_file"
+        return 0
+    fi
+    if grep -q "^${key}=" "$target_file" 2>/dev/null; then
+        TMP_SR=$(mktemp)
+        TMP_FILES="$TMP_FILES $TMP_SR"
+        sed "s|^${key}=.*|${key}=${value}|" "$target_file" > "$TMP_SR"
+        mv "$TMP_SR" "$target_file"
+        # remove from TMP_FILES list since moved
+        TMP_FILES=$(printf "%s" "$TMP_FILES" | sed "s# $TMP_SR##g")
+    else
+        printf "%s=%s\n" "$key" "$value" >> "$target_file"
+    fi
+}
+
 # New: encapsulate model provider selection + setup in its own function
 configure_model_choice() {
     log "🔧 Step 3.5: Configuring AI Model Type..."
@@ -263,6 +286,32 @@ configure_model_choice() {
     esac
 }
 
+# Prompt user which analytics backend(s) to enable and export PHILTER_MCP_SERVER
+configure_mcp_choice() {
+    log "🔧 Step 3.6: Configuring analytics backend (PHILTER_MCP_SERVER)..."
+    PHILTER_CHOICE=""
+    while :; do
+        printf "Choose analytics backend (druid/clickhouse/all) [all]: "
+        read -r PHILTER_CHOICE < /dev/tty || PHILTER_CHOICE=""
+        PHILTER_CHOICE=$(printf "%s" "$PHILTER_CHOICE" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | tr '[:upper:]' '[:lower:]')
+        PHILTER_CHOICE=${PHILTER_CHOICE:-all}
+        case "$PHILTER_CHOICE" in
+            druid|clickhouse|all|"druid,clickhouse"|"clickhouse,druid")
+                export PHILTER_MCP_SERVER="$PHILTER_CHOICE"
+                # Persist the choice into app.env immediately (like configure_model_choice)
+                # so that subsequent steps and future runs have the value.
+                if [ -f "app.env" ]; then
+                    set_or_replace_key_in_file "app.env" "PHILTER_MCP_SERVER" "$PHILTER_CHOICE"
+                fi
+                break
+                ;;
+            *)
+                err "Invalid choice. Please enter one of: none, druid, clickhouse, all."
+                ;;
+        esac
+    done
+}
+
 configure_env_file() {
     TEMPLATE_FILE=$1
     ENV_FILE=$2
@@ -313,21 +362,39 @@ configure_env_file() {
                         # interactive: show accumulated comment block (if any)
                         if [ -n "$comment_block" ]; then
                             printf "\n"
-                            printf "%s" "$comment_block" | while IFS= read -r cline || [ -n "$cline" ]; do
+                            printf "%b" "$comment_block" | while IFS= read -r cline || [ -n "$cline" ]; do
                                 # remove leading '# ' for rest part
                                 rest=$(printf "%s" "$cline" | sed 's/^#[[:space:]]*//;s/[[:space:]]*$//')
                                 printf "%b\n" "${BOLD}#${NC}${rest}"
                             done
                         fi
 
-                        # prompt loop that trims input and confirms empty values
+                        # derive default from comment block if pattern '# Default: value' exists (last one wins)
+                        default_from_comment=""
+                        if printf "%b" "$comment_block" | grep -i '^[[:space:]]*#[[:space:]]*Default:' >/dev/null 2>&1; then
+                            default_from_comment=$(printf "%b" "$comment_block" \
+                                | grep -i '^[[:space:]]*#[[:space:]]*Default:' \
+                                | tail -n1 \
+                                | sed 's/^[[:space:]]*#[[:space:]]*Default:[[:space:]]*//;s/[[:space:]]*$//')
+                        fi
+
+                        # prompt loop that trims input and confirms empty values (Enter accepts default if available)
                         while :; do
-                            printf "%s: " "$key"
+                            if [ -n "$default_from_comment" ]; then
+                                printf "%s [%s]: " "$key" "$default_from_comment"
+                            else
+                                printf "%s: " "$key"
+                            fi
                             read -r user_value < /dev/tty || user_value=""
                             # trim leading/trailing whitespace
                             user_value=$(printf "%s" "$user_value" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
                             if [ -n "$user_value" ]; then
                                 printf "%s=%s\n" "$key" "$user_value" >> "$TMP_ENV"
+                                break
+                            fi
+                            # If user pressed Enter and a default exists, use it
+                            if [ -z "$user_value" ] && [ -n "$default_from_comment" ]; then
+                                printf "%s=%s\n" "$key" "$default_from_comment" >> "$TMP_ENV"
                                 break
                             fi
                             # empty after trim -> ask for confirmation
@@ -342,7 +409,7 @@ configure_env_file() {
                             fi
                             # otherwise, re-display comment block (if any) and prompt again
                             if [ -n "$comment_block" ]; then
-                                printf "%s" "$comment_block" | while IFS= read -r cline || [ -n "$cline" ]; do
+                                printf "%b" "$comment_block" | while IFS= read -r cline || [ -n "$cline" ]; do
                                     rest=$(printf "%s" "$cline" | sed 's/^#[[:space:]]*//;s/[[:space:]]*$//')
                                     printf "%b\n" "${BOLD}#${NC}${rest}"
                                 done
@@ -397,7 +464,7 @@ ensure_dir "$DATA_PHILTER_DIR"
 cd "$DATA_PHILTER_DIR" || die "Failed to enter directory $DATA_PHILTER_DIR"
 
 # Record which env files already existed before we start creating any
-for f in app.env druid.env; do
+for f in app.env druid.env clickhouse.env; do
     if [ -f "$f" ]; then
         EXISTING_ENV_FILES="$EXISTING_ENV_FILES $f"
         # Ask user whether to recreate (overwrite) or keep the existing file
@@ -500,10 +567,39 @@ if [ "${SKIP_MODEL_CONFIG}" -ne 1 ]; then
     configure_model_choice
 fi
 
+# Step 3.6: Choose analytics backend (PHILTER_MCP_SERVER)
+configure_mcp_choice
+
+# Ensure PHILTER_MCP_SERVER is present in existing app.env if user chose to keep it
+if [ -f "app.env" ]; then
+    set_or_replace_key_in_file "app.env" "PHILTER_MCP_SERVER" "${PHILTER_MCP_SERVER:-}"
+fi
+
 # Step 4: Configure environment files
 log "🔧 Step 4: Configuring environment files..."
+# Exported PHILTER_MCP_SERVER will be picked up and populated into app.env
 configure_env_file app.env_template app.env
 configure_env_file druid.env_template druid.env
+
+# If user selected clickhouse backend, download and configure clickhouse.env similar to druid
+NEEDS_CLICKHOUSE=0
+case "${PHILTER_MCP_SERVER:-}" in
+    clickhouse|all|"druid,clickhouse"|"clickhouse,druid")
+        NEEDS_CLICKHOUSE=1
+        ;;
+esac
+if [ "$NEEDS_CLICKHOUSE" -eq 1 ]; then
+    log "ClickHouse selected — downloading template and configuring clickhouse.env..."
+    TMP_CLICKHOUSE_TEMPLATE=$(mktemp)
+    TMP_FILES="$TMP_FILES $TMP_CLICKHOUSE_TEMPLATE"
+    if ! download_file "$CLICKHOUSE_ENV_TEMPLATE_URL" "$TMP_CLICKHOUSE_TEMPLATE"; then
+        die "Failed to download clickhouse.env_template from $CLICKHOUSE_ENV_TEMPLATE_URL"
+    fi
+    mv "$TMP_CLICKHOUSE_TEMPLATE" clickhouse.env_template
+    TMP_FILES=$(printf "%s" "$TMP_FILES" | sed "s# $TMP_CLICKHOUSE_TEMPLATE##g")
+    configure_env_file clickhouse.env_template clickhouse.env
+    rm -f clickhouse.env_template || true
+fi
 
 # remove templates
 rm -f app.env_template druid.env_template
@@ -514,74 +610,22 @@ if ! download_file "$URL" docker-compose.yml; then
     die "Failed to download docker-compose.yml from $URL"
 fi
 
-# Step 6: Start services
-log "🔧 Step 6: Starting services..."
-$DOCKER_CMD compose up -d
+# Step 6: Start services using run.sh (delegates profiles, readiness, and browser open)
+log "🔧 Step 6: Starting services via philter.sh..."
 
-log "Services started in the background."
-info "You can check the status with '$DOCKER_CMD ps'."
+
+log "philter.sh installing..."
+if ! download_file "$RUNSCRIPT_URL" run.sh; then
+    die "Failed to download philter.sh from $RUNSCRIPT_URL"
+fi
+
+
+# Ensure run.sh is executable
+chmod +x ./run.sh || true
+
+./run.sh start
 
 log "✅ Installation complete!"
-info "You can now access the application at http://localhost:4000"
-
-open_browser() {
-    URL=$1
-
-    # Wait for backend to be ready before opening the browser
-    # Try for up to 120 seconds
-    WAIT_TIMEOUT=120
-    WAIT_INTERVAL=2
-    waited=0
-
-    info "Waiting for backend to become available at $URL (timeout: ${WAIT_TIMEOUT}s)..."
-    while [ $waited -lt $WAIT_TIMEOUT ]; do
-        if command -v curl >/dev/null 2>&1; then
-            if curl -fsS -o /dev/null "$URL/actuator/health" >/dev/null 2>&1; then
-                log "Backend is up!"
-                break
-            fi
-        elif command -v wget >/dev/null 2>&1; then
-            if wget -q --spider "$URL" >/dev/null 2>&1; then
-                log "Backend is up!"
-                break
-            fi
-        else
-            # Neither curl nor wget available; do a simple grace wait once
-            if [ $waited -eq 0 ]; then
-                info "curl/wget not found — waiting 10s before opening the browser..."
-            fi
-            sleep 10 || true
-            waited=$((waited + 10))
-            break
-        fi
-        sleep $WAIT_INTERVAL || true
-        waited=$((waited + WAIT_INTERVAL))
-    done
-
-    if [ $waited -ge $WAIT_TIMEOUT ]; then
-        err "Backend did not become ready within ${WAIT_TIMEOUT}s. You may need to wait a bit longer."
-    fi
-
-    OS=$(uname -s)
-    case "$OS" in
-        Linux)
-            if command -v xdg-open >/dev/null 2>&1; then
-                xdg-open "$URL" >/dev/null 2>&1 &
-                log "Opening $URL in your default browser..."
-            else
-                info "Could not find xdg-open. Please open $URL manually."
-            fi
-            ;;
-        Darwin)
-            open "$URL" >/dev/null 2>&1 &
-            log "Opening $URL in your default browser..."
-            ;;
-        *)
-            info "Unsupported OS for automatic browser opening. Please open $URL manually."
-            ;;
-    esac
-}
-
-open_browser "http://localhost:4000"
+info "If the browser did not open automatically, navigate to http://localhost:4000"
 
 INSTALL_OK=1
