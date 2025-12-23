@@ -4,6 +4,10 @@ Data Philter is a local-first conversational interface for your enterprise data.
 
 Unlike cloud-based solutions that require sending your sensitive schema and data to external providers, Data Philter operates entirely within your infrastructure. By leveraging Local LLM technology and the Model Context Protocol (MCP), it ensures that your data remains private, secure, and under your complete control.
 
+
+[![Data Philter: Your Local-First Copilot for Databases and Time Series](https://img.youtube.com/vi/tTlgX83NcB0/0.jpg)](https://www.youtube.com/watch?v=tTlgX83NcB0)
+
+
 ## Why Data Philter?
 
 In the era of Generative AI, data privacy is paramount. Data Philter addresses the critical need for "Sovereign AI"—artificial intelligence that you own and operate.
@@ -13,9 +17,6 @@ In the era of Generative AI, data privacy is paramount. Data Philter addresses t
 *   **Model Context Protocol (MCP) Standard:** Built on the robust MCP standard, ensuring standardized, reliable communication between the AI reasoning engine and your database drivers.
 *   **Database Agnostic:** Currently supports high-performance OLAP databases including Apache Druid and ClickHouse, with an extensible architecture for future integrations.
 *   **Safe Execution:** Default "Read-Only" mode ensures that AI-generated queries cannot accidentally modify or delete data, providing a safe sandbox for exploration.
-
-[![Data Philter: Your Local-First Copilot for Databases and Time Series](https://img.youtube.com/vi/tTlgX83NcB0/0.jpg)](https://www.youtube.com/watch?v=tTlgX83NcB0)
-
 
 ## Key Features
 
