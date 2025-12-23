@@ -14,6 +14,9 @@ In the era of Generative AI, data privacy is paramount. Data Philter addresses t
 *   **Database Agnostic:** Currently supports high-performance OLAP databases including Apache Druid and ClickHouse, with an extensible architecture for future integrations.
 *   **Safe Execution:** Default "Read-Only" mode ensures that AI-generated queries cannot accidentally modify or delete data, providing a safe sandbox for exploration.
 
+[![Data Philter: Your Local-First Copilot for Databases and Time Series](https://img.youtube.com/vi/tTlgX83NcB0/0.jpg)](https://www.youtube.com/watch?v=tTlgX83NcB0)
+
+
 ## Key Features
 
 *   **Local LLM Integration:** Seamlessly integrates with Ollama to run open-weight models like Llama 3, Phi-4, or iunera's fine-tuned `aura` models directly on your hardware (CPU or GPU).
@@ -44,7 +47,10 @@ You can have Data Philter running on your local machine in minutes.
 
 ### Automatic Installation
 
+
 We provide an automated script to handle the setup of environment variables and containers.
+
+![Data Philter Installation GIF](assets/images/dataphilterinstall.gif)
 
 > **Note:** This project is under active development. If the container fails to start, you may need to re-run the installation script. In such cases, you can preserve your existing environment files.
 
@@ -82,6 +88,8 @@ For users who prefer granular control or need to integrate into existing compose
 ## Configuration and AI Models
 
 Data Philter is highly configurable to suit your hardware capabilities and privacy requirements. Configuration is managed via the `app.env` file.
+
+[Watch the video introduction on YouTube for a comparison of the different Ollama models vs OpenAI](https://www.youtube.com/watch?v=tTlgX83NcB0)
 
 ### Choosing Your AI Model
 
