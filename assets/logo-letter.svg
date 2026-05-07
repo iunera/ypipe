@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="50 -30 400 500" style="width: 1em; height: 1.1em; vertical-align: -0.15em; container-type: inline-size;">
+  <style>
+    /* Default: Hollow */
+    .part { 
+      fill: none; 
+    }
+    
+    /* Trigger 1: If used directly inside HTML (Inline Container) */
+    @container (max-width: 18px) {
+      .part { fill: currentColor; }
+    }
+    
+    /* Trigger 2: If saved as a standalone .svg file and used as an Image */
+    @media (max-width: 18px) {
+      .part { fill: currentColor; }
+    }
+  </style>
+  
+  <g stroke="currentColor" stroke-width="20" stroke-linecap="round" stroke-linejoin="round">
+    <!-- The Head -->
+    <circle class="part" cx="250" cy="35" r="50" />
+    
+    <!-- The Body -->
+    <path class="part" d="M180 150H67l143 143v162h80V293l143-143H320l-70 72-70-72z" />
+  </g>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+    <!-- The Red Ring -->
+    <circle cx="250" cy="65" r="25" stroke="#c7123a" stroke-width="20" fill="none"/>
+    
+    <!-- Main Cyan Y Structure -->
+    <path d="M232 202 180 150 67 150 210 293 210 455 290 455 290 293 433 150 320 150 224 250 154 180" stroke="#38edc5" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    
+    <!-- The Red Inner Data Pipe -->
+    <polyline points="250,420 250,276 276,250" stroke="#c7123a" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+</svg>

@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+    <style>
+        /* <![CDATA[ */
+        
+        .master-group {
+            transform-origin: center;
+            animation: masterPulse 40s linear forwards;
+        }
+
+        /* --- THE HEARTBEAT SCALE --- */
+        .heartbeat-group {
+            transform-origin: center;
+            animation: heartbeatScale 40s linear forwards;
+        }
+
+        /* --- THE RED STORM: Dynamic Color Shift (Applied exactly as requested) --- */
+        @keyframes colorShift {
+            0%, 48% { stroke: #38edc5; } /* Stays cyan until the red paint is almost finished */
+            50%, 100% { stroke: #c7123a; } /* Becomes fully red exactly as the red arc covers it */
+        }
+
+        /* --- FINAL COMPONENT GLOWS (The Hand-off & Fade to Off) --- */
+        @keyframes cyanFinalGlow {
+            0%, 65% { filter: drop-shadow(0 0 0px transparent); }
+            /* Transitions IN exactly as the master global red glow recedes */
+            68% { filter: drop-shadow(0 0 6px #38edc5); } 
+            71% { filter: drop-shadow(0 0 2px #38edc5); } /* Heartbeat Valley */
+            74% { filter: drop-shadow(0 0 6px #38edc5); } /* Heartbeat Peak 2 */
+            78%, 100% { filter: drop-shadow(0 0 0px transparent); } /* All glow goes OFF completely */
+        }
+
+        @keyframes redFinalGlow {
+            0%, 65% { filter: drop-shadow(0 0 0px transparent); }
+            /* Transitions IN exactly as the master global red glow recedes */
+            68% { filter: drop-shadow(0 0 8px #c7123a); } 
+            71% { filter: drop-shadow(0 0 2px #c7123a); } /* Heartbeat Valley */
+            74% { filter: drop-shadow(0 0 8px #c7123a); } /* Heartbeat Peak 2 */
+            78%, 100% { filter: drop-shadow(0 0 0px transparent); } /* All glow goes OFF completely */
+        }
+
+        @keyframes heartbeatScale {
+            0%, 65% { transform: scale(1); }
+            68% { transform: scale(1.015); }
+            71% { transform: scale(1); }
+            74% { transform: scale(1.015); }
+            78%, 100% { transform: scale(1); }
+        }
+
+        /* --- PHASE 1: SLOW Drawing & Loop Application --- */
+        .cyan-ring { 
+            stroke-dasharray: 160; stroke-dashoffset: 160; 
+            animation: drawCyanRing 40s linear forwards, colorShift 40s linear forwards, redFinalGlow 40s linear forwards; 
+        }
+        
+        .seg-a { 
+            stroke-dasharray: 1300; stroke-dashoffset: 1300; 
+            animation: drawSegA 40s linear forwards, cyanFinalGlow 40s linear forwards; 
+        }
+        
+        .seg-b { 
+            stroke-dasharray: 110;  stroke-dashoffset: 110;  
+            animation: drawSegB 40s linear forwards, cyanFinalGlow 40s linear forwards; 
+        }
+        
+        .seg-d { stroke-dasharray: 130;  stroke-dashoffset: 130;  animation: drawSegD 40s linear forwards; }
+        .seg-e { stroke-dasharray: 80;   stroke-dashoffset: 80;   animation: drawSegE 40s linear forwards; }
+
+        .node { opacity: 0; transform: scale(0); }
+        .node-1 { transform-origin: 154px 180px; animation: node1 40s linear forwards; }
+        .node-2 { transform-origin: 224px 250px; animation: node2 40s linear forwards; }
+        .node-3 { transform-origin: 276px 250px; animation: node3 40s linear forwards; }
+        .node-4 { transform-origin: 250px 355px; animation: node4 40s linear forwards; }
+        .node-5 { transform-origin: 250px 420px; animation: node5 40s linear forwards; }
+
+        /* --- PHASE 2: Overdraw & Loop Application --- */
+        .red-arc { 
+            stroke-dasharray: 80; stroke-dashoffset: 80; 
+            animation: drawRedArc 40s linear forwards, redFinalGlow 40s linear forwards; 
+        }
+        
+        .red-pipe { 
+            stroke-dasharray: 200; stroke-dashoffset: 200; 
+            animation: drawRedPipe 40s linear forwards, redFinalGlow 40s linear forwards; 
+        }
+
+        /* --- KEYFRAME CHOREOGRAPHY --- */
+
+        @keyframes masterPulse {
+            0%, 17.5% { filter: drop-shadow(0 0 0px transparent); transform: scale(1); }
+            
+            /* Pulse 1 */
+            21.25% { filter: drop-shadow(0 0 15px #38edc5); transform: scale(1.04); }
+            24%, 26% { filter: drop-shadow(0 0 0px transparent); transform: scale(1); }
+            
+            /* Pulse 2 */
+            30% { filter: drop-shadow(0 0 20px #38edc5) drop-shadow(0 0 20px #c7123a); transform: scale(1.08); }
+            33%, 35% { filter: drop-shadow(0 0 0px transparent); transform: scale(1); }
+            
+            /* Pulse 3 (Intense Ignition) */
+            39.5% { filter: drop-shadow(0 0 80px #c7123a) drop-shadow(0 0 40px #c7123a); transform: scale(1.12); }
+            
+            /* Red glow fades completely before line removal starts at 45.5% */
+            44%, 60% { filter: drop-shadow(0 0 0px transparent); transform: scale(1); } 
+            
+            /* The Final Master Buildup */
+            60% { filter: drop-shadow(0 0 0px transparent); transform: scale(1); }
+            65% { filter: drop-shadow(0 0 100px #c7123a) drop-shadow(0 0 40px #c7123a); transform: scale(1.06); }
+            
+            /* Master glow recedes at 68%, smoothly transitioning the energy into the local component glows */
+            68%, 100% { filter: drop-shadow(0 0 0px transparent); transform: scale(1); }
+        }
+
+        @keyframes drawCyanRing { 0% { stroke-dashoffset: 160; } 15%, 100% { stroke-dashoffset: 0; } }
+        @keyframes drawSegA { 0% { stroke-dashoffset: 1300; } 7%, 100% { stroke-dashoffset: 0; } }
+        @keyframes drawSegB { 0%, 7% { stroke-dashoffset: 110; } 9%, 100% { stroke-dashoffset: 0; } }
+        
+        @keyframes node1 { 0%, 9% { transform: scale(0); opacity: 0; } 10%, 45% { transform: scale(1); opacity: 1; fill: #38edc5; } 45.5%, 46.5% { fill: #c7123a; opacity: 1; } 47% { fill: #38edc5; } 47.5%, 100% { transform: scale(0); opacity: 0; } }
+        @keyframes node2 { 0%, 6% { transform: scale(0); opacity: 0; } 7%, 46% { transform: scale(1); opacity: 1; fill: #38edc5; } 46.5%, 47.5% { fill: #c7123a; opacity: 1; } 48% { fill: #38edc5; } 48.5%, 100% { transform: scale(0); opacity: 0; } }
+        @keyframes node3 { 0%, 8% { transform: scale(0); opacity: 0; } 9%, 47% { transform: scale(1); opacity: 1; fill: #38edc5; } 47.5%, 48.5% { fill: #c7123a; opacity: 1; } 49% { fill: #38edc5; } 49.5%, 100% { transform: scale(0); opacity: 0; } }
+        @keyframes drawSegD { 0%, 9% { stroke-dashoffset: 130; } 11%, 49.5% { stroke-dashoffset: 0; } 52%, 100% { stroke-dashoffset: -130; } }
+        @keyframes node4 { 0%, 10% { transform: scale(0); opacity: 0; } 11%, 48% { transform: scale(1); opacity: 1; fill: #38edc5; } 48.5%, 49.5% { fill: #c7123a; opacity: 1; } 50% { fill: #38edc5; } 50.5%, 100% { transform: scale(0); opacity: 0; } }
+        @keyframes drawSegE { 0%, 11% { stroke-dashoffset: 80; } 13%, 50.5% { stroke-dashoffset: 0; } 53%, 100% { stroke-dashoffset: -80; } }
+        @keyframes node5 { 0%, 12% { transform: scale(0); opacity: 0; } 13%, 49% { transform: scale(1); opacity: 1; fill: #38edc5; } 49.5%, 50.5% { fill: #c7123a; opacity: 1; } 51% { fill: #38edc5; } 51.5%, 100% { transform: scale(0); opacity: 0; } }
+
+        @keyframes drawRedArc { 0%, 39.5% { stroke-dashoffset: 80; } 50%, 100% { stroke-dashoffset: 0; } }
+        @keyframes drawRedPipe { 0%, 51% { stroke-dashoffset: 200; } 60%, 100% { stroke-dashoffset: 0; } }
+        
+        /* ]]> */
+    </style>
+
+    <g class="master-group">
+        <!-- Wrapper for the end-state physical pulse -->
+        <g class="heartbeat-group">
+            
+            <!-- THE LOGIC BOARD -->
+            <circle cx="250" cy="65" r="25" stroke-width="12" fill="none" class="cyan-ring" />
+            <path d="M232 202 180 150 67 150 210 293 210 455 290 455 290 293 433 150 320 150 224 250" stroke="#38edc5" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none" class="seg-a" />
+            <path d="M224 250 L154 180" stroke="#38edc5" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none" class="seg-b" />
+            <path d="M276 250 L250 276 L250 355" stroke="#38edc5" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none" class="seg-d" />
+            <path d="M250 355 L250 420" stroke="#38edc5" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none" class="seg-e" />
+            
+            <g>
+                <circle cx="154" cy="180" r="14" class="node node-1" />
+                <circle cx="224" cy="250" r="14" class="node node-2" />
+                <circle cx="276" cy="250" r="14" class="node node-3" />
+                <circle cx="250" cy="355" r="14" class="node node-4" />
+                <circle cx="250" cy="420" r="14" class="node node-5" />
+            </g>
+
+            <!-- PERMANENT RED CORE -->
+            <path class="red-arc" d="M 250 90 A 25 25 0 0 1 250 40" stroke="#c7123a" stroke-width="20" fill="none" stroke-linecap="round" />
+            <path class="red-arc" d="M 250 90 A 25 25 0 0 0 250 40" stroke="#c7123a" stroke-width="20" fill="none" stroke-linecap="round" />
+            <polyline points="250,420 250,276 276,250" stroke="#c7123a" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" fill="none" class="red-pipe" />
+            
+        </g>
+    </g>
+</svg>
+
