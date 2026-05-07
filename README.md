@@ -29,16 +29,16 @@ jbang ypipe@iunera/ypipe
 
 ## ⛲ Installation
 
-Grab the latest binaries for your OS at [ypipe.com](https://ypipe.com) or on the Releases Page:
+Grab the latest binaries for your OS at [ypipe.com](https://ypipe.com) or download them directly from the [GitHub Releases](https://github.com/iunera/ypipe/releases):
 
-*   **Windows:** Installer (.msi) or AppImage (.zip)
-*   **macOS:** Apple Silicon (.dmg)
-*   **Linux:** Ubuntu (.deb), RedHat (.rpm), or Tarball (.tar.gz)
-*   **Universal:** Executable JAR for any Java-enabled environment.
+*   **Windows:** [Installer (.msi)](https://github.com/iunera/ypipe/releases/download/windows%2Fv1.0.0/YPipe-1.0.0.msi) or [AppImage (.zip)](https://github.com/iunera/ypipe/releases/download/windows%2Fv1.0.0/ypipe-1.0.0-app-image.zip)
+*   **macOS:** [Apple Silicon (.dmg)](https://github.com/iunera/ypipe/releases/download/macos%2Fv1.0.0/YPipe-1.0.0.dmg)
+*   **Linux:** [Ubuntu (.deb)](https://github.com/iunera/ypipe/releases/download/linux%2Fv1.0.0/ypipe_1.0.0_amd64.deb), [RedHat (.rpm)](https://github.com/iunera/ypipe/releases/download/linux%2Fv1.0.0/ypipe-1.0.0.x86_64.rpm), or [Tarball (.tar.gz)](https://github.com/iunera/ypipe/releases/download/linux%2Fv1.0.0/YPipe-1.0.0-linux-amd64.tar.gz)
+*   **Universal:** [Executable JAR](https://github.com/iunera/ypipe/releases/download/jar%2Fv1.0.0/ypipe-1.0.0-cross-platform.jar) for any Java-enabled environment.
 
 ---
 
-## <img src="assets/watermill.svg" width="32" style="filter: invert(100%); vertical-align: middle;">  Why Ypipe? 
+## <img src="assets/watermill.svg" width="32" style="filter: invert(100%); vertical-align: middle;">  Why Ypipe?
 Most AI tools are built for "Chat." Ypipe is built for **Data Workflows.** Ypipe targets connections to your system, your local secrets, and running on small devices.
 
 ---
@@ -46,8 +46,8 @@ Most AI tools are built for "Chat." Ypipe is built for **Data Workflows.** Ypipe
 ### <img src="assets/aqueduct.svg" width="32" style="filter: invert(100%); vertical-align: middle;"> Key Differentiators:
 * **Our goal is simple AI:** We focus on ensuring that you do not need a doctorate to get a model and data docking running. We believe local AI needs to be accessible to everyone.
 * **The Intelligence Switchboard:** Don't waste a 70B model on a 1B task. Ypipe lets you easily select models for sub-tasks. Imagine simple jobs utilizing tiny models for OCR or classification while reserving heavy compute for final synthesis. What works on your computer also runs easily on a server - this is how one gets AI into productive use.
-* ** Built for the professional environment. Ypipe uses the **Model Context Protocol (MCP)** and standardized APIs to bridge local intelligence with your existing tools. Whether it's a local SQL database or a custom enterprise API, Ypipe provides the "dock" for your data. 
-* **Java-Native Stability:** No Python dependency hell. Ypipe is built on Java, fitting seamlessly into existing enterprise server architectures, high-security environments, and professional DevOps pipelines. The dependencies that are required for the outside world: Do not worry, Ypipe manages it. 
+* ** Built for the professional environment. Ypipe uses the **Model Context Protocol (MCP)** and standardized APIs to bridge local intelligence with your existing tools. Whether it's a local SQL database or a custom enterprise API, Ypipe provides the "dock" for your data.
+* **Java-Native Stability:** No Python dependency hell. Ypipe is built on Java, fitting seamlessly into existing enterprise server architectures, high-security environments, and professional DevOps pipelines. The dependencies that are required for the outside world: Do not worry, Ypipe manages it.
 * **Sovereign Geopatriation:** 100% of the data stays on your hardware. No cloud-routing, no data leaks, and zero external API costs. You own the infrastructure and the intelligence it produces.
 
 ---
@@ -73,7 +73,7 @@ Further, it auto-selects the best runtime for yoru hardware and runs the models 
 
 ## <img src="assets/tap.svg" width="32" style="filter: invert(100%); vertical-align: middle;"> One-Click Connectivity
 
-Ypipe is built to be the universal docking station for the **Model Context Protocol (MCP)**. We have eliminated the "dependency hell" of manual installations. 
+Ypipe is built to be the universal docking station for the **Model Context Protocol (MCP)**. We have eliminated the "dependency hell" of manual installations.
 
 *   **Zero-Dependency Setup:** One-click installation of MCP servers. ypipe handles the environment, runtimes, and connections—no additional software or Python dependencies are required on your host machine.
 *   **Built-in Specialized Servers:** ypipe ships with a curated set of pre-defined MCP servers (including our own **Druid MCP Server**) for immediate enterprise utility. For community MCP servers, all mcp server definitions with NPX, UV, and JBang are supported.
@@ -107,7 +107,7 @@ We don't follow a fixed feature-path; we respond to the needs of the **Sovereign
 
 ## ╟ Terms of Use & Proprietary Status
 
-**Y̊pipe** is currently released as an **Exclusive Technical Preview**. 
+**Y̊pipe** is currently released as an **Exclusive Technical Preview**.
 
 *   **Free for Use:** You are free to download, run, and integrate Ypipe into your personal or enterprise workflows during this preview period.
 *   **Proprietary Rights:** All rights, title, and interest in and to the software (including the "Holon" orchestration logic and underlying architecture) remain the exclusive property of **iunera** and the respective developers.
@@ -118,7 +118,7 @@ For custom licensing or white-label integration requests, please **[Contact our 
 
 ---
 
-## Developer <img src="https://www.iunera.com/wp-content/uploads/2020/01/iunera-logo-shadow.png" width="100" style="vertical-align: middle;"> 
+## Developer <img src="https://www.iunera.com/wp-content/uploads/2020/01/iunera-logo-shadow.png" width="100" style="vertical-align: middle;">
 
 ### Enterprise Expertise
 - **AI-Powered Analytics**: Cutting-edge artificial intelligence solutions for data analysis
@@ -163,5 +163,5 @@ Ypipe is maintained by **iunera**, the team behind industry-recognized tech incl
     <img src="https://www.iunera.com/wp-content/uploads/2020/01/iunera-logo-shadow.png" alt="iunera Corporate Logo" width="150">
 </p>
 
-© 2026 Ypipe by iunera. All Rights Reserved. 
+© 2026 Ypipe by iunera. All Rights Reserved.
 [Imprint](https://iunera.com/imprint/) | [Privacy Policy](https://iunera.com/privacy-policy/)
