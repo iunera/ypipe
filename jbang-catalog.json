@@ -1,8 +1,8 @@
 {
   "aliases": {
     "ypipe": {
-      "script-ref": "https://github.com/iunera/ypipe/releases/download/jar/v1.0.1/ypipe-1.0.1-cross-platform.jar",
-      "version": "1.0.1",
+      "script-ref": "https://github.com/iunera/ypipe/releases/download/jar/v1.0.2/ypipe-1.0.2-cross-platform.jar",
+      "version": "1.0.2",
       "description": "YPipe - Easy Local AI Pipeline",
       "java-options": [
         "--enable-native-access=ALL-UNNAMED",
