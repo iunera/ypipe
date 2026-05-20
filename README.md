@@ -8,13 +8,46 @@
   <img src="assets/logo-animation.svg" alt="Ypipe Logo Animation" width="200">
 </p>
 
-[**Y̊pipe**](https://ypipe.com) is the successor to **Data-Philter**. While Data-Philter focused on privacy and filtering, Ypipe is a radically simple orchestration engine designed to chain specialized local models, bind them to legacy enterprise systems, and execute autonomous workflows with absolute data sovereignty.
+[**Y̊pipe**](https://ypipe.com) is a secure, **local desktop application** that makes offline AI practical. It gives you the power to download and run optimized local models (CPU/GPU) on your own hardware, and orchestrate agentic workflows with absolute data sovereignty and zero cloud dependencies. As an **open orchestration engine**, Ypipe enables every business to chain these specialized local models seamlessly with **Model Context Protocol (MCP) servers**—such as databases, local browsers, and document managers—to deliver lean, private local business process agents.
 
-> **Note:** Data-Philter has evolved into Ypipe. The legacy Data-Philter documentation and codebase are archived in [archive/data-philter/README.md](archive/data-philter/README.md).
+> **Note:** Y̊pipe is the successor to **Data-Philter**. The legacy Data-Philter documentation and codebase are archived in [archive/data-philter/README.md](archive/data-philter/README.md).
 
 The key goals of this project are: **Easy-to-use local AI, Data Sovereignty, Multi-Agent Systems, and Java-native stability - all on consumer enterprise hardware.**
 
 In the 2026 AI landscape, Ypipe acts as the **Industrial Assembly Line** for local AI.
+
+---
+
+## 🖥️ Interface Preview
+
+Ypipe runs entirely on your local machine, bringing a visual agentic client, local model manager, and one-click integrations together. You can explore the full-size interactive interface at [ypipe.com](https://ypipe.com).
+
+### 💬 Private Agentic Chat
+Interact directly with your offline LLMs using natural language. Query local databases, fetch system information, and trigger automation scripts securely without transmitting data over the internet.
+![Private Agentic Chat](assets/screenshot-chat.png)
+
+*   **Local LLM Chat:** Talk directly to offline models running on your CPU or GPU.
+*   **Sovereign Data Execution:** Run queries against SQLite or Apache Druid with zero external network requests.
+*   **System Automation:** Bind chat commands to trigger local scripts, legacy systems, and files safely.
+*   **Zero Data Leaks:** Your prompt, context, and responses never leave your physical machine.
+
+### ⚙️ Engine Foundry & Runtimes
+Manage local runtimes and models with a built-in downloader, automatically assessing hardware to optimize CPU/GPU execution speed.
+![Engine Foundry & Runtimes](assets/screenshot-engine.png)
+
+*   **Hardware-Optimized Config:** Assess system memory to automatically enable Apple Silicon (Metal) or CPU/Vulkan acceleration.
+*   **Model Downloader:** Direct search and one-click import from Hugging Face for optimized GGUF formats.
+*   **Versatile Model Support:** Run specialized small models (800M parameters) up to larger reasoning models (31B+).
+*   **Self-Contained Inference:** No external inference engines (like Ollama) need to be installed. Everything is fully built-in and runs out-of-the-box.
+
+### 🔌 MCP Couplings (Integrations)
+Connect your offline AI agent to external tools, database servers, web browsers, and file managers instantly.
+![One-Click MCP Integrations](assets/screenshot-couplings.png)
+
+*   **Unified MCP Protocol:** Bind local models to tools, SQL databases, web browsers, and file systems instantly.
+*   **Pre-Configured Abilities:** One-click setup for Apache Druid, SQLite/Postgres, document managers, and Playwright browsers.
+*   **No Dependency Hell:** Runs on ypipe's embedded Java engine—no complex Python or system dependencies required.
+*   **Extensible Ecosystem:** Create, register, and hot-reload custom Model Context Protocol servers in any language.
 
 ---
 ## 🌊 Quick Start (JBang)
