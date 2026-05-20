@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - Declarative Configuration & Expanded Execution Runtimes
+
+Version 1.1.0 introduces a declarative, Kubernetes-inspired approach to model configurations, systematically replacing legacy catalog systems. This structural adjustment simplifies environment reproducibility and broadens the native runtime support for standard integrations.
+
+### 🚀 Key Features
+
+* **Declarative Configuration Architecture:**
+  Transitioned model and MCP instance configurations to a Kubernetes-style definition pattern, accompanied by a new local file registry. This replaces the deprecated `LocalModelCatalogService` and legacy catalog structures, offering cleaner, immutable state definitions.
+* **Expanded Stdio Client Ecosystem:**
+  The Standard I/O Client Provider now natively supports industry-standard execution commands (`node` and `uv`). This facilitates seamless, low-overhead integration of JavaScript and modern Python-based MCP servers directly within the platform.
+* **Enhanced Tool Orchestration:**
+  Refined integration profiles and tool descriptions for data sources like Apache Druid and SQLite. Added new cluster monitoring actions and fine-tuned disabled-tool configurations to improve operational observability and execution safety.
+
+### 🛠 Improvements
+* Upgraded underlying runtime build targets, including LlamaCPP and LemonadeSDK, to maintain downstream compatibility and optimize performance.
+* Re-engineered the UI notification system.
+* Integrated core telemetry and metrics tracking into the stable deployment track.
+* Optimized pipeline build steps and streamlined dependencies to reduce packaging overhead and artifact size.
+* Improved Apache Druid support by enhancing query optimization and reducing latency.
+
+### 🐛 Bug Fixes
+* Addressed potential payload validation and checksum interference issues during application packaging.
+* Resolved styling inconsistencies within notification cards to ensure cleaner presentation across environments.
+
+### 🚀 Changes
+* Remove GPT-OSS 20B support due to mishandling the tool calling. We will introduce a more robust alternative in the next releases.
+
 ## [1.0.3] - Unified Release Intelligence & Protocol Resilience
 
 This release bridges the transparency gap between development cycles and the end-user experience by synchronizing architectural insights across both GitHub and the native application interface. In addition to these visibility improvements, version 1.0.3 hardens the MCP lifecycle with critical timing optimizations, ensuring the reliable deployment of data-intensive services and heavy-duty runtimes.
