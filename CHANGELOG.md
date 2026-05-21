@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] - Runtime Environment Stabilization
+
+This patch release prioritizes the predictability and isolation of the application's underlying execution environment. We have hardened the integration layer handling dynamically executed components to ensure strict adherence to bundled dependencies, preventing environmental drift.
+
+### 🚀 Key Features
+
+* **Strict Runtime Isolation:**
+  The JBang execution pipeline has been restructured to strictly enforce the use of the bundled Java Runtime Environment (JRE) distributed via jpackage. By explicitly overriding `JAVA_HOME` and sanitizing the environment `PATH` prior to invocation, the application guarantees execution consistency and eliminates conflicts with pre-existing, system-level software installations.
+
+### 🛠 Improvements
+* Refined macOS DMG packaging scripts to better support bundled execution contexts.
+* Synchronized version identifiers and release asset linkages across the project ecosystem.
+
+### 🐛 Bug Fixes
+* Resolved a critical startup sequence failure on macOS where the application would fail to launch when the `druid-mcp-server` was activated.
+
 ## [1.1.0] - Declarative Configuration & Expanded Execution Runtimes
 
 Version 1.1.0 introduces a declarative, Kubernetes-inspired approach to model configurations, systematically replacing legacy catalog systems. This structural adjustment simplifies environment reproducibility and broadens the native runtime support for standard integrations.
