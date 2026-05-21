@@ -1,4 +1,4 @@
-# Y̊pipe (formerly Data-Philter)
+# Y̊pipe Local AI
 ### Democratizing Enterprise-Grade Local AI Orchestration.
 
 [![Exclusive Technical Preview](https://img.shields.io/badge/Status-Technical_Preview-C7123A?style=for-the-badge)](https://ypipe.com)
