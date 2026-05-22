@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.2] - Inference Stability & Core Runtime Updates
+
+Version 1.1.2 reinforces the internal inference execution pipeline by addressing environment-specific hardware acceleration constraints on Linux. This release ensures a more consistent and predictable runtime behavior across deployments while maintaining alignment with the latest underlying inference SDKs.
+
+### 🚀 Key Features
+
+* **Inference Pipeline Refinement:**
+  Updated the core LlamaCPP and LemonadeSDK build configurations. This ensures seamless integration with recent upstream optimizations, providing a more robust foundation for high-performance, stateless model execution.
+
+### 🛠 Improvements
+* Synchronized internal application properties with the latest build versions for improved underlying SDK compatibility.
+
+### 🐛 Bug Fixes
+* Resolved an initialization and execution problem specific to OpenVINO hardware acceleration on Linux environments, restoring stable local inference.
+
 ## [1.1.1] - Runtime Environment Stabilization
 
 This patch release prioritizes the predictability and isolation of the application's underlying execution environment. We have hardened the integration layer handling dynamically executed components to ensure strict adherence to bundled dependencies, preventing environmental drift.
