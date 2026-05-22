@@ -79,7 +79,7 @@ Most AI tools are built for "Chat." Ypipe is built for **Data Workflows.** Ypipe
 ### <img src="assets/aqueduct.svg" width="32" style="filter: invert(100%); vertical-align: middle;"> Key Differentiators:
 * **Our goal is simple AI:** We focus on ensuring that you do not need a doctorate to get a model and data docking running. We believe local AI needs to be accessible to everyone.
 * **The Intelligence Switchboard:** Don't waste a 70B model on a 1B task. Ypipe lets you easily select models for sub-tasks. Imagine simple jobs utilizing tiny models for OCR or classification while reserving heavy compute for final synthesis. What works on your computer also runs easily on a server - this is how one gets AI into productive use.
-* ** Built for the professional environment. Ypipe uses the **Model Context Protocol (MCP)** and standardized APIs to bridge local intelligence with your existing tools. Whether it's a local SQL database or a custom enterprise API, Ypipe provides the "dock" for your data.
+* **Built for the Professional Environment:** Ypipe uses the **Model Context Protocol (MCP)** and standardized APIs to bridge local intelligence with your existing tools. Whether it's a local SQL database or a custom enterprise API, Ypipe provides the "dock" for your data.
 * **Java-Native Stability:** No Python dependency hell. Ypipe is built on Java, fitting seamlessly into existing enterprise server architectures, high-security environments, and professional DevOps pipelines. The dependencies that are required for the outside world: Do not worry, Ypipe manages it.
 * **Sovereign Geopatriation:** 100% of the data stays on your hardware. No cloud-routing, no data leaks, and zero external API costs. You own the infrastructure and the intelligence it produces.
 
@@ -98,9 +98,7 @@ Most AI tools are built for "Chat." Ypipe is built for **Data Workflows.** Ypipe
 
 Ypipe removes the guesswork from local AI. You don't need to be a data scientist to select the right intelligence; Ypipe acts as a **Model Switchboard**, ensuring you use the most efficient engine for every specific task in your pipeline.
 
-Ypipe features a built-in **Gearbox** that automatically assesses your local hardware (CPU, GPU, and RAM) and suggests models according to yoru hardware.
-
-Further, it auto-selects the best runtime for yoru hardware and runs the models you - ensuring that you do not need to be bothered with the complexity of local AI
+Ypipe features a built-in **Gearbox** that automatically assesses your local hardware (CPU, GPU, and RAM) and suggests appropriate models. Further, it auto-selects the best runtime for your hardware to run the models locally—ensuring that you do not need to deal with the complexity of local AI configuration.
 
 ---
 
@@ -108,10 +106,10 @@ Further, it auto-selects the best runtime for yoru hardware and runs the models 
 
 Ypipe is built to be the universal docking station for the **Model Context Protocol (MCP)**. We have eliminated the "dependency hell" of manual installations.
 
-*   **Zero-Dependency Setup:** One-click installation of MCP servers. ypipe handles the environment, runtimes, and connections—no additional software or Python dependencies are required on your host machine.
-*   **Built-in Specialized Servers:** ypipe ships with a curated set of pre-defined MCP servers (including our own **Druid MCP Server**) for immediate enterprise utility. For community MCP servers, all mcp server definitions with NPX, UV, and JBang are supported.
+*   **Zero-Dependency Setup:** One-click installation of MCP servers. Ypipe handles the environment, runtimes, and connections—no additional software or Python dependencies are required on your host machine.
+*   **Built-in Specialized Servers:** Ypipe ships with a curated set of pre-defined MCP servers (including our own **Druid MCP Server**) for immediate enterprise utility. For community MCP servers, all MCP server definitions with NPX, UV, and JBang are supported.
 *   **Community Expansion:** Effortlessly import any community-developed MCP server to instantly grant your local agents new capabilities, from database access to web-search tools.
-*   **The Model Switchboard:** ypipe doesn't just connect to MCP; it orchestrates them. It uses the "Model Switchboard" to determine which agent needs which MCP tool at exactly the right moment in the pipeline.
+*   **Intelligent Orchestration:** Ypipe doesn't just connect to MCP servers; it orchestrates them. It dynamically routes tasks to the specific models and MCP tools required at exactly the right moment in the pipeline.
 
 ---
 
@@ -151,15 +149,9 @@ For custom licensing or white-label integration requests, please **[Contact our 
 
 ---
 
-## Developer <img src="https://www.iunera.com/wp-content/uploads/2020/01/iunera-logo-shadow.png" width="100" style="vertical-align: middle;">
+## 🏗️ Developer & Maintainer
 
-### Enterprise Expertise
-- **AI-Powered Analytics**: Cutting-edge artificial intelligence solutions for data analysis
-- **Enterprise Data Platforms**: Scalable data infrastructure and analytics platforms (Druid, Flink, Kubernetes, Kafka, Spring)
-- **Model Context Protocol (MCP) Solutions**: Advanced MCP server implementations for various data systems
-- **Custom AI Development**: Tailored AI solutions for enterprise needs
-
-
+Ypipe is developed and maintained by **[iunera](https://www.iunera.com)**.
 
 ### 🧩 Enterprise Expertise
 *   **AI-Powered Analytics:** Cutting-edge solutions for high-velocity data analysis.
@@ -184,16 +176,13 @@ Need help? Let us know!
 - **Website**: [https://www.iunera.com](https://www.iunera.com)
 - **Professional Services**: Contact us through [email](mailto:consulting@iunera.com?subject=Druid%20MCP%20Server%20inquiry) for [Apache Druid enterprise consulting, support and custom development](https://www.iunera.com/apache-druid-ai-consulting-europe/)
 
-
 ---
-
 
 ## 📜 Provenance
 Ypipe is maintained by **iunera**, the team behind industry-recognized tech including the *Druid MCP Server*, *Fahrbar20*, and *License-Token*.
 
 <p align="left">
   <img src="assets/logo-corporate.svg" alt="iunera Corporate Logo" width="150">
-    <img src="https://www.iunera.com/wp-content/uploads/2020/01/iunera-logo-shadow.png" alt="iunera Corporate Logo" width="150">
 </p>
 
 © 2026 Ypipe by iunera. All Rights Reserved.
