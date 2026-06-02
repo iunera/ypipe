@@ -1,5 +1,5 @@
-# Y̊pipe Local AI
-### Democratizing Enterprise-Grade Local AI Orchestration.
+# Y̊pipe - Easy Local AI Client & MCP Orchestration Engine
+### Democratizing Enterprise-Grade Local AI.
 
 [![Exclusive Technical Preview](https://img.shields.io/badge/Status-Technical_Preview-C7123A?style=for-the-badge)](https://ypipe.com)
 [![Java Compatible](https://img.shields.io/badge/Platform-Java_Enterprise-38E7C1?style=for-the-badge)](https://iunera.com)
@@ -8,7 +8,7 @@
   <img src="assets/logo-animation.svg" alt="Ypipe Logo Animation" width="200">
 </p>
 
-[**Y̊pipe**](https://ypipe.com) is a secure, **local desktop application** that makes offline AI practical. It gives you the power to download and run optimized local models (CPU/GPU) on your own hardware, and orchestrate agentic workflows with absolute data sovereignty and zero cloud dependencies. As an **open orchestration engine**, Ypipe enables every business to chain these specialized local models seamlessly with **Model Context Protocol (MCP) servers**—such as databases, local browsers, and document managers—to deliver lean, private local business process agents.
+[**Y̊pipe**](https://ypipe.com) is an easy-to-use local AI client and MCP orchestration engine—a secure, **local desktop application** that makes offline AI practical. Run optimized models (CPU/GPU) on your own hardware with absolute data sovereignty and zero cloud dependencies. Chain specialized models via **Model Context Protocol (MCP)** and bind them to on-premise systems to execute secure, autonomous workflows.
 
 > **Note:** Y̊pipe is the successor to **Data-Philter**. The legacy Data-Philter documentation and codebase are archived in [archive/data-philter/README.md](archive/data-philter/README.md).
 
@@ -27,6 +27,7 @@ Interact directly with your offline LLMs using natural language. Query local dat
 ![Private Agentic Chat](assets/screenshot-chat.png)
 
 *   **Local LLM Chat:** Talk directly to offline models running on your CPU or GPU.
+*   **Agentic Gearbox Suggestion:** Automatically recommends a fitting LLM model based on your system's CPU, GPU, and RAM capacity.
 *   **Sovereign Data Execution:** Run queries against SQLite or Apache Druid with zero external network requests.
 *   **System Automation:** Bind chat commands to trigger local scripts, legacy systems, and files safely.
 *   **Zero Data Leaks:** Your prompt, context, and responses never leave your physical machine.
