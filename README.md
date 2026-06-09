@@ -45,10 +45,10 @@ Manage local runtimes and models with a built-in downloader, automatically asses
 Connect your offline AI agent to external tools, database servers, web browsers, and file managers instantly.
 ![One-Click MCP Integrations](assets/screenshot-couplings.png)
 
-*   **Unified MCP Protocol:** Bind local models to tools, SQL databases, web browsers, and file systems instantly.
-*   **Pre-Configured Abilities:** One-click setup for Apache Druid, SQLite/Postgres, document managers, and Playwright browsers.
-*   **No Dependency Hell:** Runs on ypipe's embedded Java engine—no complex Python or system dependencies required.
-*   **Extensible Ecosystem:** Create, register, and hot-reload custom Model Context Protocol servers in any language.
+*   **Blueprints & McpIntegrations:** Clear separation between static connection templates (Blueprints) and active running server instances (McpIntegrations).
+*   **Dedicated Management UI:** An intuitive, dedicated Couplings dashboard to manage, register, and monitor all active MCP servers and blueprints.
+*   **Fine-Grained Tool Control:** Full control over exposed tools, allowing you to disable specific tools, modify tool names, and rewrite descriptions.
+*   **Zero-Dependency Runtimes:** Run local servers using stdio, npx, uvx, or JBang directly on ypipe's embedded Java foundation.
 
 ---
 ## 🌊 Quick Start (JBang)

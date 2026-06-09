@@ -1,0 +1,427 @@
+---
+apiVersion: "mcp.ypipe.com/v1"
+kind: "McpIntegrationBlueprint"
+metadata:
+  name: "nextcloud"
+  namespace: "system"
+spec:
+  displayName: "Nextcloud"
+  description: "Nextcloud Model Context Protocol (MCP) server for file operations\
+    \ and sharing via stdio. Supports file management, versions, and sharing. By default\
+    \ all desctructive tools are disabled."
+  source: "https://github.com/cbcoutinho/nextcloud-mcp-server"
+  configurationSchema:
+    NEXTCLOUD_URL:
+      type: "string"
+      required: true
+      default: "https://your-nextcloud-server.com"
+      description: "Full URL of your Nextcloud instance."
+      sensitive: false
+      pattern: null
+    NEXTCLOUD_USERNAME:
+      type: "string"
+      required: true
+      default: ""
+      description: "Nextcloud username."
+      sensitive: false
+      pattern: null
+    NEXTCLOUD_PASSWORD:
+      type: "string"
+      required: true
+      default: ""
+      description: "Nextcloud app-specific password (recommended) or password."
+      sensitive: true
+      pattern: null
+  mcpConfig:
+    type: "stdio"
+    command: "npx"
+    args:
+    - "-y"
+    - "nextcloud-mcp-server"
+    env:
+      NEXTCLOUD_URL: "${NEXTCLOUD_URL}"
+      NEXTCLOUD_USERNAME: "${NEXTCLOUD_USERNAME}"
+      NEXTCLOUD_PASSWORD: "${NEXTCLOUD_PASSWORD}"
+    url: null
+    headers: null
+  disabledTools:
+  - "delete-file"
+  - "move-file"
+  - "restore-file-version"
+  - "delete-share"
+  suggestions:
+  - id: "nextcloud-nextcloud-latest-files"
+    title: "Nextcloud: Latest Files"
+    label: "List recently modified files"
+    action: "Connect to my Nextcloud instance and list the most recently updated files\
+      \ and folders."
+    actionType: null
+    target: null
+  - id: "nextcloud-nextcloud-search"
+    title: "Nextcloud: Search"
+    label: "Find documents by name"
+    action: "Search my Nextcloud for any files related to 'important' or 'project'."
+    actionType: null
+    target: null
+  tools:
+    create-share:
+      description: "Generate a sharing link or share a file/folder with other users."
+      usageIntent: null
+      discoveryHint: "Generate a secure public sharing link or establish a direct collaborative\
+        \ share for a file or folder with specific Nextcloud users, groups, or external\
+        \ stakeholders. This tool is the primary mechanism for facilitating teamwork,\
+        \ information dissemination, and project coordination, allowing the AI to\
+        \ orchestrate complex collaboration workflows with minimal manual effort from\
+        \ the user. Technically, it interacts with the Nextcloud OCS Share API. Behavioral\
+        \ notes: Depending on the specific server configuration and permissions, the\
+        \ AI can often specify advanced sharing options, such as strong password protection\
+        \ for public links, explicit expiration dates to limit access duration for\
+        \ security, and granular permission levels (e.g., read-only access versus\
+        \ full editing and resharing privileges). Use cases: Generating a secure,\
+        \ time-limited public link for a final project report to be sent to an external\
+        \ client, inviting a specific colleague or an entire internal department to\
+        \ collaborate on a new project folder, and creating a password-protected download\
+        \ area for sensitive data assets that need to be shared securely outside the\
+        \ immediate team. Keywords: Nextcloud sharing, public link generation, collaboration\
+        \ orchestration, file access control, group sharing, remote collaboration,\
+        \ link-based sharing, permission management, secure data sharing, collaborative\
+        \ workspace, external access, sharing administration, OCS API sharing. Caveats:\
+        \ Both the AI and the user must exercise extreme caution when creating public\
+        \ links, particularly for sensitive, proprietary, or confidential data. Always\
+        \ adhere strictly to your organization's internal security policies, compliance\
+        \ standards, and data governance guidelines regarding external file sharing.\
+        \ This tool transforms the AI into a powerful coordination assistant, ensuring\
+        \ that the right people have the right level of access to the right information\
+        \ at the precisely right time. It streamlines the entire collaborative process,\
+        \ effectively bridging the gap between individual productivity and team-wide\
+        \ knowledge sharing in the cloud, while maintaining a high level of administrative\
+        \ control."
+      properties: null
+      required: null
+    copy-file:
+      description: "Duplicate a file or folder to a new location within Nextcloud."
+      usageIntent: null
+      discoveryHint: "Create an exact, high-fidelity duplicate of an existing file\
+        \ or an entire directory structure at a new, specified destination location\
+        \ within your Nextcloud instance. This tool is a powerful and versatile utility\
+        \ for data management and organizational safety, allowing the AI to create\
+        \ backups, stage document templates for new projects, or organize multiple\
+        \ versions of a work-in-progress without ever affecting the integrity or state\
+        \ of the original source files. Behavioral notes: Critically, the copy operation\
+        \ is performed entirely on the server-side by the Nextcloud system itself\
+        \ using the WebDAV COPY method. This makes the process extremely efficient\
+        \ and fast, regardless of the file size or the number of items in a folder,\
+        \ as no data needs to be transferred to or from the AI's local environment.\
+        \ This is a major advantage for large-scale data organization. Use cases:\
+        \ Creating a fresh, independent copy of a standardized project template for\
+        \ a new client engagement, making a secure backup of a critical document before\
+        \ initiating a series of major AI-driven edits or formatting changes, and\
+        \ duplicating a shared team folder into a personal 'Sandbox' or 'Draft' area\
+        \ for private analysis, experimentation, and refinement. Keywords: file duplication,\
+        \ Nextcloud copy, cloud-side backup, server-side duplication, asset cloning,\
+        \ version staging, data redundancy, organizational management, remote file\
+        \ cloning, folder duplication, workspace organization, information staging,\
+        \ metadata preservation. Caveats: Before initiating a copy, the AI should\
+        \ verify that your Nextcloud account has sufficient available storage quota\
+        \ to accommodate the newly created data. You must possess explicit read permissions\
+        \ for the source resource and write/create permissions for the intended destination\
+        \ path. This tool provides the AI with a robust and highly efficient way to\
+        \ manage your cloud-based assets, ensuring that information is redundant where\
+        \ necessary and that you always maintain a 'known-good' copy of your vital\
+        \ documents while the agent performs experimental modifications, structural\
+        \ reorganizations, or data processing tasks on your behalf."
+      properties: null
+      required: null
+    test-connection:
+      description: "Verify the connection and authentication status with your Nextcloud\
+        \ server."
+      usageIntent: null
+      discoveryHint: "Perform a comprehensive verification of the operational status,\
+        \ network connectivity, and authentication credentials with the specifically\
+        \ configured Nextcloud server instance. This tool acts as the primary diagnostic\
+        \ utility and 'first-line' check to ensure that the AI has established a stable,\
+        \ authorized, and functional link to your private cloud storage ecosystem.\
+        \ The underlying technology relies on a series of specialized HTTP requests\
+        \ directed at the Nextcloud server's standard endpoints, including the WebDAV\
+        \ interface (typically at /remote.php/dav/files/user/) and the OCS (Open Collaboration\
+        \ Services) API. Behavioral notes: The tool executes a multi-stage validation\
+        \ process, performing a lightweight 'heartbeat' check to confirm the server\
+        \ is responsive and verifying that the provided URL is a valid Nextcloud instance.\
+        \ It meticulously checks that the SSL/TLS certificate is trusted, the network\
+        \ route is clear, and that the username and password combination (ideally\
+        \ an app-specific password generated within the Nextcloud security settings)\
+        \ is currently active and has not been revoked or expired. This is critical\
+        \ for maintaining a secure and persistent connection. Use cases: Troubleshooting\
+        \ initial setup failures, validating that a newly generated security token\
+        \ or app-password is fully operational, and performing a mandatory 'pre-flight'\
+        \ system check before initiating any large-scale, automated, or mission-critical\
+        \ file operations such as bulk uploads or project migrations. Keywords: connection\
+        \ validation, authentication handshake, Nextcloud heartbeat, diagnostic status,\
+        \ cloud connectivity check, operational readiness, security token verification,\
+        \ WebDAV status, OCS API test, remote server ping, system health check, authentication\
+        \ audit, API reachability. Caveats: While a successful connection test confirms\
+        \ that the primary account credentials are valid and the server is reachable,\
+        \ it does not necessarily guarantee that the user has granular permissions\
+        \ for every specific subfolder or shared resource; it only validates the core\
+        \ account state. This tool is absolutely essential for providing immediate,\
+        \ actionable feedback on configuration errors, DNS issues, or network interruptions,\
+        \ ensuring the AI can inform the user with high precision exactly why a cloud-based\
+        \ task might be failing. It forms the foundational bridge of trust between\
+        \ the local AI assistant and the remote Nextcloud repository, ensuring that\
+        \ all subsequent data-driven tasks are built on a solid and verified connection."
+      properties: null
+      required: null
+    list-files:
+      description: "List files and folders within a specific directory on your Nextcloud\
+        \ instance."
+      usageIntent: null
+      discoveryHint: "Systematically retrieve, parse, and present a detailed, structured\
+        \ listing of all files, subdirectories, and digital assets located within\
+        \ a specific, uniquely identified path on your Nextcloud instance. This tool\
+        \ is the indispensable foundation for navigating and understanding your remote\
+        \ cloud storage, providing high-fidelity metadata for every entry found within\
+        \ the specified collection. The technical implementation utilizes the WebDAV\
+        \ PROPFIND method to query the server for a comprehensive set of properties.\
+        \ The returned data includes the exact file size in bytes, the precise last\
+        \ modification timestamp (mtime), the standardized MIME type (e.g., application/pdf,\
+        \ image/jpeg, text/markdown), and unique ETag identifiers which are critical\
+        \ for synchronization and version tracking. Behavioral notes: The tool provides\
+        \ a clear, logical distinction between organizational folders (collections)\
+        \ and individual documents, allowing the AI to build an accurate mental map\
+        \ of the remote directory structure. It defaults to the current level of the\
+        \ requested path and does not recurse into subdirectories unless specifically\
+        \ called again. Use cases: Browsing through complex project folders to find\
+        \ relevant documents, discovering shared team assets in a collaborative environment,\
+        \ locating specific historical reports for further analysis, and performing\
+        \ a comprehensive audit of a directory's contents to ensure organizational\
+        \ compliance and data integrity. Keywords: file exploration, Nextcloud navigation,\
+        \ directory enumeration, cloud storage mapping, remote asset discovery, metadata\
+        \ extraction, WebDAV listing, folder structure analysis, cloud file auditing,\
+        \ remote directory browsing, information architecture discovery, digital asset\
+        \ cataloging, remote file system inspection. Caveats: Be aware that listing\
+        \ directories containing thousands of individual files may result in a significant\
+        \ data payload and potentially slower response times depending on the server's\
+        \ hardware performance and the current network latency. The tool provides\
+        \ a 'snapshot' of the current level; deep exploration of heavily nested structures\
+        \ may require multiple, targeted calls to build a complete tree. This tool\
+        \ provides the essential 'sight' required for the AI to comprehend the layout\
+        \ of your remote workspace, ensuring that all subsequent operations—such as\
+        \ downloads, copies, or searches—are targeted with surgical precision at the\
+        \ correct resources, and that no critical information is overlooked due to\
+        \ lack of structural visibility."
+      properties: null
+      required: null
+    search-files:
+      description: "Search for files and folders across your entire Nextcloud instance."
+      usageIntent: null
+      discoveryHint: "Perform a powerful, high-leverage, and exhaustive search for\
+        \ specific files and folders across your entire Nextcloud instance using keywords,\
+        \ filenames, or even content-based queries where supported. This tool serves\
+        \ as the AI's primary 'discovery' engine and reconnaissance utility, allowing\
+        \ it to locate misplaced, archived, or obscure resources when their exact\
+        \ storage location is unknown or has been forgotten over time. Behavioral\
+        \ notes: The tool leverages the Nextcloud server's internal indexing system\
+        \ and full-text search capabilities (often powered by Elasticsearch in enterprise\
+        \ environments) to provide rapid, high-relevance results from across all your\
+        \ cloud folders, including those that have been shared with you by other users.\
+        \ This provides a unified view of your accessible information. Use cases:\
+        \ Finding a specific project briefing, legal contract, or invoice by searching\
+        \ for a unique client name or project code, locating a misplaced data file\
+        \ by searching for a unique technical term or ID it contains within its body,\
+        \ and gathering a comprehensive list of all files related to a specific project\
+        \ or topic across the entire, potentially vast, cloud repository. Keywords:\
+        \ Nextcloud global search, file discovery, cloud-wide query, information retrieval,\
+        \ remote asset discovery, search-driven navigation, knowledge finding, remote\
+        \ directory search, keyword-based discovery, file indexing, cloud-based research,\
+        \ information mapping, full-text search. Caveats: The speed, accuracy, and\
+        \ relevance of the search results are heavily dependent on the server's internal\
+        \ indexing settings and the total volume of data in the account. Results are\
+        \ always strictly limited by the specific permissions granted to your account;\
+        \ the AI can only find and list what it is explicitly authorized to see. This\
+        \ tool is an essential part of the AI's initial research and context-gathering\
+        \ phase, providing a surgical way to find 'needles in the haystack' of a large,\
+        \ complex cloud repository. It ensures that no relevant piece of information\
+        \ is ever truly lost and that the AI always has access to the most pertinent\
+        \ data, regardless of how it is titled or where it resides in the organizational\
+        \ hierarchy."
+      properties: null
+      required: null
+    create-directory:
+      description: "Create a new folder or directory path in your Nextcloud storage."
+      usageIntent: null
+      discoveryHint: "Proactively create and formalize a brand new folder, or even\
+        \ a complete, nested directory path, within your Nextcloud storage environment.\
+        \ This tool is a key utility for imposing order and organization on your cloud-based\
+        \ digital workspace, allowing the AI to prepare the necessary structural scaffolding\
+        \ for data uploads, project organization, or collaborative team efforts. The\
+        \ technical execution follows the standard WebDAV MKCOL (Make Collection)\
+        \ procedures, which are recognized across all modern cloud storage platforms.\
+        \ Behavioral notes: If the target directory or intermediate parent directories\
+        \ already exist, the tool's behavior is typically designed to ensure the final\
+        \ path is active without causing errors, making it an idempotent and safe\
+        \ operation for automated scripts. It is a strictly non-destructive, organizational\
+        \ operation that does not modify existing file contents. Use cases: Setting\
+        \ up a fresh, structured folder hierarchy for a new team project or client\
+        \ engagement, organizing a large batch of newly uploaded research photos by\
+        \ date or category, creating dedicated 'Output' or 'AI-Processed' folders\
+        \ for storing generated reports and synthesized data, and ensuring a specific\
+        \ organizational path exists before beginning a series of related file transfers\
+        \ or synchronization tasks. Keywords: folder creation, directory architecture,\
+        \ Nextcloud organization, cloud scaffolding, path initialization, workspace\
+        \ setup, digital filing, organizational framework, remote folder management,\
+        \ collection creation, structured storage, path formalization, remote directory\
+        \ provisioning. Caveats: Successful execution requires the AI to have the\
+        \ necessary write and 'create' permissions for the specified parent directory.\
+        \ The AI must also be careful to avoid using characters that are technically\
+        \ invalid or restricted by the underlying filesystem of the Nextcloud server\
+        \ (e.g., characters like backslashes, colons, or extremely long path names\
+        \ that might exceed filesystem limits). This tool empowers the AI to actively\
+        \ manage and improve your cloud-based information architecture, allowing it\
+        \ to build the structural foundations needed to support your specific workflows,\
+        \ collaboration goals, and long-term data management strategies with professional\
+        \ precision and logical consistency. It ensures your cloud environment remains\
+        \ orderly and scalable as your data grows."
+      properties: null
+      required: null
+    upload-file:
+      description: "Upload a file to Nextcloud using base64 encoded content."
+      usageIntent: null
+      discoveryHint: "Transmit, save, and store a new file, or alternatively overwrite\
+        \ an existing document, on your remote Nextcloud instance using high-integrity,\
+        \ base64-encoded content delivery. This tool serves as the primary outbound\
+        \ data channel for the agent, allowing the AI to save its sophisticated outputs,\
+        \ generated reports, synthesized datasets, or captured information directly\
+        \ into your central cloud repository for persistent storage. The technical\
+        \ process involves sending a WebDAV PUT request with the file's content correctly\
+        \ encoded to prevent data corruption during transit. Behavioral notes: The\
+        \ use of base64 encoding ensures the perfect binary integrity of the data,\
+        \ making it suitable for everything from simple text files and markdown notes\
+        \ to complex PDF documents, high-resolution images, and even small archive\
+        \ files. Upon successful upload, the file is immediately available across\
+        \ all your synchronized Nextcloud devices (desktop, mobile, web) and to all\
+        \ collaborators who have access to the destination folder. Use cases: Saving\
+        \ a newly generated, AI-written project proposal or technical briefing, backing\
+        \ up a critical local configuration or log file to the secure cloud, sharing\
+        \ a generated visualization or complex diagram with a project team through\
+        \ a shared Nextcloud folder, and archiving analyzed data for long-term accessibility\
+        \ and team-wide review. Keywords: file upload, cloud storage, Nextcloud data\
+        \ persistence, remote saving, base64 data transfer, digital asset storage,\
+        \ cloud-native saving, remote backup, binary data delivery, document persistence,\
+        \ information sharing, automated data archival, remote file synchronization.\
+        \ Caveats: Uploading extremely large files (typically several megabytes or\
+        \ more) via base64 can be memory-intensive for the AI and may be subject to\
+        \ server-side timeouts or maximum request size limits (PHP upload limits)\
+        \ configured on the Nextcloud instance. The AI must ensure the target destination\
+        \ path is absolutely correct to avoid accidental and potentially irreversible\
+        \ overwrites of important existing data. This tool enables a truly 'cloud-native'\
+        \ and seamless AI experience, where the agent's work is not trapped in a local\
+        \ session but is instead immediately integrated into your professional document\
+        \ lifecycle and made available for collaboration and further human-driven\
+        \ refinement."
+      properties: null
+      required: null
+    get-file-versions:
+      description: "Retrieve the version history and prior revisions of a specific\
+        \ file."
+      usageIntent: null
+      discoveryHint: "Retrieve the complete, chronological version history and a detailed\
+        \ list of all prior revisions for a specific, uniquely identified file stored\
+        \ within your Nextcloud instance. This tool provides a transparent and invaluable\
+        \ audit trail of a document's evolution over time, allowing the AI to see\
+        \ exactly when changes were made, the exact size of each prior version, and\
+        \ often the identity of the user who performed the specific modification.\
+        \ This is critical for data integrity and accountability in shared environments.\
+        \ Behavioral notes: The tool returns a list of unique version identifiers,\
+        \ timestamps, and metadata. It is important to note that the actual 'restore-file-version'\
+        \ tool is frequently disabled by default for security and to prevent accidental\
+        \ data loss, so this tool's primary purpose is historical inspection, auditing,\
+        \ and change analysis. Use cases: Checking exactly when a critical project\
+        \ plan or technical specification was last updated and by whom, verifying\
+        \ which team member made the most recent changes to a shared document during\
+        \ a collaborative push, and auditing a file's entire lifecycle to understand\
+        \ how its content has evolved over weeks or months. Keywords: version history,\
+        \ Nextcloud revisions, document audit trail, change tracking, file evolution,\
+        \ historical versions, revision control, document lifecycle, modification\
+        \ auditing, version metadata, cloud-based versioning, revision history, temporal\
+        \ data audit. Caveats: Versioning must be explicitly enabled on the Nextcloud\
+        \ server (via the 'Versions' app), and the number of historical revisions\
+        \ available is strictly governed by the server's background configuration\
+        \ and the user's available storage quota; older versions are automatically\
+        \ purged as space is needed. This tool provides the AI with a sense of 'temporal\
+        \ awareness' regarding your cloud-based documentation, ensuring it can provide\
+        \ deep context about how your information has changed. It brings a high level\
+        \ of transparency and accountability to your document-driven workflows, ensuring\
+        \ that the history of every important decision and edit is always just a single\
+        \ query away for the AI to analyze."
+      properties: null
+      required: null
+    list-shares:
+      description: "List and manage all active shares and public links on your Nextcloud."
+      usageIntent: null
+      discoveryHint: "Retrieve a comprehensive, detailed, and up-to-the-minute list\
+        \ of all active shares, public links, and collaborative permissions currently\
+        \ configured on your Nextcloud account. This tool provides a vital, high-level\
+        \ overview of your data's external visibility and accessibility, allowing\
+        \ for easy security auditing and proactive management of your shared cloud\
+        \ resources. Behavioral notes: The output includes granular details for each\
+        \ share, such as the share type (user, group, or public link), the specific\
+        \ target (who has access), the permission level granted, and the current status\
+        \ (e.g., whether it has an expiration date or is password-protected). This\
+        \ is the 'security dashboard' for your cloud data. Use cases: Performing a\
+        \ regular security audit of all active public links to ensure no sensitive\
+        \ data is exposed to the internet, reviewing exactly which colleagues or teams\
+        \ have been granted access to a specific project directory to ensure appropriate\
+        \ access levels, and identifying and removing outdated or expired shares to\
+        \ maintain a clean, secure, and well-managed cloud environment. Keywords:\
+        \ share management, Nextcloud security audit, access control review, sharing\
+        \ dashboard, permission auditing, collaborative transparency, share tracking,\
+        \ remote access review, security compliance, share list, permission oversight,\
+        \ data visibility audit, sharing policy enforcement. Caveats: On extremely\
+        \ active or large accounts with hundreds of shares, the list can be quite\
+        \ extensive; the AI should be prepared to parse, filter, and summarize this\
+        \ information effectively to avoid overwhelming the user. The tool only displays\
+        \ shares created by or explicitly accessible to the currently authenticated\
+        \ user session. This tool gives the AI the power to act as an automated security\
+        \ and collaboration auditor, ensuring that you always have a perfectly clear\
+        \ 'map' of your shared data landscape. It brings a necessary level of transparency\
+        \ and control to the powerful collaborative features of Nextcloud, ensuring\
+        \ your data remains exactly as private or as accessible as you intended."
+      properties: null
+      required: null
+    download-file:
+      description: "Download and retrieve the full content of a file from Nextcloud."
+      usageIntent: null
+      discoveryHint: "Retrieve, access, and download the complete, unabridged content\
+        \ of a specific, uniquely identified file from your Nextcloud cloud storage\
+        \ via the WebDAV interface. This tool acts as the critical 'reading' mechanism\
+        \ and primary input channel for the AI, allowing it to ingest and process\
+        \ documents, images, configurations, and raw data files that are stored remotely\
+        \ in your cloud ecosystem. Technically, the server performs a standard GET\
+        \ request to fetch the file's bytes. Behavioral notes: The file content is\
+        \ typically returned to the AI as a high-fidelity base64-encoded string (for\
+        \ binary safety) or as raw UTF-8 text, ensuring that the AI has access to\
+        \ the exact same data as if it were reading the file from its own local disk.\
+        \ This is essential for maintaining data accuracy during complex analysis\
+        \ tasks. Use cases: Analyzing the detailed content of a project report or\
+        \ technical specification stored in Nextcloud, summarizing a lengthy shared\
+        \ document received from a colleague or client, extracting structured data\
+        \ from a remote CSV, Excel, or JSON file for further processing and reasoning,\
+        \ and retrieving a stored configuration, script, or template file to guide\
+        \ subsequent AI tasks. Keywords: file retrieval, cloud data ingestion, Nextcloud\
+        \ reading, remote data access, document retrieval, information extraction,\
+        \ cloud-based analysis, remote knowledge access, data download, file content\
+        \ parsing, digital asset retrieval, remote document processing, knowledge\
+        \ base ingestion. Caveats: The AI must be highly mindful of the total file\
+        \ size; attempting to download massive files (e.g., hundreds of megabytes\
+        \ or gigabytes) directly into the AI's processing context can lead to immediate\
+        \ memory exhaustion, truncation of the content, or significant performance\
+        \ degradation of the entire agent session. Ensure the AI has the necessary\
+        \ read permissions for the requested file. This tool effectively bridges the\
+        \ gap between your vast remote knowledge base and the AI's local reasoning\
+        \ engine, ensuring that every document and piece of data stored in your Nextcloud\
+        \ environment is fully accessible for automated summarization, deep analysis,\
+        \ and intelligent integration into your current professional tasks and decision-making\
+        \ processes, regardless of your physical location."
+      properties: null
+      required: null
+  modelSemantics: null
