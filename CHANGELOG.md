@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - Dynamic GitOps Auto-Discovery & Hot-Reloading & Couplings Architecture
+
+This release builds upon the Unified GitOps Workspace by introducing zero-downtime hot-reloading and automated manifest generation. It ensures that the YPipe engine can dynamically adapt to file system changes, imports, and forks instantly without requiring an application restart, while aggressively protecting shared hardware resources.
+In addition it's introduces the brand-new **Couplings** view. It formally introduces declarative `McpIntegration` and `McpIntegrationBlueprint` resource Kinds, providing a native management UI for MCP servers with granular control over tool naming, descriptions, and active status.
+Last but not least we YPipe now supports the latest awesome Gemma4 12B model. 
+
+### 🚀 Key Features
+* **"Couplings" MCP Integration View:** Introduced a complete, native management UI ("Couplings") for MCP servers. Backed by declarative `McpIntegration` and `McpIntegrationBlueprint` resource Kinds, it grants granular control to customize tool names, rewrite descriptions, toggle individual tools on/off, and dynamically persist configurations on the fly.
+* **Zero-Downtime Hot-Reloading:** Completely overhauled the Spring Context configuration binder. Dropping a new `.ypipe` file into the workspace, or forking an existing model, now synchronously hot-reloads the manifest into memory and instantly broadcasts state changes to the UI without crashing or requiring a reboot.
+* **Auto-Import Pipeline (`import/`):** Introduced a dedicated `~/.ypipe/models/import/` staging directory. Dropping raw `.gguf` files here triggers an automated workflow that moves the file to managed storage, auto-detects its metadata, generates a pristine Kubernetes-style `.ypipe` manifest  `Kind: Model` on `apiVersion: coordinator.ypipe.com/v1`  in your GitOps repository, and injects the model live into the active catalog.
+* **Reference-Counted Deletions:** Deleting models is now completely safe. The engine utilizes the `ypipe-fh1` FastHash registry to track physical file ownership across the entire catalog. Deleting a model fork will now safely preserve the underlying 40GB `.gguf` weights if they are still being referenced by the base model or other active agents.
+
+### 🛠 Improvements
+* **Always-Available Manifest Management:** Unlocked the model management context menu (`...`) in the UI. Users can now edit, configure, or delete `.ypipe` manifests at any time, even if the underlying physical weights are currently missing or deleted from the disk.
+* **Evaluation Stability:** Added pre-flight readiness checks to the hardware evaluation service, preventing system crashes when attempting to benchmark models that are not fully downloaded or hydrated.
+* **Synchronous State Resolution:** Eliminated race conditions between the backend property registry and the JavaFX UI, ensuring that visual components only refresh when the underlying data is fully validated and bound in RAM.
+
+### 🤖 Model Catalog
+* **Gemma 4 12B (ggml-org, Q4_K_M):** Added `gemma-4-12b` to the system model catalog. Dense 12B instruct model from Google, quantized to Q4_K_M by ggml-org. Available in two variants: text-only (LLM) and multimodal (VLM with SigLIP2 vision projector — requires a llama.cpp build with SigLIP2 support).
+
+### ⚠️ Breaking Changes
+* **Model Naming Convention:** YPipe now enforces a strict SDR (Standard Directory Registry) naming format for model files (e.g., prefixing with `ax_`). Existing model files in `~/.ypipe/models/gguf/` must be renamed to the new format or moved to the `import/` directory for automated migration. Alternatively, they can be downloaded again through the UI.
+* **MCP Integration Migration:** Legacy MCP configurations are no longer supported. All MCP servers must be re-connected using the new "Couplings" management UI to generate the required declarative `.ypipe` manifests.
+* **MCP Controller Management Tools:** The MCP tools used for managing the MCP controller itself have been updated and replaced by the new internal lifecycle management system.
+* **Removal of MCP Example Tool:** The legacy MCP example tool has been removed from the distribution as it is superseded by the new declarative integration patterns.
+
+
+
 ## [1.1.2] - Inference Stability & Core Runtime Updates
 
 Version 1.1.2 reinforces the internal inference execution pipeline by addressing environment-specific hardware acceleration constraints on Linux. This release ensures a more consistent and predictable runtime behavior across deployments while maintaining alignment with the latest underlying inference SDKs.
