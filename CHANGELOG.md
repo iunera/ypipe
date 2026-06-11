@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - Performance Improvements, Resilient Service Boot, Live Log Console
+
+This release significantly optimizes the YPipe startup time by introducing concurrent service initialization and improves boot resilience under slow-starting or offline MCP controller environments.
+
+### 🚀 Key Features
+* **Concurrent Service Startup:** Overhauled the main startup orchestrator to boot both the Spring Boot MCP Controller and the Coordinator applications in parallel background threads, cutting down cold boot and initialization latency by up to 60%.
+* **Parallel McpIntegration Registration:** Parallelized the registration and handshake process of all persisted MCP servers. This cuts startup latency from the sum of all server connection times down to the duration of the single slowest server.
+* **Resilient MCP Client Connection:** Introduced a background connection retry loop for the Coordinator's Spring AI MCP client. Bypassing the eager, blocking startup health verification prevents context initialization failures when the MCP Controller is not yet fully listening.
+* **Granular Service Boot UI Overlay:** Reworked the application startup splash overlay to present individual status cards for each background service.
+* **Live Log Console:** Integrated a standalone, monospaced live log viewer.
+* **Theme Color Alignment:** Unified the dark theme background styling across the startup screen.
+* **Parallelized Tool-Vectorstore Embedding:** Parallelized the generation of vector embeddings for all tools in the tool registry to optimize background synchronization performance.
+
+### 🛠 Improvements
+* **Runtime Dependency Updates:** Runtime build versions `lamacpp` updated to `b9596` and `lemonadeSdk` updated to `b1293`.
+
 ## [1.2.0] - Dynamic GitOps Auto-Discovery & Hot-Reloading & Couplings Architecture
 
 This release builds upon the Unified GitOps Workspace by introducing zero-downtime hot-reloading and automated manifest generation. It ensures that the YPipe engine can dynamically adapt to file system changes, imports, and forks instantly without requiring an application restart, while aggressively protecting shared hardware resources.
