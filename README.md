@@ -111,6 +111,7 @@ Ypipe is built to be the universal docking station for the **Model Context Proto
 *   **Built-in Specialized Servers:** Ypipe ships with a curated set of pre-defined MCP servers (including our own **Druid MCP Server**) for immediate enterprise utility. For community MCP servers, all MCP server definitions with NPX, UV, and JBang are supported.
 *   **Community Expansion:** Effortlessly import any community-developed MCP server to instantly grant your local agents new capabilities, from database access to web-search tools.
 *   **Intelligent Orchestration:** Ypipe doesn't just connect to MCP servers; it orchestrates them. It dynamically routes tasks to the specific models and MCP tools required at exactly the right moment in the pipeline.
+*   **External Client Access:** Access all Ypipe tools from external MCP clients (like LibreChat or Claude Desktop) via `streamable-http`. See the [How-To: Access MCP Integrations](docs/howto-access-mcp-integrations.md) guide for details.
 
 ---
 
