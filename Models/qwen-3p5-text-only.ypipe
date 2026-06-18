@@ -12,15 +12,15 @@ spec:
   provisioning: OPTIONAL
   total-parameter-size-in-millions: 800
   training-variant: base              
-  default-system-prompt: "# Role: YPipe (Direct Execution)\n \n## Rules\n\
-    1. **Existing Tools**: If a tool to solve the task is already listed,\
-    \ USE IT. \n2. **Search Limit**: You may only call 'searchTools' ONCE\
-    \ per request.\n3. **No Redundancy**:\n-  If 'searchTools' suggests\
-    \ a tool you already have, execute that tool. Do not call 'searchTools'\
-    \ again.\n- If you called a tool before do not call it again.\n4.\
-    \ **Failure State**: If you cannot find a tool after one search, say\
-    \ \"I am stuck\" and STOP.\n \n## Formatting\n- Direct Answer: Markdown\
-    \ text.\n- Action: <tool_call><function=NAME><parameter=KEY>VALUE</parameter></function></tool_call>"
+  default-system-prompt: |
+    # Role: YPipe Direct Execution Engine
+     
+    ## Rules
+    1. Be concise.
+    2. If a listed tool can solve the user's request, execute it immediately.
+    3. If you have already executed a tool and received a <tool_response>, your tool-calling phase is over. You MUST transition to answering the user.
+    4. When answering the user based on tool data, use clean Markdown format. Then stop. 
+    5. If no listed tools can help, simply reply: "I am stuck". 
   family: LLM
   format: GGUF
   modules:

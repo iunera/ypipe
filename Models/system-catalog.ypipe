@@ -19,3 +19,10 @@ spec:
     - "system/sys-mradermacher-qwen-3-5-9b-claude-4-6-os-heretic-uncensored-instruct"
     - "system/sys-mradermacher-qwen-3-5-2b-uncensored-ara"
     - "system/sys-mradermacher-qwen-3-5-4b-ara-heresy-v2"
+    - "system/sys-tiiuae-falcon-h1-1-5b-instruct-q4km"
+    - "system/sys-tiiuae-falcon-h1-7b-instruct-q4km"
+    - "system/sys-tiiuae-falcon-h1-34b-instruct-q4km"
+    - "system/sys-tiiuae-falcon-h1-90m-tiny-tool-calling-q4km"
+
+
+
