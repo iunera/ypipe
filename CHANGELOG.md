@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.2] - Model Integration Fixes, Falcon Support & Prompt Optimization
+
+This release addresses several startup and activation stability issues, introduces initial support for Falcon-based architectures, and refines system prompt formatting for improved model performance.
+
+### 🛠 Improvements & Fixes
+* **Model Activation:** Fixed a startup error when activating the first model on fresh, vanilla systems.
+* **Concurrent Startup:** Resolved startup race conditions by disabling synchronous MCP client initialization on boot and increasing service health-check timeouts.
+* **System Prompt & YAML Serialization:** Configured system prompt editing to correctly target the REST API, and enabled YAML literal block styling (`|`) for cleaner prompt serialization.
+* **Falcon Model Support:** Introduced early-stage dialect adapter support for Falcon models.
+* **Model Compatibility:** Optimized prompt adapters (including Qwen models) and improved context rendering, resulting in more reliable text generation.
+
 ## [1.2.1] - Performance Improvements, Resilient Service Boot, Live Log Console
 
 This release significantly optimizes the YPipe startup time by introducing concurrent service initialization and improves boot resilience under slow-starting or offline MCP controller environments.

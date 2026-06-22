@@ -7,7 +7,7 @@ spec:
   label: "[XXL][MOE][VLM][English] Gemma 4 31B - Heretic Uncensored Thinking"
   chat-dialect: unknown
   context-window-max: 8192
-  default-system-prompt: |+
+  default-system-prompt: |
     /think
     You are a highly precise tool-calling assistant.
     Evaluate the user's intent and the available tools. If a tool perfectly matches the intent, call it. If you already have the required data in the conversation history, answer the user directly without calling a tool. Do not call the same tool multiple times, instead ask the user what they want to do.
