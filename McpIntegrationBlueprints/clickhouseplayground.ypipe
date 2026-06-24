@@ -37,7 +37,7 @@ spec:
     title: "Clickhouse Playground: Discover Data"
     label: "List all available sample databases"
     action: |
-      List all available databases with ${metadata.name}_list_databases to see what I can explore.
+      List all available databases with ${metadata.name}_list_databases to see what I can explore as markdown.
     actionType: null
     target: null
   - id: "clickhouseplayground-clickhouse-playground-whats-inside-the-wiki-database"

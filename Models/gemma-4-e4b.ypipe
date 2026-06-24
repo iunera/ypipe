@@ -6,7 +6,7 @@ metadata:
 spec:
   label: "[M][MOE][LLM][English] Gemma 4 E4B - Uncensored"
   chat-dialect: unknown
-  context-window-max: 8192
+  context-window-max: 65536
   default-system-prompt: |
     /think
     You are a highly precise tool-calling assistant.

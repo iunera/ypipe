@@ -21,7 +21,7 @@ spec:
      
     ## Formatting
     - Direct Answer: Markdown text.
-    - Action: <tool_call><function=NAME><parameter=KEY>VALUE</parameter></function></tool_call>
+    - Action: function call, tool call
   family: VLM
   format: GGUF
   modules:
