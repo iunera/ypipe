@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.3] - Tool Registry Refinements, Model Configuration Upgrades & Ollama Adapter Enhancements
+
+This release introduces key parameter configuration upgrades for LLMs, refines tool registry search behavior, and enhances model adapter handling for Spring AI Ollama execution pipelines.
+
+### 🚀 Key Features
+* **Ollama Adapter & Execution Enhancements:** Overhauled local inference engine adapters (including Falcon, Gemma, Llama, and Qwen) with robust support for `temperature`, modality logic, and custom message types (`EngineAssistantMessage`/`EngineUserMessage`).
+* **Tool Registry Refinements:** Optimized query similarity thresholds, streamlined callback lookups, and refined fallback mechanisms in the search registry for more responsive and reliable tool integration.
+* **Model Configuration Sanitization:** Implemented automatic DNS-1123 compliance validation for model names and namespaces, instantly validating input when editing fields in the YAML configuration popups.
+
+### 🛠 Improvements
+* **Blueprint Action Updates:** Enhanced Clickhouse Playground and Druid blueprints with clarified action descriptions and more detailed server status checks.
+* **Model Parameter Defaults:** Adjusted standard prompt configurations and default settings for Falcon and Gemma models, including optimized temperature defaults and an expanded context window of 65536 tokens for Gemma.
+* **Release Artifacts & Runtimes:** Updated release dependencies, download URLs, and notification durations. Upgraded bundled execution environment toolchains to Node v26.3.1, uv 0.11.24, and JBang 0.139.3.
+
 ## [1.2.2] - Model Integration Fixes, Falcon Support & Prompt Optimization
 
 This release addresses several startup and activation stability issues, introduces initial support for Falcon-based architectures, and refines system prompt formatting for improved model performance.
