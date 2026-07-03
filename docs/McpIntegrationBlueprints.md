@@ -160,9 +160,13 @@ Placeholders (defined under `configurationSchema`) can be referenced anywhere in
 | `type` | `String` | `"string"` | Either `"string"` or `"boolean"`. Influences UI rendering (text field vs. checkbox). |
 | `required` | `Boolean` | `false` | If true, user must provide a value before installation. |
 | `default` | `String` | `null` | Pre-populated value shown in the UI. |
-| `description` | `String` | `null` | Informative label or hint shown to the user. |
+| `description` | `String` | `null` | Informative label or hint shown to the user. You can append `Options: choice1, choice2` to define dropdown suggestions. |
 | `sensitive` | `Boolean` | `false` | If true, masks user inputs (e.g. for API keys and passwords). |
 | `pattern` | `String` | `null` | Optional regex pattern to validate user input on save. |
+
+> [!TIP]
+> **Dropdown Suggestions**: 
+> You can provide selection suggestions for a configuration variable in the UI by appending `Options: choice1, choice2, ...` or `Choices: choice1, choice2, ...` to the `description` string. The UI will automatically detect this syntax and render an editable `ComboBox` (dropdown), allowing the user to select one of the pre-configured choices or type a custom value.
 
 ---
 
@@ -174,7 +178,7 @@ You can define semantic changes or security parameters for each tool under the `
 
 * `description`: Replaces the description sent to the model entirely. Keep it concise, action-oriented, and in the semantic domain of the tool.
 * `usageIntent`: Explains *when* the model should choose this tool.
-* `discoveryHint`: Text given to the vector store to find the tool more effectively during semantic discovery.
+* `discoveryHint`: Detailed text used to index the tool in a Vector Store for semantic search. Because the AI model performs semantic search to discover tools dynamically, discovery hints should be highly descriptive and rich in keywords. Include synonyms, related terminology, common user intent scenarios, system components involved, and target questions the tool solves. A longer, comprehensive hint significantly improves tool discovery and query matching accuracy.
 * `required`: List of parameters that are strictly required.
 * `properties`: Map of property name → `ToolPropertyOverride` to modify parameters:
   * `type`: Override parameter type.

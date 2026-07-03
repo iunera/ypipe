@@ -1,3 +1,4 @@
+---
 apiVersion: "mcp.ypipe.com/v1"
 kind: "McpIntegrationBlueprint"
 metadata:
@@ -30,6 +31,7 @@ spec:
   - "delete-calendar-event"
   - "delete-specific-calendar-event"
   - "list-drives"
+  - "list-folder-files"
   - "get-drive-root-item"
   - "download-onedrive-file-content"
   - "upload-file-content"
@@ -64,269 +66,6 @@ spec:
   - "get-planner-task"
   - "update-planner-task"
   - "update-planner-task-details"
-  - "parse-teams-url"
-  - "download-bytes"
-  - "delete-planner-task-message"
-  - "list-planner-task-messages"
-  - "get-my-profile"
-  - "create-planner-task-message"
-  - "send-shared-mailbox-mail"
-  - "get-user-presence"
-  - "reply-shared-mailbox-mail"
-  - "forward-shared-mailbox-mail"
-  - "get-shared-mailbox-message"
-  - "create-shared-mailbox-draft"
-  - "list-shared-mailbox-messages"
-  - "reply-all-shared-mailbox-mail"
-  - "get-user-manager"
-  - "list-shared-mailbox-folder-messages"
-  - "graph-batch"
-  - "create-chat"
-  - "get-chat"
-  - "list-chat-members"
-  - "list-chat-messages"
-  - "get-chat-message"
-  - "send-chat-message"
-  - "list-chat-message-hosted-contents"
-  - "reply-to-chat-message"
-  - "list-chat-message-replies"
-  - "set-chat-message-reaction"
-  - "unset-chat-message-reaction"
-  - "list-pinned-chat-messages"
-  - "pin-chat-message"
-  - "unpin-chat-message"
-  - "get-presences-by-user-id"
-  - "copilot-retrieve"
-  - "get-drive-item"
-  - "move-rename-onedrive-item"
-  - "create-onedrive-folder"
-  - "delete-calendar"
-  - "get-specific-calendar-view"
-  - "update-calendar"
-  - "create-calendar"
-  - "get-schedule"
-  - "delete-my-calendar-permission"
-  - "copy-drive-item"
-  - "create-drive-item-share-link"
-  - "create-upload-session"
-  - "get-drive-delta"
-  - "extract-drive-item-sensitivity-labels"
-  - "list-drive-item-permissions"
-  - "share-drive-item"
-  - "delete-drive-item-permission"
-  - "create-drive-item-preview"
-  - "list-drive-item-thumbnails"
-  - "list-drive-item-versions"
-  - "list-excel-tables"
-  - "get-excel-table"
-  - "list-excel-table-rows"
-  - "add-excel-table-rows"
-  - "update-excel-table-row"
-  - "delete-excel-table-row"
-  - "update-excel-range"
-  - "clear-excel-range"
-  - "delete-excel-range"
-  - "insert-excel-range"
-  - "merge-excel-range"
-  - "unmerge-excel-range"
-  - "create-excel-table"
-  - "get-excel-used-range"
-  - "search-onedrive-files"
-  - "create-group"
-  - "get-group"
-  - "update-group"
-  - "delete-group"
-  - "get-group-calendar-view"
-  - "list-group-conversations"
-  - "list-group-events"
-  - "list-group-members"
-  - "remove-group-member"
-  - "add-group-member"
-  - "list-group-owners"
-  - "remove-group-owner"
-  - "add-group-owner"
-  - "list-group-threads"
-  - "reply-to-group-thread"
-  - "get-current-user"
-  - "list-my-calendar-permissions"
-  - "create-my-calendar-permission"
-  - "update-my-calendar-permission"
-  - "list-specific-calendar-events"
-  - "create-specific-calendar-event"
-  - "get-specific-calendar-event"
-  - "update-specific-calendar-event"
-  - "list-calendar-event-instances"
-  - "get-calendar-view"
-  - "list-calendar-view-delta"
-  - "update-contact-folder"
-  - "create-contact-folder"
-  - "delete-contact-folder"
-  - "list-contact-folder-child-folders"
-  - "create-contact-child-folder"
-  - "list-contact-folder-contacts"
-  - "create-contact-in-folder"
-  - "create-outlook-contact"
-  - "get-outlook-contact"
-  - "update-outlook-contact"
-  - "get-sensitivity-label"
-  - "list-sensitivity-labels"
-  - "list-my-direct-reports"
-  - "list-calendar-events"
-  - "get-calendar-event"
-  - "create-calendar-event"
-  - "update-calendar-event"
-  - "accept-calendar-event"
-  - "cancel-calendar-event"
-  - "decline-calendar-event"
-  - "dismiss-calendar-event-reminder"
-  - "forward-calendar-event"
-  - "snooze-calendar-event-reminder"
-  - "tentatively-accept-calendar-event"
-  - "list-calendar-events-delta"
-  - "find-meeting-times"
-  - "get-mail-tips"
-  - "list-focused-inbox-overrides"
-  - "create-focused-inbox-override"
-  - "update-focused-inbox-override"
-  - "delete-focused-inbox-override"
-  - "list-trending-insights"
-  - "list-joined-teams"
-  - "get-mailbox-settings"
-  - "update-mailbox-settings"
-  - "create-mail-folder"
-  - "update-mail-folder"
-  - "list-mail-child-folders"
-  - "delete-mail-folder"
-  - "create-mail-child-folder"
-  - "list-mail-rules"
-  - "create-mail-rule"
-  - "update-mail-rule"
-  - "delete-mail-rule"
-  - "list-mail-folder-messages"
-  - "list-mail-folder-messages-delta"
-  - "get-my-manager"
-  - "list-my-memberships"
-  - "create-draft-email"
-  - "get-mail-message"
-  - "update-mail-message"
-  - "get-mail-message-mime"
-  - "list-mail-attachments"
-  - "add-mail-attachment"
-  - "create-mail-attachment-upload-session"
-  - "copy-mail-message"
-  - "create-forward-draft"
-  - "create-reply-draft"
-  - "create-reply-all-draft"
-  - "forward-mail-message"
-  - "reply-mail-message"
-  - "move-mail-message"
-  - "reply-all-mail-message"
-  - "send-draft-message"
-  - "create-onenote-notebook"
-  - "list-onenote-notebooks"
-  - "list-onenote-notebook-sections"
-  - "create-onenote-section"
-  - "get-onenote-notebook-from-web-url"
-  - "list-onenote-pages"
-  - "create-onenote-page"
-  - "delete-onenote-page"
-  - "get-onenote-page-content"
-  - "list-onenote-section-groups"
-  - "list-all-onenote-sections"
-  - "list-onenote-section-pages"
-  - "create-onenote-section-page"
-  - "list-online-meetings"
-  - "get-online-meeting"
-  - "create-online-meeting"
-  - "delete-online-meeting"
-  - "update-online-meeting"
-  - "get-meeting-attendance-report"
-  - "list-meeting-attendance-reports"
-  - "list-meeting-attendance-records"
-  - "list-shared-calendar-events"
-  - "list-users"
-  - "remove-team-member"
-  - "add-team-member"
-  - "get-shared-calendar-view"
-  - "list-user-direct-reports"
-  - "list-team-members"
-  - "list-channel-tabs"
-  - "unset-channel-message-reaction"
-  - "set-channel-message-reaction"
-  - "reply-to-channel-message"
-  - "list-channel-message-replies"
-  - "get-channel-message"
-  - "send-channel-message"
-  - "list-channel-message-hosted-contents"
-  - "list-channel-messages"
-  - "delete-team-channel"
-  - "update-team-channel"
-  - "get-channel-files-folder"
-  - "get-team-channel"
-  - "create-team-channel"
-  - "reauthorize-subscription"
-  - "delete-subscription"
-  - "update-subscription"
-  - "get-subscription"
-  - "create-subscription"
-  - "list-webinar-sessions"
-  - "get-virtual-event-webinar"
-  - "list-sharepoint-site-onenote-section-pages"
-  - "list-sharepoint-site-onenote-section-group-sections"
-  - "list-sharepoint-site-onenote-section-group-section-groups"
-  - "get-sharepoint-site-onenote-page-content"
-  - "list-sharepoint-site-onenote-notebook-sections"
-  - "list-sharepoint-site-onenote-notebook-section-groups"
-  - "list-sharepoint-site-onenote-notebooks"
-  - "delete-sharepoint-list-item"
-  - "update-sharepoint-list-item"
-  - "create-sharepoint-list-item"
-  - "delete-sharepoint-list-column"
-  - "update-sharepoint-list-column"
-  - "get-sharepoint-list-column"
-  - "create-sharepoint-list-column"
-  - "list-sharepoint-list-columns"
-  - "create-sharepoint-list"
-  - "search-query"
-  - "delete-planner-bucket"
-  - "update-planner-bucket"
-  - "get-planner-bucket"
-  - "create-planner-bucket"
-  - "get-room-list-room"
-  - "list-room-list-rooms"
-  - "get-room-list"
-  - "get-room"
-  - "delete-todo-linked-resource"
-  - "create-todo-linked-resource"
-  - "list-todo-linked-resources"
-  - "update-place"
-  - "delete-todo-task-list"
-  - "update-todo-task-list"
-  - "create-todo-task-list"
-  - "list-my-installed-teams-apps"
-  - "send-my-activity-notification"
-  - "send-mail"
-  - "set-my-user-preferred-presence"
-  - "set-my-status-message"
-  - "set-my-presence"
-  - "clear-my-user-preferred-presence"
-  - "clear-my-presence"
-  - "get-my-presence"
-  - "list-my-associated-teams"
-  - "upload-my-profile-photo"
-  - "list-relevant-people"
-  - "list-supported-time-zones"
-  - "list-supported-languages"
-  - "create-outlook-category"
-  - "list-outlook-categories"
-  - "get-meeting-transcript-content"
-  - "get-meeting-transcript"
-  - "list-meeting-transcripts"
-  - "get-meeting-recording-content"
-  - "get-meeting-recording"
-  - "list-meeting-recordings"
-
-
   suggestions: []
   tools:
     get-current-user:
@@ -510,38 +249,38 @@ spec:
     search-query:
       description: "Global search across Microsoft 365 data."
       usageIntent: null
-      discoveryHint: "Perform a powerful, unified global search across the entire\
-        \ Microsoft 365 ecosystem for the authenticated user. This tool leverages\
-        \ the Microsoft Graph Search API to provide high-relevance results from every\
-        \ service, including Outlook emails, calendar events, Teams chat messages,\
-        \ and documents stored in OneDrive or SharePoint. It is the ultimate 'finding'\
-        \ utility that helps the AI locate information when it isn't sure exactly\
-        \ which service or folder it might be stored in. Behavioral notes: The search\
-        \ is highly optimized and considers relevance based on the user's recent activity\
-        \ and relationships. Use cases: Finding all mentions of a specific project\
-        \ code name or client across every communication channel, locating a specific\
-        \ document by searching for a unique phrase or data point within it, and gathering\
-        \ a comprehensive, 360-degree view of all historical interactions and documents\
-        \ related to a specific stakeholder. Keywords: global search, Microsoft 365\
-        \ search, data discovery, cross-service search, information retrieval, unified\
-        \ search, enterprise search, data finding, cross-app search, holistic discovery.\
-        \ Caveats: Global searches can be very broad; the AI must be highly adept\
-        \ at filtering and prioritizing the most relevant results from a potentially\
-        \ large list to avoid information overload. This tool is the ultimate 'discovery'\
-        \ mechanism for the AI, ensuring that no piece of critical information is\
-        \ ever truly lost in the digital archive. It allows the agent to act as a\
-        \ true master of the user's digital universe, providing a unified, efficient,\
-        \ and incredibly powerful way to retrieve information regardless of its original\
-        \ format or storage location. It ensures that the AI can connect the dots\
-        \ across different silos of information, providing a comprehensive understanding\
-        \ of any topic or project."
+      discoveryHint: "Perform a powerful, unified global search across the entire Microsoft\
+        \ 365 ecosystem for the authenticated user. This tool leverages the Microsoft\
+        \ Graph Search API to provide high-relevance results from every service, including\
+        \ Outlook emails, calendar events, Teams chat messages, and documents stored\
+        \ in OneDrive or SharePoint. It is the ultimate 'finding' utility that helps\
+        \ the AI locate information when it isn't sure exactly which service or folder\
+        \ it might be stored in. Behavioral notes: The search is highly optimized\
+        \ and considers relevance based on the user's recent activity and relationships.\
+        \ Use cases: Finding all mentions of a specific project code name or client\
+        \ across every communication channel, locating a specific document by searching\
+        \ for a unique phrase or data point within it, and gathering a comprehensive,\
+        \ 360-degree view of all historical interactions and documents related to\
+        \ a specific stakeholder. Keywords: global search, Microsoft 365 search, data\
+        \ discovery, cross-service search, information retrieval, unified search,\
+        \ enterprise search, data finding, cross-app search, holistic discovery. Caveats:\
+        \ Global searches can be very broad; the AI must be highly adept at filtering\
+        \ and prioritizing the most relevant results from a potentially large list\
+        \ to avoid information overload. This tool is the ultimate 'discovery' mechanism\
+        \ for the AI, ensuring that no piece of critical information is ever truly\
+        \ lost in the digital archive. It allows the agent to act as a true master\
+        \ of the user's digital universe, providing a unified, efficient, and incredibly\
+        \ powerful way to retrieve information regardless of its original format or\
+        \ storage location. It ensures that the AI can connect the dots across different\
+        \ silos of information, providing a comprehensive understanding of any topic\
+        \ or project."
       properties: null
       required: null
     move-mail-message:
       description: "Move an email to a different folder."
       usageIntent: null
-      discoveryHint: "Relocate a specific email message from its current location\
-        \ to a different mail folder within the user's Outlook account (e.g., moving\
+      discoveryHint: "Relocate a specific email message from its current location to\
+        \ a different mail folder within the user's Outlook account (e.g., moving\
         \ a message from the 'Inbox' to an 'Archive' folder or a specific project-themed\
         \ subfolder). This tool is absolutely essential for automated mailbox organization\
         \ and for performing 'triage' on a high volume of incoming mail. Behavioral\
@@ -629,30 +368,30 @@ spec:
     list-users:
       description: "Search for people in the organization."
       usageIntent: null
-      discoveryHint: "Search for and retrieve a detailed list of users, contacts,\
-        \ and colleagues within the organization's Microsoft 365 directory (powered\
-        \ by Azure Active Directory / Microsoft Entra ID). This tool is absolutely\
-        \ essential for finding the correct email addresses, job titles, department\
-        \ names, and unique user IDs needed for almost every other operation in the\
-        \ msoffice suite, such as sending emails, initiating Teams chats, or inviting\
-        \ people to meetings. Behavioral notes: You can search the directory by a\
-        \ person's name or their email address. Use cases: Finding the correct 'John\
-        \ Smith' in a large global corporation, looking up a colleague's job title\
-        \ and department before reaching out to ensure the correct context, and building\
-        \ a comprehensive list of project stakeholders for a new initiative. Keywords:\
-        \ directory search, user discovery, colleague lookup, organizational chart,\
-        \ contact management, AAD search, employee directory, user identification,\
-        \ identity discovery, Entra ID lookup. Caveats: The results returned are strictly\
-        \ limited by the organization's directory visibility settings and the permissions\
-        \ granted to the application. This tool is the AI's 'official phone book'\
-        \ for the entire company. It ensures that the AI can accurately identify and\
-        \ interact with the right people, avoiding the significant risk of sending\
-        \ sensitive information to the wrong recipient. It provides the essential\
-        \ social and organizational context needed to navigate a complex corporate\
-        \ environment, ensuring that the AI's communications and coordination efforts\
-        \ are always precisely targeted, professional, and contextually appropriate.\
-        \ It is the social map of the enterprise, allowing the AI to understand the\
-        \ relationships and roles within the company."
+      discoveryHint: "Search for and retrieve a detailed list of users, contacts, and\
+        \ colleagues within the organization's Microsoft 365 directory (powered by\
+        \ Azure Active Directory / Microsoft Entra ID). This tool is absolutely essential\
+        \ for finding the correct email addresses, job titles, department names, and\
+        \ unique user IDs needed for almost every other operation in the msoffice\
+        \ suite, such as sending emails, initiating Teams chats, or inviting people\
+        \ to meetings. Behavioral notes: You can search the directory by a person's\
+        \ name or their email address. Use cases: Finding the correct 'John Smith'\
+        \ in a large global corporation, looking up a colleague's job title and department\
+        \ before reaching out to ensure the correct context, and building a comprehensive\
+        \ list of project stakeholders for a new initiative. Keywords: directory search,\
+        \ user discovery, colleague lookup, organizational chart, contact management,\
+        \ AAD search, employee directory, user identification, identity discovery,\
+        \ Entra ID lookup. Caveats: The results returned are strictly limited by the\
+        \ organization's directory visibility settings and the permissions granted\
+        \ to the application. This tool is the AI's 'official phone book' for the\
+        \ entire company. It ensures that the AI can accurately identify and interact\
+        \ with the right people, avoiding the significant risk of sending sensitive\
+        \ information to the wrong recipient. It provides the essential social and\
+        \ organizational context needed to navigate a complex corporate environment,\
+        \ ensuring that the AI's communications and coordination efforts are always\
+        \ precisely targeted, professional, and contextually appropriate. It is the\
+        \ social map of the enterprise, allowing the AI to understand the relationships\
+        \ and roles within the company."
       properties: null
       required: null
     send-mail:
