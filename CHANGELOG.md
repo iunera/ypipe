@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.4] - Binary MCP Server Downloads, System Proxy Integration & Trusted Windows Releases
+
+This release introduces automated binary downloads for platform-specific MCP servers, integrates support for system proxy configurations, and resolves Windows executable trust warnings. It also enhances the dynamic variable input dialogs with combo box suggestions.
+
+### 🚀 Key Features
+* **Binary-Downloaded MCP Support:**
+  Added platform-specific binary download and extraction capabilities in `McpBinaryDownloadService`, resolving placeholders for `binaryDownloads` inside MCP configs to support tools like VictoriaLogs natively. See example: https://github.com/iunera/ypipe/blob/main/McpIntegrationBlueprints/experimental/mcp-victorialogs.ypipe
+* **System Proxy Integration:**
+  YPipe respect now System Proxy configuration to ensure seamless network operations in enterprise and restricted network environments.
+* **Trusted Windows Packages:**
+  Redesigned the Windows release workflow to sign the internal `YPipe.exe` binary *prior* to wrapping it in the MSI installer, establishing clean signature reputation with Microsoft Defender and third-party antivirus software.
+* **Smart Variable Inputs:**
+  Enhanced the variable input dialog to support dropdown suggestions parsed directly from variable descriptions, allowing for faster and less error-prone configurations.
+
+### 🛠 Improvements
+* **SSL and Download Security:**
+  Introduced optional trust-all SSL configurations for handling local/untrusted certificates.
+* **Refactored Tool Registration:**
+  Streamlined dynamic tool registration and metadata preservation within `DynamicToolUpdate` for consistent specification generation.
+* **Druid MCP Server:** `druid-mcp-server` is updated to the latest version 2.0.0 and supporting the latest profile-based tools.https://github.com/iunera/druid-mcp-server
+
+### 🐛 Bug Fixes
+* **Windows Executable Signature:**
+  Fixed a packaging bug where the extracted `YPipe.exe` installed via MSI was unsigned, triggering false positive heuristic antivirus alerts.
+* **OCR and Architecture Fixes:**
+  Resolved environment-specific runtime issues with LightOnOCR and ROCm configurations.
+
 ## [1.2.3] - Tool Registry Refinements, Model Configuration Upgrades & Ollama Adapter Enhancements
 
 This release introduces key parameter configuration upgrades for LLMs, refines tool registry search behavior, and enhances model adapter handling for Spring AI Ollama execution pipelines.
