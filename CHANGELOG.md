@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - Headless Deployment, Visual Smart Pipes Builder & Agentic Workflows
+
+This major release introduces headless execution capability for server/daemon environments and the brand-new visual Smart Pipes builder. It features a complete pipeline interpreter, agentic drafting helper, step-by-step debugging, and cron/webhook triggers for declarative AI workflows.
+
+### 🚀 Key Features
+* **Visual Smart Pipes Workspace for Agentic Flow Conception:**
+  Introduced a new visual canvas tab in the UI (`SmartPipes`) for drafting, editing, and orchestrating local agentic flows and pipelines.
+* **Smart Pipes Interpreter & Execution Engine:**
+  Implemented a robust pipeline execution engine capable of running multi-step DAG workflows. Supports diverse built-in execution steps:
+* **Headless Startup & Self-Provisioning:**
+  Added a dedicated `--headless` launcher (controlled via environment variables or CLI flags) that boots the MCP Controller and Coordinator services without launching the JavaFX GUI (see [HEADLESS.md]([github-ypipe-public/docs](https://github.com/iunera/ypipe/tree/main/docs)/HEADLESS.md) for configuration details). In headless mode, the system auto-detects system hardware, dynamically registers and downloads required runtime engines (including custom ggml/ROCm releases), and fetches model weights automatically prior to service activation.
+
+### 🛠 Improvements
+* **Data Sanitization and Utilities:**
+  Added a dedicated data wiping utility to safely reset workspace caches, runtimes, and local files.
+* **Lifecycle Refinements:**
+  Refactored bootstrap orchestrators to resolve lifecycle race conditions, ensuring all event listeners are registered prior to download events firing.
+* **Updated Runtimes:**
+  Updated LamaCpp runtimes to the `b10092`, ensuring compatibility and performance improvements.
+
+### 🐛 Bug Fixes
+* **Hugging Face Model Links:**
+  Updated system catalog configurations for Google Gemma 4 12B to point to the correct Hugging Face repository file structures (`Q4_0` quant weights and updated vision projector files), resolving 404 test failures.
+
 ## [1.2.4] - Binary MCP Server Downloads, System Proxy Integration & Trusted Windows Releases
 
 This release introduces automated binary downloads for platform-specific MCP servers, integrates support for system proxy configurations, and resolves Windows executable trust warnings. It also enhances the dynamic variable input dialogs with combo box suggestions.
