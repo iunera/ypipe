@@ -65,10 +65,10 @@ jbang ypipe@iunera/ypipe
 
 Grab the latest binaries for your OS at [ypipe.com](https://ypipe.com) or download them directly from the [GitHub Releases](https://github.com/iunera/ypipe/releases):
 
-*   **Windows:** [Installer (.msi)](https://github.com/iunera/ypipe/releases/download/windows/v1.2.4/YPipe-1.2.4.msi) or [AppImage (.zip)](https://github.com/iunera/ypipe/releases/download/windows/v1.2.4/ypipe-1.2.4-app-image.zip)
-*   **macOS:** [Apple Silicon (.dmg)](https://github.com/iunera/ypipe/releases/download/macos/v1.2.4/YPipe-1.2.4.dmg)
-*   **Linux:** [Ubuntu (.deb)](https://github.com/iunera/ypipe/releases/download/linux/v1.2.4/ypipe_1.2.4_amd64.deb), [RedHat (.rpm)](https://github.com/iunera/ypipe/releases/download/linux/v1.2.4/ypipe-1.2.4.x86_64.rpm), or [Tarball (.tar.gz)](https://github.com/iunera/ypipe/releases/download/linux/v1.2.4/YPipe-1.2.4-linux-amd64.tar.gz)
-*   **Universal:** [Executable JAR](https://github.com/iunera/ypipe/releases/download/jar/v1.2.4/ypipe-1.2.4.jar) for any Java-enabled environment.
+*   **Windows:** [Installer (.msi)](https://github.com/iunera/ypipe/releases/download/windows/v1.3.0/YPipe-1.3.0.msi) or [AppImage (.zip)](https://github.com/iunera/ypipe/releases/download/windows/v1.3.0/ypipe-1.3.0-app-image.zip)
+*   **macOS:** [Apple Silicon (.dmg)](https://github.com/iunera/ypipe/releases/download/macos/v1.3.0/YPipe-1.3.0.dmg)
+*   **Linux:** [Ubuntu (.deb)](https://github.com/iunera/ypipe/releases/download/linux/v1.3.0/ypipe_1.3.0_amd64.deb), [RedHat (.rpm)](https://github.com/iunera/ypipe/releases/download/linux/v1.3.0/ypipe-1.3.0.x86_64.rpm), or [Tarball (.tar.gz)](https://github.com/iunera/ypipe/releases/download/linux/v1.3.0/YPipe-1.3.0-linux-amd64.tar.gz)
+*   **Universal:** [Executable JAR](https://github.com/iunera/ypipe/releases/download/jar/v1.3.0/ypipe-1.3.0.jar) for any Java-enabled environment.
 
 ---
 
@@ -111,7 +111,14 @@ Ypipe is built to be the universal docking station for the **Model Context Proto
 *   **Built-in Specialized Servers:** Ypipe ships with a curated set of pre-defined MCP servers (including our own **Druid MCP Server**) for immediate enterprise utility. For community MCP servers, all MCP server definitions with NPX, UV, and JBang are supported.
 *   **Community Expansion:** Effortlessly import any community-developed MCP server to instantly grant your local agents new capabilities, from database access to web-search tools.
 *   **Intelligent Orchestration:** Ypipe doesn't just connect to MCP servers; it orchestrates them. It dynamically routes tasks to the specific models and MCP tools required at exactly the right moment in the pipeline.
-*   **External Client Access:** Access all Ypipe tools from external MCP clients (like LibreChat or Claude Desktop) via `streamable-http`. See the [How-To: Access MCP Integrations](docs/howto-access-mcp-integrations.md) guide for details.
+
+---
+
+## 📖 Documentation & Guides
+
+For detailed configuration guides, step-by-step how-tos, and advanced orchestration examples, please refer to our main documentation index:
+
+👉 **[How-To Guides Index](docs/howtos.md)**
 
 ---
 

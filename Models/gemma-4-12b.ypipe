@@ -30,11 +30,11 @@ spec:
       mandatory: true
       module-type: WEIGHTS
       properties:
-        quantization: Q4_K_M
+        quantization: Q4_0
       downloads:
-      - "https://huggingface.co/ggml-org/gemma-4-12B-it-GGUF/resolve/main/gemma-4-12B-it-Q4_K_M.gguf"
+      - "https://huggingface.co/ggml-org/gemma-4-12B-it-GGUF/resolve/main/gemma-4-12B-it-Q4_0.gguf"
       checksums:
-        - sha256: "1278394b693672ac2799eadc9a83fd98259a6a88a40acfb1dcaa6c6fc895a606"
+        - sha256: "4e950c7e74afbfd934bd2ebf4164506ab43fb8775aa262e669e2b03b18bdc2e3"
       target-extension: gguf
     - identifier: VISION
       mandatory: true
@@ -44,7 +44,7 @@ spec:
       downloads:
       - "https://huggingface.co/ggml-org/gemma-4-12B-it-GGUF/resolve/main/mmproj-gemma-4-12B-it-Q8_0.gguf"
       checksums:
-        - sha256: "b486d28398a398db4fa14cc4b032252ad3a8d7f950b9fabd93f5c8b4d4dde52b"
+        - sha256: "f94d5a699adc70518178630a95b0893e42e67bf4c5d3a682dbaa9eb4e64b164c"
       target-extension: gguf
   provisioning: NEVER
   total-parameter-size-in-millions: 12000
