@@ -1,0 +1,83 @@
+apiVersion: "mcp.ypipe.com/v1"
+kind: "McpIntegrationBlueprint"
+metadata:
+  name: "gmail-email"
+  namespace: "default"
+spec:
+  displayName: "Gmail"
+  description: "Send and manage Gmail email via SMTP/IMAP with an App Password. Local, no OAuth2, no cloud dependency."
+  source: "https://github.com/wh1isper/mcp-email-server"
+  configurationSchema:
+    ACCOUNT_NAME:
+      type: "string"
+      required: true
+      default: "gmail"
+      description: "A short name for this account, e.g. 'gmail' or 'work-gmail'."
+      sensitive: false
+    EMAIL_ADDRESS:
+      type: "string"
+      required: true
+      default: ""
+      description: "Your full Gmail address, e.g. you@gmail.com"
+      sensitive: false
+    APP_PASSWORD:
+      type: "string"
+      required: true
+      default: ""
+      description: |
+        Gmail App Password (not your normal Google password). Requires
+        2-Step Verification enabled. Generate one at
+        myaccount.google.com/apppasswords
+      sensitive: true
+  mcpConfig:
+    type: "stdio"
+    command: "uvx"
+    args:
+    - "mcp-email-server@latest"
+    - "stdio"
+    env:
+      MCP_EMAIL_SERVER_ACCOUNT_NAME: "${ACCOUNT_NAME}"
+      MCP_EMAIL_SERVER_EMAIL_ADDRESS: "${EMAIL_ADDRESS}"
+      MCP_EMAIL_SERVER_PASSWORD: "${APP_PASSWORD}"
+      MCP_EMAIL_SERVER_IMAP_HOST: "imap.gmail.com"
+      MCP_EMAIL_SERVER_IMAP_PORT: "993"
+      MCP_EMAIL_SERVER_IMAP_SSL: "true"
+      MCP_EMAIL_SERVER_SMTP_HOST: "smtp.gmail.com"
+      MCP_EMAIL_SERVER_SMTP_PORT: "465"
+      MCP_EMAIL_SERVER_SMTP_SSL: "true"
+    url: null
+    headers: null
+  disabledTools: []
+  suggestions:
+  - id: "gmail-send-test"
+    title: "Gmail: Send"
+    label: "Send a test email"
+    action: "Send an email using the send_email function."
+    actionType: null
+    target: null
+  tools:
+    send_email:
+      description: "Send email. account_name, recipients(list), subject, body required."
+      usageIntent: "Use for any send/draft/deliver email request."
+      discoveryHint: null
+      properties: null
+      required: null
+    list_available_accounts:
+      description: "List email accounts. No params."
+      usageIntent: null
+      discoveryHint: null
+      properties: null
+      required: null
+    list_emails_metadata:
+      description: "List emails. account_name required. Returns email_id."
+      usageIntent: null
+      discoveryHint: null
+      properties: null
+      required: null
+    get_emails_content:
+      description: "Get email body. account_name, email_ids(list) required."
+      usageIntent: null
+      discoveryHint: null
+      properties: null
+      required: null
+  modelSemantics: {}
