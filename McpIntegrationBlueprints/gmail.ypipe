@@ -47,7 +47,10 @@ spec:
       MCP_EMAIL_SERVER_SMTP_SSL: "true"
     url: null
     headers: null
-  disabledTools: []
+  disabledTools:
+  - "delete_emails"
+  - "move_emails"
+  - "archive_emails"
   suggestions:
   - id: "gmail-send-test"
     title: "Gmail: Send"
@@ -59,25 +62,52 @@ spec:
     send_email:
       description: "Send email. account_name, recipients(list), subject, body required."
       usageIntent: "Use for any send/draft/deliver email request."
-      discoveryHint: null
+      discoveryHint: |
+        Send, deliver, draft-and-send, or compose and send an email through
+        Gmail SMTP. Use this whenever the user asks to email someone, send a
+        message, notify a recipient, forward information as an email, or
+        deliver a written communication to an address. Synonyms include
+        emailing, mailing, sending a message, and dispatching a notification.
+        Requires an account_name, one or more recipient addresses, a
+        subject, and a body. Supports optional CC, BCC, HTML formatting,
+        file attachments, and reply threading via in_reply_to. This is the
+        only tool that actually delivers mail; it does not read, search, or
+        organize existing messages.
       properties: null
       required: null
     list_available_accounts:
       description: "List email accounts. No params."
       usageIntent: null
-      discoveryHint: null
+      discoveryHint: |
+        List every configured email account with masked credentials.
+        Use this to discover which account names are available before
+        calling send_email or any other tool that requires an account_name,
+        or when the user asks what email accounts are set up, connected,
+        or configured. Takes no parameters.
       properties: null
       required: null
     list_emails_metadata:
       description: "List emails. account_name required. Returns email_id."
       usageIntent: null
-      discoveryHint: null
+      discoveryHint: |
+        List, browse, or check recent emails in an inbox without reading
+        full message bodies. Use this when the user asks what's in their
+        inbox, whether new mail has arrived, or wants a quick summary of
+        recent senders and subjects. Returns email_id values needed by
+        get_emails_content to read a specific message in full. Supports
+        filtering by sender, subject, date range, and read status.
       properties: null
       required: null
     get_emails_content:
       description: "Get email body. account_name, email_ids(list) required."
       usageIntent: null
-      discoveryHint: null
+      discoveryHint: |
+        Read, open, or retrieve the full text of one or more specific
+        emails by their email_id. Use this after list_emails_metadata has
+        identified which messages to read in detail, for example when the
+        user asks to read a message, see what an email says, or check the
+        contents of a specific email. Requires the email_id values returned
+        by list_emails_metadata.
       properties: null
       required: null
   modelSemantics: {}
