@@ -2,7 +2,7 @@ apiVersion: "mcp.ypipe.com/v1"
 kind: "McpIntegrationBlueprint"
 metadata:
   name: "gmail-email"
-  namespace: "default"
+  namespace: "system"
 spec:
   displayName: "Gmail"
   description: "Send and manage Gmail email via SMTP/IMAP with an App Password. Local, no OAuth2, no cloud dependency."
@@ -51,6 +51,7 @@ spec:
   - "delete_emails"
   - "move_emails"
   - "archive_emails"
+  - "list_allowed_senders"
   suggestions:
   - id: "gmail-send-test"
     title: "Gmail: Send"
