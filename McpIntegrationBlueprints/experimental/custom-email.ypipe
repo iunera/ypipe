@@ -5,7 +5,7 @@ metadata:
   namespace: "system"
 spec:
   displayName: "Custom Email (SMTP/IMAP)"
-  description: "Send and manage email through any SMTP/IMAP provider (Gmail, Outlook, ProtonMail Bridge, custom domains) with a password or app password. Local, no OAuth2, no cloud dependency."
+  description: "Send and manage email through any SMTP/IMAP provider (Gmail, Outlook, ProtonMail Bridge, custom domains) with a password or app password. "
   source: "https://github.com/wh1isper/mcp-email-server"
   configurationSchema:
     ACCOUNT_NAME:
