@@ -1,0 +1,39 @@
+apiVersion: "coordinator.ypipe.com/v1"
+kind: Model
+metadata:
+  name: qwen-3p5-text-only-bs-0p8b
+  namespace: system
+spec:
+  chat-dialect: qwen3p5
+  label: "[XS][LLM] 800M Qwen 3.5"
+  num-experts: 1
+  parameter-size-label: 0p8b
+  parameter-size-per-expert-in-millions: 800
+  provisioning: OPTIONAL
+  total-parameter-size-in-millions: 800
+  training-variant: base              
+  default-system-prompt: |
+    # Role: YPipe Direct Execution Engine
+     
+    ## Rules
+    1. Be concise.
+    2. If a listed tool can solve the user's request, execute it immediately.
+    3. If you have already executed a tool and received a <tool_response>, your tool-calling phase is over. You MUST transition to answering the user.
+    4. When answering the user based on tool data, use clean Markdown format. Then stop. 
+    5. If no listed tools can help, simply reply: "I am stuck". 
+  family: LLM
+  format: GGUF
+  modules:
+  - identifier: WGT
+    mandatory: true
+    module-type: WEIGHTS
+    properties:
+      quantization: IQ4-XS
+    ready-files:
+    - ax_qwen-3p5-text-only_bs_0p8b__LLM.WGT_IQ4-XS.gguf
+    target-extension: gguf
+  - identifier: TPT
+    mandatory: true
+    module-type: TEMPLATE
+    ready-files:
+    - ax_qwen-3p5-text-only_bs_0p8b__LLM.TPT.jinja

@@ -20,11 +20,12 @@ In the 2026 AI landscape, Ypipe acts as the **Industrial Assembly Line** for loc
 
 ## 🖥️ Interface Preview
 
-Ypipe runs entirely on your local machine, bringing a visual agentic client, local model manager, and one-click integrations together. You can explore the full-size interactive interface at [ypipe.com](https://ypipe.com).
+Ypipe runs entirely on your local machine, bringing a visual agentic client, workflow builder, local model manager, and one-click integrations together. You can explore the full-size interactive interface at [ypipe.com](https://ypipe.com).
 
 ### 💬 Private Agentic Chat
 Interact directly with your offline LLMs using natural language. Query local databases, fetch system information, and trigger automation scripts securely without transmitting data over the internet.
-![Private Agentic Chat](assets/screenshot-chat.png)
+![Private Agentic Chat Conversation](assets/screenshot-chat-conversation-dark.png)
+![Private Agentic Chat Welcome](assets/screenshot-chat-welcome-dark.png)
 
 *   **Local LLM Chat:** Talk directly to offline models running on your CPU or GPU.
 *   **Agentic Gearbox Suggestion:** Automatically recommends a fitting LLM model based on your system's CPU, GPU, and RAM capacity.
@@ -32,9 +33,19 @@ Interact directly with your offline LLMs using natural language. Query local dat
 *   **System Automation:** Bind chat commands to trigger local scripts, legacy systems, and files safely.
 *   **Zero Data Leaks:** Your prompt, context, and responses never leave your physical machine.
 
+### 🔀 SmartPipes Builder & Workflows
+Design, test, and run visual DAG agentic pipelines. Chain offline LLMs, MCP tool calls, Javascript logic, and multi-engine processing.
+![SmartPipes Visual Flow Builder](assets/screenshot-smartpipes-builder-dark.png)
+![SmartPipes HTTP & Web Form Trigger](assets/screenshot-smartpipes-trigger-dark.png)
+
+*   **Visual DAG Flow Builder:** Drag-and-drop workflow designer to assemble multi-step pipeline architectures.
+*   **WebForm & REST API Publishing:** Instantly make designed flows accessible as interactive webforms or headless REST endpoints to easily run and share workflows.
+*   **Multi-Engine Pipeline Steps:** Chain local GGUF models, MCP server calls, custom Javascript transformers, and media synthesis.
+*   **Real-time Step Test & Cascading:** Test individual pipeline steps with live input payload cascading without executing the full flow.
+
 ### ⚙️ Engine Foundry & Runtimes
 Manage local runtimes and models with a built-in downloader, automatically assessing hardware to optimize CPU/GPU execution speed.
-![Engine Foundry & Runtimes](assets/screenshot-engine.png)
+![Engine Foundry & Runtimes](assets/screenshot-engine-dark.png)
 
 *   **Hardware-Optimized Config:** Assess system memory to automatically enable Apple Silicon (Metal) or CPU/Vulkan acceleration.
 *   **Model Downloader:** Direct search and one-click import from Hugging Face for optimized GGUF formats.
@@ -43,7 +54,8 @@ Manage local runtimes and models with a built-in downloader, automatically asses
 
 ### 🔌 MCP Couplings (Integrations)
 Connect your offline AI agent to external tools, database servers, web browsers, and file managers instantly.
-![One-Click MCP Integrations](assets/screenshot-couplings.png)
+![MCP Couplings Catalog](assets/screenshot-couplings-catalog-dark.png)
+![MCP Couplings Installed](assets/screenshot-couplings-installed-dark.png)
 
 *   **Blueprints & McpIntegrations:** Clear separation between static connection templates (Blueprints) and active running server instances (McpIntegrations).
 *   **Dedicated Management UI:** An intuitive, dedicated Couplings dashboard to manage, register, and monitor all active MCP servers and blueprints.
@@ -65,10 +77,10 @@ jbang ypipe@iunera/ypipe
 
 Grab the latest binaries for your OS at [ypipe.com](https://ypipe.com) or download them directly from the [GitHub Releases](https://github.com/iunera/ypipe/releases):
 
-*   **Windows:** [Installer (.msi)](https://github.com/iunera/ypipe/releases/download/windows/v1.3.0/YPipe-1.3.0.msi) or [AppImage (.zip)](https://github.com/iunera/ypipe/releases/download/windows/v1.3.0/ypipe-1.3.0-app-image.zip)
-*   **macOS:** [Apple Silicon (.dmg)](https://github.com/iunera/ypipe/releases/download/macos/v1.3.0/YPipe-1.3.0.dmg)
-*   **Linux:** [Ubuntu (.deb)](https://github.com/iunera/ypipe/releases/download/linux/v1.3.0/ypipe_1.3.0_amd64.deb), [RedHat (.rpm)](https://github.com/iunera/ypipe/releases/download/linux/v1.3.0/ypipe-1.3.0.x86_64.rpm), or [Tarball (.tar.gz)](https://github.com/iunera/ypipe/releases/download/linux/v1.3.0/YPipe-1.3.0-linux-amd64.tar.gz)
-*   **Universal:** [Executable JAR](https://github.com/iunera/ypipe/releases/download/jar/v1.3.0/ypipe-1.3.0.jar) for any Java-enabled environment.
+*   **Windows:** [Installer (.msi)](https://github.com/iunera/ypipe/releases/download/windows/v1.3.1/YPipe-1.3.1.msi) or [AppImage (.zip)](https://github.com/iunera/ypipe/releases/download/windows/v1.3.1/ypipe-1.3.1-app-image.zip)
+*   **macOS:** [Apple Silicon (.dmg)](https://github.com/iunera/ypipe/releases/download/macos/v1.3.1/YPipe-1.3.1.dmg)
+*   **Linux:** [Ubuntu (.deb)](https://github.com/iunera/ypipe/releases/download/linux/v1.3.1/ypipe_1.3.1_amd64.deb), [RedHat (.rpm)](https://github.com/iunera/ypipe/releases/download/linux/v1.3.1/ypipe-1.3.1.x86_64.rpm), or [Tarball (.tar.gz)](https://github.com/iunera/ypipe/releases/download/linux/v1.3.1/YPipe-1.3.1-linux-amd64.tar.gz)
+*   **Universal:** [Executable JAR](https://github.com/iunera/ypipe/releases/download/jar/v1.3.1/ypipe-1.3.1.jar) for any Java-enabled environment.
 
 ---
 

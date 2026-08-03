@@ -1,0 +1,748 @@
+---
+apiVersion: "mcp.ypipe.com/v1"
+kind: "McpIntegrationBlueprint"
+metadata:
+  name: "msoffice"
+  namespace: "system"
+spec:
+  displayName: "Microsoft Office  / Office 365"
+  description: "A Model Context Protocol server for Microsoft 365. It enables interaction\
+    \ with Outlook, Calendar, Teams, and OneNote through the Microsoft Graph API."
+  configurationSchema: {}
+  mcpConfig:
+    type: "stdio"
+    command: "npx"
+    args:
+    - "-y"
+    - "@softeria/ms-365-mcp-server"
+    - "--org-mode"
+    env: null
+    url: null
+    headers: null
+  disabledTools:
+  - "verify-login"
+  - "select-account"
+  - "list-accounts"
+  - "remove-account"
+  - "delete-mail-message"
+  - "delete-mail-attachment"
+  - "list-outlook-contacts"
+  - "delete-outlook-contact"
+  - "delete-calendar-event"
+  - "delete-specific-calendar-event"
+  - "list-drives"
+  - "list-folder-files"
+  - "get-drive-root-item"
+  - "download-onedrive-file-content"
+  - "upload-file-content"
+  - "search-sharepoint-sites"
+  - "get-sharepoint-site"
+  - "list-sharepoint-site-drives"
+  - "get-sharepoint-site-drive-by-id"
+  - "get-sharepoint-site-by-path"
+  - "list-sharepoint-site-items"
+  - "get-sharepoint-site-item"
+  - "list-sharepoint-site-lists"
+  - "get-sharepoint-site-list"
+  - "list-sharepoint-site-list-items"
+  - "get-sharepoint-site-list-item"
+  - "get-sharepoint-sites-delta"
+  - "delete-onedrive-file"
+  - "list-excel-worksheets"
+  - "get-excel-range"
+  - "create-excel-chart"
+  - "format-excel-range"
+  - "sort-excel-range"
+  - "list-todo-task-lists"
+  - "list-todo-tasks"
+  - "create-todo-task"
+  - "get-todo-task"
+  - "update-todo-task"
+  - "delete-todo-task"
+  - "list-planner-tasks"
+  - "get-planner-plan"
+  - "list-plan-tasks"
+  - "create-planner-task"
+  - "get-planner-task"
+  - "update-planner-task"
+  - "update-planner-task-details"
+  suggestions: []
+  tools:
+    get-current-user:
+      description: "Retrieve the current user's profile details."
+      usageIntent: null
+      discoveryHint: "Retrieve the comprehensive profile details and organizational\
+        \ identity of the currently authenticated Microsoft 365 user. This tool fetches\
+        \ data directly from the Microsoft Graph '/me' endpoint, providing a wealth\
+        \ of context about the user's role and presence. The returned information\
+        \ includes the user's full display name, primary SMTP email address, job title\
+        \ (e.g., 'Senior Software Engineer'), office location, department, and a unique,\
+        \ immutable user ID (GUID). Behavioral notes: The availability of specific\
+        \ fields depends on the data populated in the organization's Azure Active\
+        \ Directory (AAD) and the privacy settings of the user. Use cases: Personalizing\
+        \ AI-human interactions ('Hello, Sarah! How can I help with your tasks today?'),\
+        \ identifying the user's organizational context to intelligently route emails,\
+        \ finding the sender's own email address for adding CC or BCC recipients to\
+        \ a message, and verifying that the correct account is being used for a sensitive\
+        \ task. Keywords: user profile, identity management, Microsoft account, personal\
+        \ info, job title, organizational context, AAD profile, SMTP address, GUID,\
+        \ employee information. Caveats: Some fields may be null or empty if the IT\
+        \ department has not filled them in. This tool allows the AI to understand\
+        \ exactly 'who' it is acting on behalf of, enabling a more personalized, contextually\
+        \ aware, and professional assistant experience. It ensures that the AI can\
+        \ answer questions about the user's own identity and use that information\
+        \ to intelligently interact with colleagues, schedule meetings in the correct\
+        \ time zone, and maintain a consistent professional persona across all Microsoft\
+        \ 365 services. It is the key to providing a truly integrated 'digital twin'\
+        \ experience for the user, ensuring all actions are contextually appropriate\
+        \ for the user's specific role."
+      properties: null
+      required: null
+    list-calendars:
+      description: "Retrieve a list of user calendars."
+      usageIntent: null
+      discoveryHint: "Retrieve a comprehensive, detailed list of all calendars associated\
+        \ with the user's Microsoft 365 account. This tool provides visibility into\
+        \ the user's entire scheduling landscape, including the primary 'Calendar'\
+        \ (the default for most appointments), any additional personal calendars created\
+        \ for specific purposes (e.g., 'Travel', 'Personal Projects', 'Family'), and\
+        \ any shared calendars from colleagues, teams, or external organizations that\
+        \ the user has been granted access to. Behavioral notes: The tool returns\
+        \ the display name, assigned color, and a unique, immutable ID for each calendar.\
+        \ Use cases: Identifying the most appropriate calendar for a new meeting request,\
+        \ finding shared team schedules to coordinate a group event, and auditing\
+        \ the user's available time sources to ensure no conflicts exist across different\
+        \ life/work areas. Keywords: calendar discovery, schedule management, Outlook\
+        \ calendars, shared schedules, hierarchy, time management, calendar ID, schedule\
+        \ listing, time resource mapping, calendar auditing. Caveats: Access to shared\
+        \ or delegated calendars is strictly dependent on the permissions granted\
+        \ by the original owners or the organization's IT policy. This tool is the\
+        \ critical first step in any scheduling or time-management task, allowing\
+        \ the AI to understand the full 'map' of the user's time commitments. By knowing\
+        \ exactly what calendars are available and what they represent, the AI can\
+        \ intelligently offer suggestions for meeting locations, check for conflicts\
+        \ across multiple disparate schedules, and ensure that the user's time is\
+        \ managed holistically and with full awareness of their various professional\
+        \ and personal obligations. It is the foundation of a proactive and reliable\
+        \ digital scheduling assistant, providing the structural context needed for\
+        \ any time-based reasoning."
+      properties: null
+      required: null
+    list-mail-folders:
+      description: "List all available mail folders."
+      usageIntent: null
+      discoveryHint: "Retrieve a complete, hierarchical list of all mail folders and\
+        \ subfolders within the user's Microsoft 365 account. This includes all the\
+        \ system-standard folders such as 'Inbox' (the primary landing zone for incoming\
+        \ mail), 'Sent Items' (the record of all outbound communication), 'Drafts'\
+        \ (work-in-progress messages), 'Deleted Items' (Trash for temporary storage\
+        \ of discarded mail), 'Junk Email' (for filtered spam), and 'Archive' (for\
+        \ long-term storage of processed items), as well as every custom folder and\
+        \ subfolder the user has created to organize their communications. Behavioral\
+        \ notes: The tool returns the unique display name and the immutable folder\
+        \ ID for each entry, which is absolutely necessary for moving messages between\
+        \ folders or for performing targeted searches within a specific part of the\
+        \ mailbox. Use cases: Navigating a complex mailbox structure, identifying\
+        \ where specialized project-related emails are being stored, helping the user\
+        \ reorganize their communications into a more consistent hierarchy, and verifying\
+        \ the existence of a specific folder before attempting a move operation. Keywords:\
+        \ mail organization, folder navigation, Outlook structure, mailbox management,\
+        \ hierarchy, taxonomy, folder ID, path discovery, subfolder listing, mail\
+        \ architecture. Caveats: Deeply nested folder structures may require recursive\
+        \ traversal or multiple targeted calls depending on how the Microsoft Graph\
+        \ API exposes the hierarchy. This tool allows the AI to understand the 'map'\
+        \ of how the user categorizes their communications, enabling it to assist\
+        \ with high-level organization and ensuring that no important message is ever\
+        \ 'lost' in an obscure subfolder. It provides the essential structural context\
+        \ needed to perform complex mail management tasks, such as 'Move all invoices\
+        \ received this month to the Finance/Invoices folder', ensuring that the user's\
+        \ digital workspace remains tidy, logical, and easily searchable. It is the\
+        \ foundational tool for any automated inbox management or organizational strategy."
+      properties: null
+      required: null
+    create-calendar-event:
+      description: "Schedule a new meeting or event."
+      usageIntent: null
+      discoveryHint: "Schedule and book a new meeting, appointment, or reminder directly\
+        \ on the user's Microsoft 365 calendar. This tool provides full control over\
+        \ the event's properties, allowing the AI to set the subject line, the physical\
+        \ or virtual location (e.g., 'Conference Room A' or a Teams link), the exact\
+        \ start and end times, a detailed body description or agenda, and a list of\
+        \ invited attendees. Behavioral notes: Upon a successful call, the tool can\
+        \ automatically send out meeting invitations to all listed attendees, ensuring\
+        \ they receive the request in their own inboxes and can respond accordingly.\
+        \ Use cases: Booking a discovery call with a new client, setting up an internal\
+        \ team brainstorm session, blocking off 'focus time' for deep work, and adding\
+        \ a reminder for an important project milestone or deadline. Keywords: meeting\
+        \ scheduling, appointment creation, Outlook calendar, event booking, time\
+        \ allocation, invitation management, calendar entry, meeting dispatch, schedule\
+        \ addition, appointment booking. Caveats: The AI should always perform a check\
+        \ for existing conflicts using 'get-calendar-view' or 'find-meeting-times'\
+        \ before finalizing a booking to ensure the user's availability. It is also\
+        \ critical to ensure that the time zone is correctly specified to avoid confusing\
+        \ scheduling errors across different regions. This tool empowers the AI to\
+        \ actively manage and protect the user's time, turning plans and intentions\
+        \ into concrete, professional commitments. It is a powerful utility for organizational\
+        \ coordination, ensuring that everyone is aligned and that the user's schedule\
+        \ accurately reflects their current priorities, obligations, and workload,\
+        \ thus serving as a truly capable executive assistant. It transforms plans\
+        \ into action."
+      properties: null
+      required: null
+    create-draft-email:
+      description: "Create and save a new draft email."
+      usageIntent: null
+      discoveryHint: "Compose and save a new email message as a draft in the user's\
+        \ Outlook account without sending it to the recipients. This tool is a key\
+        \ enabler of a collaborative 'AI-drafts, user-sends' workflow, where the AI\
+        \ performs the heavy lifting of gathering information and drafting a response,\
+        \ but the user retains final creative and editorial control. Behavioral notes:\
+        \ The draft is saved in the user's 'Drafts' folder and can be further refined,\
+        \ edited, or sent through the standard Outlook web/desktop interface or by\
+        \ using the 'send-mail' tool at a later time. Use cases: Preparing a highly\
+        \ complex response to a client that requires a final 'human' check for nuance,\
+        \ staging several related emails for a coordinated project launch, and saving\
+        \ a work-in-progress message when the AI needs more information before completion.\
+        \ Keywords: draft composition, message staging, Outlook drafts, preparation,\
+        \ collaborative writing, email drafting, content staging, work-in-progress.\
+        \ Caveats: Drafts are not sent automatically and will sit in the folder indefinitely\
+        \ until acted upon by a human or another tool call. The AI must clearly inform\
+        \ the user that a draft has been created and where it can be found. This tool\
+        \ is an excellent way for the AI to provide significant value while remaining\
+        \ safely 'in the loop', allowing the user to maintain ultimate control over\
+        \ their outbound communications and organizational voice. It ensures that\
+        \ the AI can handle the time-consuming work of content creation while leaving\
+        \ the critical decision-making process of when and how to communicate to the\
+        \ user, providing a perfect balance between automation efficiency and human\
+        \ oversight. It is the ideal tool for high-stakes communication where human\
+        \ approval is mandatory."
+      properties: null
+      required: null
+    send-chat-message:
+      description: "Post a new message to a Teams chat."
+      usageIntent: null
+      discoveryHint: "Compose and post a brand new instant message to a specific 1-on-1\
+        \ or group chat in Microsoft Teams. This tool allows the AI to participate\
+        \ actively in real-time conversations, providing quick status updates, answering\
+        \ questions from colleagues, or sharing important links and documents. Behavioral\
+        \ notes: The message is delivered instantly to all participants in the chat\
+        \ and will trigger a notification on their devices. Use cases: Poking a colleague\
+        \ for an urgent update on a task, sharing a concise summary of a completed\
+        \ work item in a project chat, and providing an automated but helpful response\
+        \ to a common team query. Keywords: Teams messaging, instant response, chat\
+        \ participation, real-time update, communication, IM, message dispatch, chat\
+        \ post, real-time collaboration, instant notification. Caveats: Just like\
+        \ with emails, once a Teams chat message is sent, it is immediately visible\
+        \ to all participants. The AI must be extremely careful to ensure that the\
+        \ tone is appropriate for the informal but professional context of a chat\
+        \ and that no sensitive information is shared inappropriately. This tool gives\
+        \ the AI a 'voice' in the user's most immediate and high-frequency communication\
+        \ channel, enabling it to act as a proactive, responsive, and truly helpful\
+        \ team member. It ensures that the AI can keep projects moving forward by\
+        \ providing the right piece of information at exactly the right time, directly\
+        \ in the conversation where the team is already collaborating. It is a powerful\
+        \ tool for maintaining momentum and ensuring that the AI can act as a real-time\
+        \ assistant in fast-paced professional environments, closing the gap between\
+        \ reasoning and action."
+      properties: null
+      required: null
+    search-query:
+      description: "Global search across Microsoft 365 data."
+      usageIntent: null
+      discoveryHint: "Perform a powerful, unified global search across the entire Microsoft\
+        \ 365 ecosystem for the authenticated user. This tool leverages the Microsoft\
+        \ Graph Search API to provide high-relevance results from every service, including\
+        \ Outlook emails, calendar events, Teams chat messages, and documents stored\
+        \ in OneDrive or SharePoint. It is the ultimate 'finding' utility that helps\
+        \ the AI locate information when it isn't sure exactly which service or folder\
+        \ it might be stored in. Behavioral notes: The search is highly optimized\
+        \ and considers relevance based on the user's recent activity and relationships.\
+        \ Use cases: Finding all mentions of a specific project code name or client\
+        \ across every communication channel, locating a specific document by searching\
+        \ for a unique phrase or data point within it, and gathering a comprehensive,\
+        \ 360-degree view of all historical interactions and documents related to\
+        \ a specific stakeholder. Keywords: global search, Microsoft 365 search, data\
+        \ discovery, cross-service search, information retrieval, unified search,\
+        \ enterprise search, data finding, cross-app search, holistic discovery. Caveats:\
+        \ Global searches can be very broad; the AI must be highly adept at filtering\
+        \ and prioritizing the most relevant results from a potentially large list\
+        \ to avoid information overload. This tool is the ultimate 'discovery' mechanism\
+        \ for the AI, ensuring that no piece of critical information is ever truly\
+        \ lost in the digital archive. It allows the agent to act as a true master\
+        \ of the user's digital universe, providing a unified, efficient, and incredibly\
+        \ powerful way to retrieve information regardless of its original format or\
+        \ storage location. It ensures that the AI can connect the dots across different\
+        \ silos of information, providing a comprehensive understanding of any topic\
+        \ or project."
+      properties: null
+      required: null
+    move-mail-message:
+      description: "Move an email to a different folder."
+      usageIntent: null
+      discoveryHint: "Relocate a specific email message from its current location to\
+        \ a different mail folder within the user's Outlook account (e.g., moving\
+        \ a message from the 'Inbox' to an 'Archive' folder or a specific project-themed\
+        \ subfolder). This tool is absolutely essential for automated mailbox organization\
+        \ and for performing 'triage' on a high volume of incoming mail. Behavioral\
+        \ notes: You must provide the unique message ID and the target destination\
+        \ folder ID (which can be found using 'list-mail-folders'). Use cases: Archiving\
+        \ old messages once a project has been successfully completed, moving incoming\
+        \ invoices to a dedicated finance folder for better tracking, and isolating\
+        \ spam or unimportant promotional messages for later bulk review. Keywords:\
+        \ mail organization, message triage, Outlook management, folder transfer,\
+        \ archiving, mailbox cleanup, mail relocation, folder management, inbox organization,\
+        \ message sorting. Caveats: The AI must ensure that the destination folder\
+        \ actually exists; if there is any doubt, it should use 'list-mail-folders'\
+        \ first to verify the ID. Moving a message is a destructive action in terms\
+        \ of its original location, though the data remains safe in the new folder.\
+        \ This tool gives the AI the power to act as a highly effective personal digital\
+        \ assistant, keeping the user's primary communication channel tidy, well-structured,\
+        \ and focused on what matters most. It ensures that important information\
+        \ is always where it belongs, making it significantly easier for the user\
+        \ to stay productive and for the AI to perform targeted searches in the future.\
+        \ It is a fundamental component of effective personal and organizational information\
+        \ management, enabling the AI to maintain a professional digital workspace."
+      properties: null
+      required: null
+    login:
+      description: "Authenticate and sign in to Microsoft 365."
+      usageIntent: null
+      discoveryHint: "Initiate the secure authentication and sign-in process for Microsoft\
+        \ 365 / Office 365 services using the Microsoft Graph API. This tool is the\
+        \ foundational gateway for the AI to access the user's personal and organizational\
+        \ data ecosystem, including Outlook emails, Exchange calendars, Teams messages,\
+        \ and OneNote notebooks. The underlying server uses the OAuth2 protocol for\
+        \ secure authorization, ensuring that no passwords are ever stored locally.\
+        \ Behavioral notes: If the system requires interactive authentication, this\
+        \ tool will provide a 'device_code' and a specific verification URL (typically\
+        \ https://microsoft.com/devicelogin) that must be presented to the user. The\
+        \ AI must display this information clearly and wait for the user to complete\
+        \ the sign-in on their separate device (computer or smartphone). Once the\
+        \ user successfully authenticates, the server receives an access token and\
+        \ the session becomes active. Use cases: Re-authenticating after an expired\
+        \ or revoked token, switching between multiple Microsoft accounts, or performing\
+        \ the initial setup for an AI assistant to integrate with a user's corporate\
+        \ workspace. Keywords: OAuth2, sign-in, device code, authentication flow,\
+        \ access token, Microsoft Graph, identity management, single sign-on, SSO,\
+        \ Azure AD, Entra ID. Caveats: Ensure a stable internet connection is available\
+        \ and that the organization's Azure Active Directory (AAD) policy allows third-party\
+        \ application access. This tool is critical for an AI to establish a secure,\
+        \ permissioned connection, ensuring that all subsequent operations are performed\
+        \ with the correct identity and within the appropriate security boundaries.\
+        \ It provides the 'unlock' mechanism that enables the full productivity suite.\
+        \ The AI should think of this as its primary 'onboarding' step for any Microsoft-integrated\
+        \ workflow. Always handle the 'device_code_required' error gracefully by presenting\
+        \ the discoveryHint to the user. This ensures that the user is always in control\
+        \ of the authentication process while the AI remains a helpful facilitator."
+      properties: null
+      required: null
+    get-calendar-view:
+      description: "Fetch calendar events for a time range."
+      usageIntent: null
+      discoveryHint: "Fetch and list all calendar events, meetings, and appointments\
+        \ occurring within a specific, user-defined time range (defined by a precise\
+        \ start and end date/time). This tool provides a comprehensive, high-resolution\
+        \ view of the user's schedule for a single day, an entire week, or a full\
+        \ month, including one-time appointments, all-day events, and recurring meeting\
+        \ series. Behavioral notes: Each event is returned with rich details, including\
+        \ the subject, physical or virtual location (e.g., Teams link), start and\
+        \ end times, and the full attendee list with their response status. Use cases:\
+        \ Summarizing the user's agenda for the upcoming day to help them prepare,\
+        \ checking for available free time slots for a new meeting request, identifying\
+        \ upcoming deadlines or milestones marked on the calendar, and reviewing past\
+        \ activities for time-tracking or reporting purposes. Keywords: schedule overview,\
+        \ agenda retrieval, calendar events, time management, Outlook view, availability\
+        \ check, time range inspection, event metadata, meeting retrieval, agenda\
+        \ summary. Caveats: For extremely busy calendars or very long time ranges\
+        \ (e.g., a full year), the API response can be quite large and may require\
+        \ careful handling to avoid overwhelming the AI's context window. This tool\
+        \ is the absolute foundation of time-based reasoning and schedule management\
+        \ for the AI. It allows the agent to answer questions like 'What is my schedule\
+        \ like for next Tuesday?', 'When am I free for a 30-minute call tomorrow afternoon?',\
+        \ or 'Where is my next meeting taking place?'. It ensures that the AI can\
+        \ provide proactive, intelligent schedule management, helping the user stay\
+        \ organized and on top of their commitments with minimal manual effort. It\
+        \ provides the necessary data for any time-aware assistant."
+      properties: null
+      required: null
+    list-users:
+      description: "Search for people in the organization."
+      usageIntent: null
+      discoveryHint: "Search for and retrieve a detailed list of users, contacts, and\
+        \ colleagues within the organization's Microsoft 365 directory (powered by\
+        \ Azure Active Directory / Microsoft Entra ID). This tool is absolutely essential\
+        \ for finding the correct email addresses, job titles, department names, and\
+        \ unique user IDs needed for almost every other operation in the msoffice\
+        \ suite, such as sending emails, initiating Teams chats, or inviting people\
+        \ to meetings. Behavioral notes: You can search the directory by a person's\
+        \ name or their email address. Use cases: Finding the correct 'John Smith'\
+        \ in a large global corporation, looking up a colleague's job title and department\
+        \ before reaching out to ensure the correct context, and building a comprehensive\
+        \ list of project stakeholders for a new initiative. Keywords: directory search,\
+        \ user discovery, colleague lookup, organizational chart, contact management,\
+        \ AAD search, employee directory, user identification, identity discovery,\
+        \ Entra ID lookup. Caveats: The results returned are strictly limited by the\
+        \ organization's directory visibility settings and the permissions granted\
+        \ to the application. This tool is the AI's 'official phone book' for the\
+        \ entire company. It ensures that the AI can accurately identify and interact\
+        \ with the right people, avoiding the significant risk of sending sensitive\
+        \ information to the wrong recipient. It provides the essential social and\
+        \ organizational context needed to navigate a complex corporate environment,\
+        \ ensuring that the AI's communications and coordination efforts are always\
+        \ precisely targeted, professional, and contextually appropriate. It is the\
+        \ social map of the enterprise, allowing the AI to understand the relationships\
+        \ and roles within the company."
+      properties: null
+      required: null
+    send-mail:
+      description: "Compose and send a new email message."
+      usageIntent: null
+      discoveryHint: "Compose, create, and immediately send a brand new email message\
+        \ to one or more recipients using the user's authenticated Outlook account\
+        \ and the Microsoft Graph API. This tool provides full control over the message's\
+        \ structure, allowing the AI to set the subject line, the body content (supporting\
+        \ both plain text for simplicity and HTML for rich formatting), and the various\
+        \ recipient lists (To, CC, BCC). Behavioral notes: The email is dispatched\
+        \ immediately upon a successful API call and will appear in the user's 'Sent\
+        \ Items' folder. Use cases: Proactively reaching out to a colleague with a\
+        \ project status update, sharing a summarized meeting transcript with all\
+        \ attendees, replying to a customer support inquiry with a resolution, and\
+        \ automating routine notifications or status reports. Keywords: email sending,\
+        \ Outlook communication, message composition, electronic mail, outbound mail,\
+        \ SMTP alternative, mail dispatch, recipient management. Caveats: Once a message\
+        \ is sent, it cannot be 'un-sent' or recalled through this specific API. The\
+        \ AI must be extremely careful to verify the recipient's email addresses and\
+        \ ensure that the tone and content of the message are professional and accurate.\
+        \ This tool transforms the AI from a passive information retriever into an\
+        \ active, authoritative communicator that can represent the user in professional\
+        \ and personal interactions. It is a high-leverage utility for closing loops\
+        \ on tasks, providing critical information to stakeholders, and maintaining\
+        \ the flow of communication within a dynamic team environment. It ensures\
+        \ that the AI can fully participate in the user's daily communication cycle,\
+        \ delivering messages with the same authority and context as the user themselves,\
+        \ thus significantly increasing the agent's utility. It is the primary means\
+        \ of proactive interaction."
+      properties: null
+      required: null
+    logout:
+      description: "Sign out and end the current session."
+      usageIntent: null
+      discoveryHint: "Sign out and immediately terminate the current active Microsoft\
+        \ 365 session, clearing all stored authentication tokens and local session\
+        \ data. This tool is essential for maintaining a high standard of privacy\
+        \ and security, particularly when the AI is no longer required to access the\
+        \ user's data or when a transition to a different account is necessary. By\
+        \ logging out, the AI ensures that it no longer possesses the credentials\
+        \ needed to interact with the Microsoft Graph API on behalf of the user. Behavioral\
+        \ notes: The tool effectively revokes the local session and clears sensitive\
+        \ material from memory; however, it may not necessarily revoke the long-lived\
+        \ refresh token on the Microsoft server-side unless the specific implementation\
+        \ supports full token revocation. Use cases: Ending a collaborative work session\
+        \ at the end of the day, preparing for a secure account hand-over between\
+        \ different users, or troubleshooting persistent authentication errors by\
+        \ starting the login process from scratch. Keywords: sign-out, session termination,\
+        \ token revocation, security audit, account switching, privacy protection,\
+        \ identity clearance, session cleanup. Caveats: After a successful logout,\
+        \ all other tools within the msoffice suite will immediately fail with an\
+        \ authentication error until a new 'login' procedure is completed. The AI\
+        \ must ensure that any unsaved drafts, pending calendar events, or incomplete\
+        \ Teams messages are fully processed or abandoned before calling this tool.\
+        \ This tool is a critical component of responsible data handling and organizational\
+        \ security policy compliance. It allows the AI to 'leave' the digital workspace\
+        \ cleanly, ensuring that the user's digital footprint is managed with the\
+        \ utmost care and that the AI does not retain unnecessary access to sensitive\
+        \ enterprise resources once its task is finished. It provides a definitive\
+        \ 'off-switch' for the AI's access to the user's corporate environment."
+      properties: null
+      required: null
+    list-onenote-notebooks:
+      description: "List all OneNote notebooks."
+      usageIntent: null
+      discoveryHint: "Retrieve a complete, high-level list of all digital notebooks\
+        \ stored in the user's Microsoft OneNote account. OneNote is a powerful, flexible\
+        \ tool for capturing fleeting ideas, detailed meeting notes, and long-term\
+        \ project documentation, and this tool provides the essential entry point\
+        \ for accessing that personal and professional knowledge base. Behavioral\
+        \ notes: The tool returns the display name and unique ID for each notebook,\
+        \ which is a prerequisite for navigating deeper into specific sections and\
+        \ pages. Use cases: Finding where specific project-related notes are stored,\
+        \ auditing the user's personal knowledge base to find relevant context for\
+        \ a new task, and identifying shared notebooks used for cross-functional team\
+        \ collaboration. Keywords: OneNote notebooks, digital notes, knowledge management,\
+        \ notebook discovery, organization, information architecture, note storage,\
+        \ digital notebook listing, knowledge repository, personal knowledge base.\
+        \ Caveats: Some notebooks might be stored in the user's personal OneDrive,\
+        \ while others might be hosted on shared SharePoint sites, which can affect\
+        \ access permissions and sync behavior. This tool allows the AI to understand\
+        \ the 'brain' of the user—the place where they store their unstructured thoughts,\
+        \ plans, and historical knowledge. By knowing exactly what notebooks are available\
+        \ and what they represent, the AI can assist in organizing new information\
+        \ and quickly find the right historical context for any given task, ensuring\
+        \ that the user's digital notes are always accessible, organized, and practically\
+        \ useful. It is the foundation of a sophisticated knowledge management assistant,\
+        \ providing the AI with a map of the user's captured wisdom and documentation,\
+        \ ensuring no recorded thought is out of reach."
+      properties: null
+      required: null
+    list-mail-messages:
+      description: "Search and list email messages."
+      usageIntent: null
+      discoveryHint: "Search for and retrieve a list of email messages from the user's\
+        \ Outlook mailbox via the Microsoft Graph API. This tool is a powerful search\
+        \ engine for the inbox, supporting sophisticated filtering and sorting to\
+        \ help the AI find exactly what it needs. You can filter messages by sender\
+        \ address, subject line keywords, specific time ranges, and read/unread status.\
+        \ Behavioral notes: Results are paginated to ensure performance; you can specify\
+        \ the number of messages to return per page (the '$top' parameter) and skip\
+        \ over results for deep history searches. Use cases: Checking for new incoming\
+        \ mail from a specific client, finding a historical thread about a past project,\
+        \ summarizing the most recent communications from a manager, and performing\
+        \ 'triage' on an overloaded inbox by identifying urgent or high-priority messages.\
+        \ Keywords: email search, Outlook inbox, mailbox management, message retrieval,\
+        \ mail filtering, OData query, inbox inspection, message indexing. Caveats:\
+        \ Be mindful of the volume of data; retrieving hundreds of messages in a single\
+        \ call can be slow and may exceed the AI's context window. The tool typically\
+        \ returns message metadata and a short text snippet (preview); to read the\
+        \ full body of an email, the AI must subsequently use the 'get-mail-message'\
+        \ tool with the specific message ID. This tool acts as the 'eyes' of the AI\
+        \ for the user's primary business communication channel. It allows the agent\
+        \ to stay informed about ongoing discussions, identify urgent requests, and\
+        \ provide a high-level overview of the user's correspondence. It is fundamental\
+        \ for any email-driven workflow, ensuring that the AI can navigate the vast\
+        \ sea of electronic communication with precision, speed, and analytical depth.\
+        \ It provides the initial 'scan' before a deep dive into specific messages."
+      properties: null
+      required: null
+    reply-mail-message:
+      description: "Send a direct reply to an email."
+      usageIntent: null
+      discoveryHint: "Compose and send a direct, threaded reply to the sender of a\
+        \ specific email message using the Microsoft Graph API. This tool is highly\
+        \ intelligent; it automatically handles all the complexities of email threading,\
+        \ including setting the correct 'In-Reply-To' and 'References' headers to\
+        \ ensure the reply appears in the same conversation on the recipient's end.\
+        \ It also prefixes the subject line with 'Re:' and correctly populates the\
+        \ recipient list based on the original sender. Behavioral notes: You provide\
+        \ the new text content for the reply body. The context and history of the\
+        \ original message are preserved in the overall thread. Use cases: Quickly\
+        \ answering a colleague's question without starting a new thread, acknowledging\
+        \ the receipt of a report or document, and continuing a long-running professional\
+        \ discussion with a client or partner. Keywords: email reply, thread management,\
+        \ Outlook response, conversation flow, automated reply, message threading,\
+        \ direct response, mail thread continuity, context preservation. Caveats:\
+        \ The AI must be careful to only include information intended for the original\
+        \ sender and ensure the tone is appropriate for the ongoing discussion. This\
+        \ tool sends the reply immediately, so accuracy and tone are paramount. This\
+        \ tool provides a streamlined and professional way for the AI to participate\
+        \ in existing conversations, ensuring that its contributions are contextually\
+        \ integrated into the user's mailbox. It maintains the continuity of the dialogue,\
+        \ making the AI's interactions feel more natural, coherent, and less disruptive\
+        \ than sending a completely new, separate email for every response. It is\
+        \ a key tool for maintaining the professional flow of ongoing business communications,\
+        \ ensuring the AI can act as a true participant in team dialogues."
+      properties: null
+      required: null
+    create-onenote-page:
+      description: "Create a new page in OneNote."
+      usageIntent: null
+      discoveryHint: "Create a brand new, titled page in a specific section of a Microsoft\
+        \ OneNote notebook. This tool allows the AI to proactively document meetings,\
+        \ capture complex research findings, and organize structured information directly\
+        \ into the user's digital notebook for long-term storage and retrieval. Behavioral\
+        \ notes: You can specify the page title and the initial content using HTML\
+        \ format, allowing for rich layouts including headings, lists, and tables.\
+        \ Use cases: Automatically generating and saving meeting minutes immediately\
+        \ after a calendar event concludes, saving a detailed summary of a complex\
+        \ research task for the user's later review, and creating a fresh, organized\
+        \ page for a project brainstorm or a new client onboarding. Keywords: note\
+        \ taking, OneNote page, documentation, knowledge capture, digital notebook,\
+        \ information organization, page creation, HTML notes, knowledge storage,\
+        \ digital journaling. Caveats: You must have the correct, unique Section ID\
+        \ to target the page creation. HTML formatting should be kept relatively clean\
+        \ and standard to ensure best compatibility with the different versions of\
+        \ the OneNote application (Web, Desktop, Mobile). This tool effectively transforms\
+        \ the AI into a diligent, organized secretary and researcher, ensuring that\
+        \ important information is never lost and is always captured in an organized\
+        \ manner with minimal manual effort from the user. It provides a permanent,\
+        \ searchable home for the AI's most valuable outputs, ensuring they are integrated\
+        \ into the user's long-term personal knowledge management system. It ensures\
+        \ that the AI's contributions become a persistent and useful part of the user's\
+        \ documented knowledge base, adding long-term value beyond the immediate session."
+      properties: null
+      required: null
+    get-mail-message:
+      description: "Read the full content of an email."
+      usageIntent: null
+      discoveryHint: "Read and extract the full content, detailed metadata, and technical\
+        \ header information for a specific, individual email message in Outlook.\
+        \ This tool provides the entire body of the email in multiple formats (typically\
+        \ HTML and plain text), allowing the AI to perceive the message exactly as\
+        \ the user would. It also includes the full list of recipients (To, CC, BCC),\
+        \ precise timestamps, priority levels (Importance), and a flag indicating\
+        \ the presence of attachments. Behavioral notes: A valid, unique message ID\
+        \ (obtained from 'list-mail-messages') is required as input. Use cases: Analyzing\
+        \ the fine details of a project briefing or a legal contract, summarizing\
+        \ a long and complex email thread for a quick overview, extracting meeting\
+        \ details (time, location, agenda) from an invitation, and identifying the\
+        \ exact list of recipients for an old communication to ensure follow-ups are\
+        \ correctly addressed. Keywords: email reading, message body, full content\
+        \ extraction, mail analysis, Outlook details, message metadata, header inspection,\
+        \ recipient analysis. Caveats: Large emails with extensive HTML formatting,\
+        \ inline images, or large tables can result in a significant amount of text\
+        \ that may consume a large portion of the AI's context window; summarization\
+        \ strategies should be employed for very long messages. Note that this tool\
+        \ does not return the actual binary content of attachments; it only provides\
+        \ the metadata and IDs needed to fetch them with 'list-mail-attachments'.\
+        \ This tool is critical for a deep, granular understanding of the user's communications,\
+        \ ensuring the AI has all the facts and nuances before responding or taking\
+        \ action. It is the cornerstone of informed email assistance, providing the\
+        \ raw data needed for complex reasoning, accurate summarization, and high-quality\
+        \ drafting. It ensures no detail is missed during analysis."
+      properties: null
+      required: null
+    list-chats:
+      description: "List active Teams chats."
+      usageIntent: null
+      discoveryHint: "Retrieve a comprehensive list of all active 1-on-1 and group\
+        \ chats in Microsoft Teams for the currently authenticated user. This tool\
+        \ provides a high-level, real-time view of the user's instant messaging landscape,\
+        \ including the display name of each chat, the list of participating members,\
+        \ and the precise timestamp of the very last message sent or received in that\
+        \ thread. Behavioral notes: Chats are typically returned sorted by recency,\
+        \ allowing the AI to focus on the most active and relevant conversations.\
+        \ Use cases: Finding a recent conversation with a specific colleague whose\
+        \ name the user might have forgotten, checking for new unread messages in\
+        \ a busy group project chat, and mapping out the user's most frequent collaborators\
+        \ for organizational insights. Keywords: Teams chats, conversation listing,\
+        \ instant messaging, communication history, collaboration, real-time presence,\
+        \ chat ID, thread discovery, conversation overview, IM history. Caveats: This\
+        \ tool is for discovery only; it returns the metadata and identifiers for\
+        \ the chats but does not return the actual message content. The AI must use\
+        \ 'list-chat-messages' with a specific chat ID to read the actual discussion\
+        \ history. This tool is the essential starting point for any task involving\
+        \ the user's Teams-based communications. It allows the AI to navigate the\
+        \ fast-paced, often fragmented world of enterprise instant messaging, providing\
+        \ a structured way to quickly find and summarize discussions that might otherwise\
+        \ be buried under a mountain of notifications. It ensures the AI is aware\
+        \ of the 'real-time' heartbeat of the user's professional network, enabling\
+        \ more responsive, timely, and contextually relevant assistance. It provides\
+        \ the essential index for Teams."
+      properties: null
+      required: null
+    list-mail-attachments:
+      description: "List attachments for a specific email."
+      usageIntent: null
+      discoveryHint: "Search for and retrieve a detailed, structured list of all files,\
+        \ documents, images, and other assets attached to a specific email message\
+        \ in Outlook. This tool provides essential metadata for each attachment, including\
+        \ the original filename, the file size in bytes, the MIME type (e.g., 'application/pdf',\
+        \ 'image/png', 'text/csv'), and a unique attachment ID that can be used for\
+        \ further processing or targeted download. Behavioral notes: Crucially, this\
+        \ tool does not download the binary content of the file itself; it only provides\
+        \ the identifiers and descriptions needed to understand what assets are available\
+        \ for analysis. Use cases: Identifying what specific documents were sent along\
+        \ with a project proposal, verifying if a received email contains a required\
+        \ invoice or receipt, and auditing a long email thread for all shared assets\
+        \ to ensure everything has been accounted for. Keywords: email attachments,\
+        \ file listing, Outlook assets, document discovery, mail metadata, attachment\
+        \ ID, asset inventory, file properties, MIME analysis, attachment search.\
+        \ Caveats: You must have the specific message ID from a previous 'list-mail-messages'\
+        \ or 'get-mail-message' call to target the correct email. This tool is an\
+        \ essential intermediate step for any workflow that involves processing files\
+        \ received via email. It allows the AI to 'see' and 'identify' what files\
+        \ are available before making a decision on which ones are relevant enough\
+        \ to download or analyze further. It ensures that the AI can intelligently\
+        \ handle the rich, multi-media nature of modern professional communication,\
+        \ bridging the gap between simple text-based messages and complex, document-driven\
+        \ business processes. It is a vital tool for any agent performing data extraction\
+        \ or document management from an inbox, providing the necessary visibility\
+        \ into the email's payload."
+      properties: null
+      required: null
+    list-chat-messages:
+      description: "Retrieve messages from a Teams chat."
+      usageIntent: null
+      discoveryHint: "Retrieve the full, granular message history and conversation\
+        \ log from a specific Microsoft Teams chat thread. This tool provides the\
+        \ actual text content of each message, along with the identity of the sender\
+        \ and a precise timestamp, allowing the AI to fully understand the context,\
+        \ tone, and evolution of an ongoing discussion. Behavioral notes: A valid,\
+        \ unique chat ID (typically obtained from 'list-chats') is required. Results\
+        \ are paginated to handle long-running conversations efficiently. Use cases:\
+        \ Catching up on missed messages from a group brainstorm that happened while\
+        \ the user was away, summarizing a project-related discussion that occurred\
+        \ in a private 1-on-1 chat, and extracting specific action items or decisions\
+        \ shared during a quick 'huddle' in Teams. Keywords: chat history, Teams messages,\
+        \ conversation log, message retrieval, instant messaging context, discussion\
+        \ summary, chat log, message extraction, communication record, IM analysis.\
+        \ Caveats: Chat logs in a professional setting can be very long, informal,\
+        \ and fragmented; the AI must be highly adept at parsing these nuances and\
+        \ summarizing the data accurately to avoid information overload. This tool\
+        \ provides the AI with deep, 'inside' insight into the informal but absolutely\
+        \ critical communications that happen daily in Microsoft Teams. It ensures\
+        \ that the AI can answer detailed questions about what was discussed, who\
+        \ made specific promises, and what consensus was reached, even if those details\
+        \ were never documented in a formal email or project report. It is the key\
+        \ to capturing the 'tribal knowledge' of a team, ensuring the AI has the full\
+        \ context of informal collaborations and decision-making processes."
+      properties: null
+      required: null
+    send-channel-message:
+      description: "Post a message to a Teams channel."
+      usageIntent: null
+      discoveryHint: "Compose and send a message to a specific channel within a Microsoft\
+        \ Team. Unlike private chats, channel messages are intended for broader visibility\
+        \ and are typically organized into threads for project-wide discussions, announcements,\
+        \ and persistent knowledge sharing. Behavioral notes: Channel messages are\
+        \ more formal than individual chats and are archived as part of the team's\
+        \ long-term record. You must provide the unique Team ID and the specific Channel\
+        \ ID. Use cases: Announcing the successful completion of a major project milestone\
+        \ to the entire department, sharing a detailed weekly status report with all\
+        \ stakeholders, and starting a structured discussion about a new proposal\
+        \ in a dedicated project channel. Keywords: Teams channels, group announcement,\
+        \ project update, channel communication, team collaboration, broadcast, team\
+        \ post, channel thread, organizational message, formal announcement. Caveats:\
+        \ The AI must be mindful of the wide visibility of channel messages; every\
+        \ member of the team will be able to see the post. Ensure the content is structured,\
+        \ professional, and relevant to the channel's specific purpose. This tool\
+        \ allows the AI to communicate effectively at scale within the organization.\
+        \ It ensures that the agent can broadcast important information to the entire\
+        \ team, maintaining alignment, celebrating wins, and ensuring that every stakeholder\
+        \ stays informed about the progress of shared goals and objectives. It is\
+        \ the primary tool for organizational communication within the Microsoft 365\
+        \ ecosystem, enabling the AI to act as a central hub for information distribution\
+        \ and project awareness. It ensures that critical updates reach the widest\
+        \ appropriate audience with high professional standards."
+      properties: null
+      required: null
+    find-meeting-times:
+      description: "Search for available meeting time slots."
+      usageIntent: null
+      discoveryHint: "Search for and suggest the best available meeting time slots\
+        \ that work for all required participants based on their actual, real-time\
+        \ calendar data within the organization. This powerful coordination tool leverages\
+        \ the Microsoft Graph API to analyze the real-time schedules of multiple attendees\
+        \ to identify windows of opportunity where everyone is free. Behavioral notes:\
+        \ You can specify various constraints, such as the preferred duration of the\
+        \ meeting, a specific time range to search within (e.g., 'next Monday between\
+        \ 9 AM and 5 PM'), and whether certain participants are 'required' or 'optional'.\
+        \ Use cases: Scheduling a group call with five different stakeholders without\
+        \ any manual back-and-forth negotiation, finding the very first available\
+        \ slot for an urgent 'hotfix' meeting, and optimizing a team's weekly sync\
+        \ to ensure maximum attendance. Keywords: meeting coordination, availability\
+        \ search, scheduling optimization, Outlook calendar, slot finding, free/busy\
+        \ analysis, schedule matching, optimal time finding, participant availability,\
+        \ meeting planning. Caveats: This tool primarily works for internal participants\
+        \ within the same organization or for external users who have explicitly shared\
+        \ their free/busy information with the user. It does not 'book' the meeting;\
+        \ it only suggests the best possible times for the AI to present to the user\
+        \ or use in a subsequent 'create-calendar-event' call. This tool eliminates\
+        \ one of the most tedious and time-consuming administrative tasks in a professional\
+        \ environment—the 'scheduling dance'. By automating this search, the AI can\
+        \ provide immediate, conflict-free suggestions for meeting times, making team\
+        \ coordination significantly faster and more efficient. It ensures that the\
+        \ AI can act as a high-level orchestrator for complex team activities, respecting\
+        \ everyone's time while driving projects forward."
+      properties: null
+      required: null
+  modelSemantics: null

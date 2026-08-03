@@ -1,0 +1,55 @@
+apiVersion: "coordinator.ypipe.com/v1"
+kind: Model
+metadata:
+  name: sys-mradermacher-gemma-4-31b-it-deckard-heretic-uncensored-thinking
+  namespace: system
+spec:
+  label: "[XXL][MOE][VLM][English] Gemma 4 31B - Heretic Uncensored Thinking"
+  chat-dialect: unknown
+  context-window-max: 8192
+  default-system-prompt: |
+    /think
+    You are a highly precise tool-calling assistant.
+    Evaluate the user's intent and the available tools. If a tool perfectly matches the intent, call it. If you already have the required data in the conversation history, answer the user directly without calling a tool. Do not call the same tool multiple times, instead ask the user what they want to do.
+
+    ### ROLE & TONE
+    - Capability: Refiner
+    - Tone: Analytical
+    - Response Style: STRICT. Render data immediately if available in history. STRICTLY ONE tool call per turn.
+
+    ### TOOLING EXTENSION (STRICT)
+    - **Search-First:** If you are unsure which tool to use, ALWAYS call `searchTools` first.
+    - **Single Action:** You are strictly limited to calling ONE tool per turn. Do not attempt multi-step plans.
+
+    ### CRITICAL RULES
+    1. **No Guessing:** Never guess parameters or tool names. If you lack required data, ask the user or use `searchTools`.
+    2. **Markdown Only:** Always format tool results into clean Markdown tables.
+    3. **No Chatter:** Do not talk about tools, just generate the necessary required tags.
+  family: VLM
+  format: GGUF
+  modules:
+    - identifier: WEIGHTS
+      mandatory: true
+      module-type: WEIGHTS
+      properties:
+        quantization: IQ4_XS
+      downloads:
+      - "https://huggingface.co/mradermacher/gemma-4-31B-it-The-DECKARD-HERETIC-UNCENSORED-Thinking-i1-GGUF/resolve/main/gemma-4-31B-it-The-DECKARD-HERETIC-UNCENSORED-Thinking.i1-IQ4_XS.gguf"
+      checksums:
+        - sha256: "c243e1b04871867fecc3fbfbbd8c6ba2433fe8bb294f89eccb1df1046982df09"
+      target-extension: gguf
+    - identifier: VISION
+      mandatory: true
+      module-type: VISION
+      properties:
+        quantization: Q8_0
+      downloads:
+      - "https://huggingface.co/mradermacher/gemma-4-31B-it-The-DECKARD-HERETIC-UNCENSORED-Thinking-GGUF/resolve/main/gemma-4-31B-it-The-DECKARD-HERETIC-UNCENSORED-Thinking.mmproj-Q8_0.gguf"
+      checksums:
+        - sha256: "a75726af77550e2edbb640c1413a8b63cb9c49c8c1bf35bcf9a8309850ff691f"
+      target-extension: gguf
+  num-experts: 4
+  parameter-size-per-expert-in-millions: 4000
+  provisioning: NEVER
+  total-parameter-size-in-millions: 31000
+  training-variant: instruct

@@ -1,0 +1,330 @@
+apiVersion: "mcp.ypipe.com/v1"
+kind: "McpIntegrationBlueprint"
+metadata:
+  name: "libreoffice"
+  namespace: "system"
+spec:
+  displayName: "LibreOffice"
+  description: |
+    LibreOffice Model Context Protocol (MCP) server for document manipulation (Writer, Calc, Impress, Draw, etc.).
+  source: "https://github.com/iunera/mcp-libre"
+  configurationSchema:
+    LIBREOFFICE_PATH:
+      type: "string"
+      required: false
+      default: ""
+      description: |
+        Optional path to the LibreOffice executable (e.g., /usr/bin/libreoffice or C:\Program Files\LibreOffice\program\soffice.exe).
+        If left empty, it will be auto-detected.
+      sensitive: false
+      pattern: null
+  mcpConfig:
+    type: "stdio"
+    command: "uvx"
+    args:
+    - "--from"
+    - "git+https://github.com/iunera/mcp-libre"
+    - "mcp-libre"
+    env:
+      LIBREOFFICE_PATH: "${LIBREOFFICE_PATH}"
+    url: null
+    headers: null
+  disabledTools: null
+  suggestions:
+  - id: "libreoffice-libreoffice-statistics"
+    title: "LibreOffice: Statistics"
+    label: "Get document word count"
+    action: |
+      Open my my latest.odt and show me the word count and other statistics.
+    actionType: null
+    target: null
+  tools:
+    batch_convert_documents:
+      description: |
+        Convert all documents in a directory to a target format simultaneously.
+      usageIntent: null
+      discoveryHint: |
+        Perform high-performance mass conversion of multiple documents in a source directory to a specified target format simultaneously.
+        This tool is a major, high-leverage time-saver for administrative tasks, allowing you to standardize an entire folder or repository of files (e.g., converting all DOCX files to PDF for distribution or all ODT files to ODS for data processing) in a single, automated, and efficient operation.
+        By leveraging the parallel processing and batch capabilities of the LibreOffice engine, the agent can transform dozens or even hundreds of files much faster than through individual, sequential 'convert_document' calls.
+        This is essential for a wide variety of tasks, including archiving a completed project folder by converting all internal documents to PDF for long-term secure storage, preparing a directory of templates for distribution to partners in a different format, and standardizing a messy, inherited folder of mixed office files into a consistent and professional corporate format.
+        Synonyms include mass conversion, batch processing, document standardization, format migration, office automation, and bulk transcoding.
+        Keywords: batch export, mass transcoding, standardizing documents, bulk rendering, administrative automation, format migration.
+        Behavioral notes: You can specify the source directory, the target destination directory for the newly converted files, the target output format, and optionally a list of source extensions (like '.docx', '.rtf') to filter the input.
+        Caveats: Ensure the target directory has enough available disk space to hold the newly created files, especially when converting to media-heavy formats like PDF.
+        The total time required depends on the number and size of the documents being processed and the performance of the CPU.
+        This tool provides the AI with high-leverage administrative capabilities, enabling it to manage large volumes of professional data with extreme efficiency.
+        Security-wise, it follows the same strict path restrictions as other file-based tools.
+        Performance is highly optimized for throughput, making it the correct choice for large-scale migrations.
+        The AI should think of this as its 'bulk processor' for any office document task.
+      properties: null
+      required: null
+    create_document:
+      description: |
+        Create a new LibreOffice document (Writer, Calc, Impress, or Draw) at a specific path.
+      usageIntent: null
+      discoveryHint: |
+        Create a brand new LibreOffice document at a specified filesystem path with full control over the initial file type and optional starting content.
+        This tool supports a wide range of professional document types, including text documents (Writer/ODT), powerful spreadsheets (Calc/ODS), visually rich presentations (Impress/ODP), and precise technical drawings (Draw/ODG).
+        It is the essential, foundational starting point for generating automated reports, complex project documentation, or standardized office templates for organizational use.
+        By specifying the desired document type and a valid target path, the agent initiates a sophisticated call to the underlying LibreOffice engine (leveraging the UNO API or the headless command-line interface) to initialize a new, standards-compliant file structure according to the international OpenDocument Format (ODF) specifications.
+        This is essential for a vast variety of professional tasks, including starting a new monthly financial report, generating a comprehensive project proposal from a dynamic template, creating a fresh, organized spreadsheet for manual data entry, and preparing high-quality presentation slides programmatically from research data.
+        Synonyms for this action include document generation, file creation, ODT/ODS/ODP initialization, office file scaffolding, and document provisioning.
+        Keywords: ODF, office automation, document template, automated reporting, file creation, OpenDocument, digital content generation.
+        Behavioral notes: For Writer documents, you can specify initial text content which is seamlessly injected during the creation process.
+        If a file already exists at the target path, the tool will typically overwrite it, so the AI should proactively check for existing files if data preservation is a requirement.
+        Caveats: Ensure the target directory is writable and that the requested document type is fully supported by the local LibreOffice installation.
+        This tool empowers the AI to move from an abstract plan or data set to a concrete, professional file on disk, ready for human review or further automated processing.
+        From a security perspective, this is a write operation and is strictly limited to authorized filesystem paths.
+        Performance-wise, creating a new document is a relatively lightweight operation.
+        The AI should think of this tool as its primary way to 'start a new page' in the user's digital office ecosystem, ensuring all generated content is properly formatted and stored from the very beginning.
+      properties: null
+      required: null
+    read_document_text:
+      description: |
+        Extract and read the textual content from a LibreOffice document.
+      usageIntent: null
+      discoveryHint: |
+        Extract and retrieve the complete, unabridged textual content from a supported LibreOffice or Microsoft Office document via the high-fidelity LibreOffice conversion engine.
+        This powerful tool is capable of parsing and 'reading' an extensive range of formats, including OpenDocument Text (ODT), Microsoft Word (DOCX, DOC), Rich Text Format (RTF), and even portable document formats like PDF.
+        It serves as the primary, indispensable way for an AI to 'ingest' and understand the information stored in complex office files that are otherwise opaque to standard text readers.
+        By leveraging the LibreOffice engine in the background, the agent converts the document into a clean, plain text representation while maintaining the relative logical order of the information.
+        This is essential for a wide variety of advanced tasks, including summarizing a lengthy and complex technical report, extracting specific action items from detailed meeting minutes, performing a deep analysis of a legal contract or agreement, and fetching precise data points from a project brief for integration into other systems.
+        Synonyms include text extraction, document parsing, content analysis, ODT/DOCX reading, textual content retrieval, and document scraping.
+        Keywords: document scraping, text conversion, UTF-8 extraction, content analysis, office data ingestion, digital text recovery.
+        Behavioral notes: The extraction process focuses specifically on the readable text and may intentionally strip away complex visual formatting, embedded images, or non-text objects to provide a clean, high-signal string for AI processing.
+        It returns the content as a standard UTF-8 string, which is the ideal format for LLM summarization and reasoning.
+        Caveats: For documents with extremely non-linear layouts or heavily nested tables, the linear text output might lose some semantic nuance compared to the original visual representation.
+        Password-protected files cannot be read without the correct decryption credentials.
+        This tool effectively bridges the gap between static, formatted documents and the AI's internal reasoning engine, enabling a deep, context-aware understanding of the user's local knowledge base.
+        Security-wise, it is a safe, read-only operation.
+        Performance-wise, processing very large documents (e.g., hundreds of pages) can be CPU-intensive and may take several seconds.
+        The AI should think of this as its primary way to 'digest' and learn from existing office documentation.
+      properties: null
+      required: null
+    get_document_statistics:
+      description: |
+        Retrieve detailed statistics like word and character counts for a document.
+      usageIntent: null
+      discoveryHint: |
+        Retrieve detailed, granular, and quantitative statistics for a LibreOffice document, including accurate word count, character count (with and without spaces), paragraph count, and sentence count.
+        This tool is absolutely essential for professional quality control, meeting strict length requirements for academic or business submissions, or analyzing the overall complexity and density of a piece of text.
+        By performing a deep, linguistic analysis of the document's actual content rather than just looking at file metadata, the agent provides a much more detailed and useful view of the document's structure.
+        This is essential for a wide variety of tasks, including verifying that a drafted blog post or article meets a required word count for a client, checking the length of a professional biography or summary, analyzing the information density of a complex technical report, and auditing a large collection of documents for consistent brevity or verbosity.
+        Synonyms include word count, document statistics, character count analysis, linguistic profiling, quality control metrics, and text analytics.
+        Keywords: word count, document scale, text analytics, character statistics, linguistic audit, structural analysis.
+        Behavioral notes: It provides a significantly more granular view than simple filesystem metadata, actually analyzing the linguistic and structural components of the document content.
+        Caveats: Different counting algorithms might handle edge cases (like hyphenated words or punctuation) slightly differently; use the results as a high-precision estimate rather than an absolute mathematical law.
+        This tool allows an AI to provide concrete, data-driven feedback on a user's writing or its own generated content, ensuring that it meets professional standards.
+        It ensures that document-based tasks are not only completed but also meet the quantitative and structural constraints expected in professional, academic, or publishing environments.
+        Security-wise, it is a safe, read-only operation.
+        Performance is fast as it only requires text-level analysis of the document content.
+        The AI should use this tool for final quality assurance before submitting any work.
+      properties: null
+      required: null
+    get_document_info:
+      description: |
+        Retrieve metadata and technical details for a specific document.
+      usageIntent: null
+      discoveryHint: |
+        Retrieve comprehensive metadata, technical properties, and detailed document statistics for a specific LibreOffice or Microsoft Office file without needing to read its entire textual content.
+        This tool provides a quick, efficient 'stat' of the document, including essential properties such as file size, original author, creation date, last modification timestamp, total page count, word count, character count, and the specific document type (e.g., Writer, Calc, Impress).
+        It is a highly lightweight and effective way to inspect a file's provenance, age, and scale before committing to more resource-intensive operations like full-text extraction or format conversion.
+        By querying the document's internal metadata headers (such as Dublin Core properties in ODF files), the agent provides a detailed summary of the file's technical history and current state.
+        This is essential for a wide variety of tasks, including verifying the authorship and ownership of a document, checking the last time a critical file was updated by a user, identifying the total number of pages in a massive report before attempting to read it, and auditing a directory of files for consistency and compliance with organizational standards.
+        Synonyms include metadata extraction, property inspection, document auditing, file statistics, authorship verification, and technical profiling.
+        Keywords: document metadata, stat, file history, scale analysis, technical profiling, document properties, audit trail.
+        Behavioral notes: It uses the internal LibreOffice API to extract both application-level document properties and standard filesystem-level metadata.
+        Caveats: Some internal metadata fields might be empty or null if they were not explicitly set by the user or the software during the original document's creation.
+        This tool is a great 'pre-flight' utility, allowing an AI to intelligently decide how to handle a file based on its basic characteristics and avoid 'surprises' when dealing with very large or old documents.
+        Security-wise, it is a safe, metadata-only operation that does not expose the document's content.
+        Performance is near-instant, making it ideal for bulk auditing tasks across large directories.
+        The AI should use this to validate its assumptions about a document's scale, age, and relevance before taking further action.
+      properties: null
+      required: null
+    search_documents:
+      description: |
+        Search for documents containing specific keywords within a directory.
+      usageIntent: null
+      discoveryHint: |
+        Search for documents within a specified directory that contain a particular keyword, phrase, or complex text pattern across various file formats.
+        This tool is a powerful and essential discovery utility that helps you locate relevant files when the exact filenames are unknown, when they have been archived, or when you need to find all references to a specific topic, client, or project across multiple disparate documents.
+        By recursively scanning the target directory and parsing the content of each supported document type (ODT, DOCX, DOC, PDF, etc.) in the background, the agent provides a comprehensive list of matching file paths for further inspection.
+        This is essential for a wide variety of tasks, including finding all reports related to a specific project name or code, locating a misplaced contract by searching for the client's name or a unique clause, auditing a directory for sensitive or restricted keywords, and gathering all research notes on a particular subject for summarization.
+        Synonyms include document search, keyword discovery, content-based search, file location, reconnaissance, and full-text retrieval.
+        Keywords: document discovery, keyword search, content indexing, file finding, project audit, document reconnaissance.
+        Behavioral notes: The tool parses each individual file to find matches, which is significantly more effective and reliable than searching for filenames alone, as it catches information buried deep within the document body.
+        Caveats: Searching through a very large directory with hundreds or thousands of complex, media-heavy documents can be time-consuming and CPU-intensive as it requires temporary, background conversion of each file to text.
+        The tool returns a list of matching file paths which can then be further inspected using 'read_document_text' or 'get_document_info'.
+        This tool is an essential part of the AI's research and discovery phase, providing a surgical way to find 'needles in the haystack' of a large, cluttered local repository.
+        Security-wise, it only searches within authorized directories.
+        Performance is dependent on the number of files, their size, and the speed of the underlying storage.
+        The AI should use this as its 'grep' or 'find' equivalent for office-based documentation.
+      properties: null
+      required: null
+    convert_document:
+      description: |
+        Export or convert a document to a different format like PDF or DOCX.
+      usageIntent: null
+      discoveryHint: |
+        Convert an existing document from its current source format to a completely different target format using the professional-grade LibreOffice conversion engine.
+        This tool supports a massive and versatile range of cross-format conversions, such as ODT to PDF, DOCX to ODT, ODS to HTML, PPTX to PDF, and many others.
+        It is an essential utility for ensuring cross-platform document compatibility, preparing high-quality files for professional distribution to clients, or standardizing file formats across a large-scale project or organizational archive.
+        By invoking the 'soffice' engine in a headless mode with the '--convert-to' command or equivalent API call, the agent ensures that the resulting target file perfectly reflects the source content, layout, and structure in the new format with high fidelity.
+        This is essential for a wide variety of tasks, including exporting a final project report to a non-editable PDF for secure distribution, converting proprietary Microsoft Office files to open, standards-based formats for better long-term digital preservation, generating HTML previews of complex spreadsheets for web display, and creating plain TXT versions of documents for easy indexing and searching.
+        Synonyms include file export, format conversion, PDF generation, document compatibility, office transcoding, and format transformation.
+        Keywords: PDF export, format migration, inter-office compatibility, document rendering, file transformation, digital transcoding.
+        Behavioral notes: The conversion process is strictly non-destructive; it creates a brand new file at the specified target path while leaving the original source document entirely untouched.
+        Caveats: Some extremely complex or proprietary formatting, especially in highly styled legacy Word or Excel documents, might undergo subtle shifts during conversion to a different format.
+        Ensure the target path is valid, writable, and has sufficient disk space.
+        This tool provides the AI with the power to manage the entire 'lifecycle' and distribution of a document, ensuring it is always in the most appropriate and professional format for the specific task at hand.
+        From a security perspective, this tool only processes files within authorized directories.
+        Performance-wise, converting to PDF or other rich formats can be relatively slow for very large or complex documents due to the rendering and layout calculation requirements.
+        The AI should think of this as its primary 'export and distribute' function.
+      properties: null
+      required: null
+    merge_text_documents:
+      description: |
+        Combine multiple text documents into a single ODT file.
+      usageIntent: null
+      discoveryHint: |
+        Combine and consolidate multiple text-based documents (such as ODT, DOCX, and TXT files) into a single, unified, and cohesive LibreOffice Writer document.
+        This tool is perfect for tasks like consolidating different chapters of a book, assembling a final project report from multiple individual team contributions, or creating a master log from a series of daily research notes.
+        By intelligently and sequentially appending the contents of each source file into a brand new master document, the agent preserves the relative order, structure, and flow of the information.
+        This is essential for a wide variety of tasks, including compiling a complete project dossier from separate modules, merging a series of monthly status reports into an annual review, consolidating individual research notes into a single, searchable document, and building a comprehensive user manual or technical guide from individual topic files.
+        Synonyms include document merging, content consolidation, master document creation, file joining, Writer automation, and document assembly.
+        Keywords: document compilation, file merging, content unification, master file, ODT assembly, content consolidation.
+        Behavioral notes: You provide an explicitly ordered list of paths to the documents to be merged and a target output path for the final result.
+        You can also specify an optional separator (such as a page break, a horizontal line, or a specific heading) to be inserted between the merged files to improve readability.
+        Caveats: The final document's formatting might require some adjustment if the source files had significantly different styles, templates, or page settings.
+        Ensure the source files are in the correct logical order in the input list before starting the merge.
+        This tool allows the AI to act as a sophisticated editor and compiler, bringing together disparate pieces of information into a cohesive and professional whole.
+        Security-wise, it only combines files that are located within authorized paths.
+        Performance is dependent on the total aggregate size of the documents being merged and the number of files.
+        The AI should think of this as its primary 'compilation' tool for creating long-form content from many smaller pieces.
+      properties: null
+      required: null
+    refresh_document_in_libreoffice:
+      description: |
+        Signal LibreOffice to reload a document after an external modification.
+      usageIntent: null
+      discoveryHint: |
+        Signal an already open and active LibreOffice instance to immediately reload a specific document from the filesystem to reflect recent changes.
+        This tool is critical for 'live' and collaborative workflows where the AI modifies a document in the background (using 'insert_text_at_position' or other tools) and wants those changes to be instantly visible to the user who is currently viewing and working on the file in the GUI.
+        By sending a refresh signal via the LibreOffice communication interface, the agent ensures that the user's view is always synchronized with the latest data without requiring them to manually close and reopen the file.
+        This is essential for a wide variety of tasks, including updating a live dashboard in Calc as new data arrives from a process, refreshing a report as new findings are appended by the AI in real-time, and synchronizing a Writer document during a collaborative drafting session.
+        Synonyms include document refresh, UI sync, live update, background modification, office synchronization, and real-time reload.
+        Keywords: live reload, UI synchronization, real-time update, background refresh, collaborative sync, document reload.
+        Behavioral notes: It prevents the annoying 'file has changed on disk' dialog from interrupting the user and ensures the UI always reflects the most recent state accurately.
+        Caveats: The document must already be open in a LibreOffice instance that supports this signal and is accessible to the MCP server.
+        This tool effectively bridges the gap between the AI's 'behind-the-scenes' automated actions and the user's 'front-and-center' visual view, creating a truly interactive and fluid work environment.
+        Security-wise, it only affects documents that are already open by the user.
+        Performance is very fast, as it only triggers an internal reload event within the running application.
+        The AI should use this tool to keep the user informed of background progress and updates without disrupting their concentration or manual work, enabling a high-quality co-authoring experience.
+      properties: null
+      required: null
+    read_spreadsheet_data:
+      description: |
+        Extract cell values and structured data from a Calc or Excel spreadsheet.
+      usageIntent: null
+      discoveryHint: |
+        Extract structured, tabular data from a LibreOffice Calc or Microsoft Excel spreadsheet and return it as a clean, two-dimensional array of raw values for further analysis.
+        This tool is specifically designed for data-intensive tasks where the AI needs to access specific cells, rows, or columns for automated data cleaning, complex analysis, or structured reporting.
+        By parsing the underlying XML structure of the spreadsheet (ODS or XLSX formats), the agent retrieves the actual raw data values while maintaining their critical grid-based relationships and coordinates.
+        This is essential for a wide variety of tasks, including parsing a CSV or XLSX file for deep data analysis, importing budget and financial data into a generated report, extracting a list of contacts or leads from a shared spreadsheet, and verifying the contents of a data log or technical inventory.
+        Synonyms include spreadsheet parsing, data extraction, Calc/Excel reading, 2D array retrieval, tabular data processing, and grid extraction.
+        Keywords: spreadsheet analytics, cell extraction, ODS parsing, XLSX data ingestion, tabular mapping, data science.
+        Behavioral notes: You can specify a particular sheet name within a multi-tab workbook or default to the first available sheet.
+        The output is typically a list of lists, where each inner list represents a single row of data.
+        Caveats: For extremely large spreadsheets with thousands of rows and columns, the resulting data payload can be quite large and may significantly impact the AI's context limit or cause performance degradation.
+        It is highly recommended to be specific about the sheet name if the file contains multiple tabs to avoid processing irrelevant data.
+        Note that visual formatting like cell colors, bold text, or complex internal formulas is usually ignored in the raw data output, which focuses exclusively on the final calculated values.
+        This tool provides the AI with the 'eyes' needed to see and understand tabular data, enabling complex analytical and data management tasks that are common in professional environments.
+        Security-wise, it only reads from authorized filesystem locations.
+        Performance depends on the size and complexity of the spreadsheet.
+        The AI should think of this as its primary 'data loading' tool for any office-based dataset.
+      properties: null
+      required: null
+    create_live_editing_session:
+      description: |
+        Start an interactive session combining GUI access with live change monitoring.
+      usageIntent: null
+      discoveryHint: |
+        Start an integrated, interactive, and high-performance collaborative session for a specific document that combines opening it in the LibreOffice GUI with active, real-time change monitoring.
+        This is the 'premium' collaborative tool, designed specifically for complex tasks where the AI and the user are working together on the same file in a tight, iterative, and highly collaborative loop.
+        By setting up both the visual interface and the underlying filesystem event listeners simultaneously, the agent creates a shared and synchronized workspace for human-AI partnership.
+        This is essential for a wide variety of advanced tasks, including real-time collaborative drafting of a complex technical document, interactive data cleaning where the user and AI iterate on a spreadsheet together, and 'over-the-shoulder' AI assistance where the agent provides tips, summaries, or data lookups as the user writes in real-time.
+        Synonyms include collaborative session, live editing, real-time interaction, interactive workflow, office partnership, and co-authoring session.
+        Keywords: live collaboration, interactive drafting, shared workspace, real-time feedback, human-AI loop, co-authoring, synchronized editing.
+        Behavioral notes: It sets up the environment to automatically detect user saves and can be configured to auto-refresh the AI's internal state or provide proactive suggestions directly.
+        Caveats: This is a complex operation that relies on both GUI interaction and low-level filesystem events functioning correctly.
+        It works best on systems with stable and standard LibreOffice installations.
+        This tool represents the peak of AI-human collaboration in office tasks, ensuring that the final document benefits from both the automated precision/speed of the AI and the creative intuition and expert knowledge of the human user.
+        Security-wise, it is subject to the same strict permissions as the individual open and watch tools.
+        Performance is dependent on the host system's ability to handle multiple concurrent office-related processes and the size of the document.
+        The AI should think of this as its 'meeting room' for deep, focused work with the user.
+      properties: null
+      required: null
+    insert_text_at_position:
+      description: |
+        Insert, append, or replace text at a specific position within a Writer document.
+      usageIntent: null
+      discoveryHint: |
+        Insert, append, prepend, or replace text within an existing LibreOffice Writer document at a specified logical position with high precision.
+        This tool allows for the surgical and precise modification of documents, enabling the AI to dynamically update reports, add detailed notes, or build complex documents piece by piece from various data sources in an iterative fashion.
+        By manipulating the document's internal Document Object Model (DOM) via the LibreOffice API, the agent can safely inject new content without risk of corrupting the surrounding formatting, styles, or structural elements.
+        This is essential for a wide variety of tasks, including adding a concise executive summary to the top of an existing technical report, appending new research findings to a running project log or diary, updating a standardized template with specific user data or variables, and automating the drafting of a multi-section document from several disparate sources.
+        Synonyms include document editing, text insertion, Writer automation, content update, surgical editing, and document modification.
+        Keywords: document injection, text update, automated editing, Writer manipulation, surgical insertion, content appending.
+        Behavioral notes: You can choose to insert at the 'start' (prepend) of the document, the 'end' (append), or 'replace' the entire existing content.
+        More advanced implementations might support inserting at specific bookmarks, headings, or identified search strings.
+        Caveats: Frequent and large insertions in very large documents (e.g., hundreds of pages) can be resource-intensive for the background LibreOffice process.
+        Ensure that the text you are inserting is properly formatted to match the document's existing style if necessary to maintain visual consistency.
+        This tool transforms the AI from a passive reader into an active and helpful contributor, allowing it to collaborate directly with the user on document maintenance and content creation.
+        Security-wise, this is a write operation and should be handled with care to avoid unintentional data loss.
+        Performance is generally fast for small to medium-sized insertions.
+        The AI should think of this as its primary 'writing hand' in the professional office environment, enabling a new level of productivity.
+      properties: null
+      required: null
+    open_document_in_libreoffice:
+      description: |
+        Launch a document in the LibreOffice GUI for manual review or editing.
+      usageIntent: null
+      discoveryHint: |
+        Launch a specific office document directly in the LibreOffice Graphical User Interface (GUI) on the user's machine for manual review, visual editing, or final human polish.
+        This tool provides a seamless and professional hand-off from the AI's automated processing to the user's manual control, which is essential for tasks that require visual layout adjustments, artistic input, or final 'human-in-the-loop' verification.
+        By initiating a local system call to the LibreOffice application, the agent brings the document to the forefront of the user's workspace.
+        This is essential for a wide variety of tasks, including opening a generated report for final visual review and formatting, hand-off of a drafted email or memo to the user for final review and sending, providing the user with a quick way to manually edit a complex table or chart, and displaying a presentation for a live meeting or discussion.
+        Synonyms include GUI launch, manual editing, document hand-off, visual review, office interaction, and application launch.
+        Keywords: user hand-off, GUI interaction, manual override, visual verification, live review, application interface.
+        Behavioral notes: You can specify whether to open the document in 'read-only' mode for safe viewing.
+        This action typically brings the LibreOffice window to the foreground on the user's machine, making it immediately accessible.
+        Caveats: This tool requires a local installation of LibreOffice with GUI capabilities on the same machine where the server is running.
+        It is a 'blocking' operation in terms of workflow transition—once the GUI is open, the user typically takes over for manual interaction.
+        This tool ensures that the AI remains a supportive and flexible partner, recognizing when a task requires the unique 'human touch' or creative intuition that automation cannot yet provide.
+        Security-wise, it only opens files that the user already has explicit access to.
+        Performance is dependent on the time it takes for the local LibreOffice application to launch and load the specific file.
+        The AI should think of this as its primary 'hand-off' mechanism for collaborative work.
+      properties: null
+      required: null
+    watch_document_changes:
+      description: |
+        Monitor a document for external edits and provide real-time updates.
+      usageIntent: null
+      discoveryHint: |
+        Monitor a specific document for any external edits, saves, or system modifications over a specified duration of time.
+        This tool provides the AI with a 'heartbeat' of the user's activity on a file, allowing it to stay in sync with manual changes and react accordingly with updated summaries, re-analysis, or related follow-up actions.
+        By using filesystem event listeners (such as inotify on Linux or FSEvents on macOS), the agent can detect exactly when a file has been updated and saved on disk by the user or another process.
+        This is essential for a wide variety of tasks, including detecting when a user has finished editing a draft, triggering an automated summary or translation whenever a document is saved, keeping an internal cache of the document content up-to-date for search purposes, and providing 'save-on-change' functionality for integrated automation tools.
+        Synonyms include change monitoring, file watching, event detection, live synchronization, activity tracking, and save detection.
+        Keywords: file watcher, change detection, event listener, live sync, activity monitoring, filesystem events.
+        Behavioral notes: The tool typically 'blocks' or provides a stream of notifications for the duration of the watch period, informing the AI as soon as a change is detected.
+        Caveats: Continuous and long-term watching can be resource-intensive if applied to many files at once in a busy system.
+        It only detects that *a change* happened, not necessarily *what specifically* was changed (unless followed by a new 'read_document_text' call to compare with the previous state).
+        This tool provides the AI with critical temporal awareness, ensuring it can respond dynamically and intelligently to the user's real-time actions.
+        Security-wise, it is a passive monitoring tool and only watches files that are within authorized directories.
+        Performance is very light as it relies on efficient OS-level event systems.
+        The AI should think of this as its way to 'stay awake and aware' while the user is actively working on a document, allowing for a more responsive and helpful collaboration experience.
+      properties: null
+      required: null
+  modelSemantics: null
