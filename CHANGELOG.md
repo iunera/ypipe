@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * **Task Trace UUID & File Cleanup**: Fixed Task Trace UUID mismatches and enabled automatic directory deletion when clearing runs (`DELETE /runs/{taskId}`) or deleting flows (`DELETE /{namespace}/{slug}`).
 * **Migration Bootstrapping**: Resolved v1.2.4 upgrade issues via persistent version tracking under `${ypipe.data}/config/version`.
 * **Structured Logging**: Replaced raw console output in chat handling with structured logging.
+* **Fix Version**: Addressed issues with versioning.
 
 ## [1.3.0] - Headless Deployment, Visual Smart Pipes Builder & Agentic Workflows
 
