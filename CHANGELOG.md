@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.1] - Directory Architecture & Migration Bugfix
+
+### 🚀 Changes
+* **Storage Path Standardization**: Standardized all storage locations (workspace repos, draft caches, and execution uploads) under `${ypipe.data}`, removing legacy unanchored directory paths.
+* **Execution Task Storage Alignment**: Uploaded process files are now saved strictly under `${ypipe.data}/data/smartpipes/uploads/{slug}/{taskId}/`, matching execution Task IDs 1-to-1.
+* **Automated Upload Migration**: Added auto-migration in `MigrateTo_1_3_1` moving legacy uploads from `${ypipe.data}/smartpipes/uploads` to `${ypipe.data}/data/smartpipes/uploads`.
+
+### 🐛 Bug Fixes
+* **System Overrides Namespace Directories**: Fixed system override manifests being saved directly under `${ypipe.data}/workspace/systemoverrides/` by enforcing namespace subfolder paths (`${ypipe.data}/workspace/systemoverrides/{namespace}/`).
+* **Migration Bootstrapping**: Resolved issues when upgrading from version 1.2.4 by switching to persistent version tracking under `${ypipe.data}/config/version`.
+* **MCP Installed Variables Masking**: Fixed an issue where sensitive configuration variables on the Installed Couplings tab were displayed in plain text instead of masked placeholders.
+* **Double Subfolder & Route Cleanup**: Fixed duplicate directory nesting (`.../slug/slug`) and removed legacy endpoints.
+* **Task Trace UUID & File Cleanup**: Fixed Task Trace UUID mismatches and enabled automatic directory deletion when clearing runs (`DELETE /runs/{taskId}`) or deleting flows (`DELETE /{namespace}/{slug}`).
+* **Migration Bootstrapping**: Resolved v1.2.4 upgrade issues via persistent version tracking under `${ypipe.data}/config/version`.
+* **Structured Logging**: Replaced raw console output in chat handling with structured logging.
+
 ## [1.3.0] - Headless Deployment, Visual Smart Pipes Builder & Agentic Workflows
 
 This major release introduces headless execution capability for server/daemon environments and the brand-new visual Smart Pipes builder. It features a complete pipeline interpreter, agentic drafting helper, step-by-step debugging, and cron/webhook triggers for declarative AI workflows.
