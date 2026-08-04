@@ -1,0 +1,149 @@
+apiVersion: "mcp.ypipe.com/v1"
+kind: "McpIntegrationBlueprint"
+metadata:
+  name: "custom-email"
+  namespace: "system"
+spec:
+  displayName: "Custom Email (SMTP/IMAP)"
+  description: "Send and manage email through any SMTP/IMAP provider (Gmail, Outlook, ProtonMail Bridge, custom domains) with a password or app password. "
+  source: "https://github.com/wh1isper/mcp-email-server"
+  configurationSchema:
+    ACCOUNT_NAME:
+      type: "string"
+      required: true
+      default: "email"
+      description: "A short name for this account, e.g. 'work-email' or 'gmail'."
+      sensitive: false
+    EMAIL_ADDRESS:
+      type: "string"
+      required: true
+      default: ""
+      description: "Your full email address, e.g. you@example.com"
+      sensitive: false
+    PASSWORD:
+      type: "string"
+      required: true
+      default: ""
+      description: "The password for this email account, used to authenticate over IMAP and SMTP."
+      sensitive: true
+    IMAP_HOST:
+      type: "string"
+      required: true
+      default: "imap.gmail.com"
+      description: "IMAP server hostname for your provider, e.g. imap.gmail.com, outlook.office365.com, or 127.0.0.1 for ProtonMail Bridge."
+      sensitive: false
+    IMAP_PORT:
+      type: "string"
+      required: true
+      default: "993"
+      description: "IMAP server port. 993 is standard for SSL/TLS."
+      sensitive: false
+    IMAP_SSL:
+      type: "boolean"
+      required: true
+      default: "true"
+      description: "Whether to connect to IMAP over SSL/TLS. Leave true unless your provider explicitly requires plain or STARTTLS."
+      sensitive: false
+    SMTP_HOST:
+      type: "string"
+      required: true
+      default: "smtp.gmail.com"
+      description: "SMTP server hostname for your provider, e.g. smtp.gmail.com, smtp.office365.com, or 127.0.0.1 for ProtonMail Bridge."
+      sensitive: false
+    SMTP_PORT:
+      type: "string"
+      required: true
+      default: "465"
+      description: "SMTP server port. 465 is standard for SSL, 587 for STARTTLS."
+      sensitive: false
+    SMTP_SSL:
+      type: "boolean"
+      required: true
+      default: "true"
+      description: "Whether to connect to SMTP over SSL/TLS. Leave true for port 465. Set to false and use STARTTLS-capable ports (like 587) for providers that require it."
+      sensitive: false
+  mcpConfig:
+    type: "stdio"
+    command: "uvx"
+    args:
+    - "--with"
+    - "tzdata"
+    - "mcp-email-server@latest"
+    - "stdio"
+    env:
+      MCP_EMAIL_SERVER_ACCOUNT_NAME: "${ACCOUNT_NAME}"
+      MCP_EMAIL_SERVER_EMAIL_ADDRESS: "${EMAIL_ADDRESS}"
+      MCP_EMAIL_SERVER_PASSWORD: "${PASSWORD}"
+      MCP_EMAIL_SERVER_IMAP_HOST: "${IMAP_HOST}"
+      MCP_EMAIL_SERVER_IMAP_PORT: "${IMAP_PORT}"
+      MCP_EMAIL_SERVER_IMAP_SSL: "${IMAP_SSL}"
+      MCP_EMAIL_SERVER_SMTP_HOST: "${SMTP_HOST}"
+      MCP_EMAIL_SERVER_SMTP_PORT: "${SMTP_PORT}"
+      MCP_EMAIL_SERVER_SMTP_SSL: "${SMTP_SSL}"
+    url: null
+    headers: null
+  disabledTools:
+  - "delete_emails"
+  - "move_emails"
+  - "archive_emails"
+  - "list_allowed_senders"
+  suggestions:
+  - id: "custom-email-send-test"
+    title: "Email: Send"
+    label: "Send a test email"
+    action: "Send an email using the send_email function."
+    actionType: null
+    target: null
+  tools:
+    send_email:
+      description: "Send email. account_name, recipients(list), subject, body required."
+      usageIntent: "Use for any send/draft/deliver email request."
+      discoveryHint: |
+        Send, deliver, draft-and-send, or compose and send an email through
+        SMTP. Use this whenever the user asks to email someone, send a
+        message, notify a recipient, forward information as an email, or
+        deliver a written communication to an address. Synonyms include
+        emailing, mailing, sending a message, and dispatching a notification.
+        Requires an account_name, one or more recipient addresses, a
+        subject, and a body. Supports optional CC, BCC, HTML formatting,
+        file attachments, and reply threading via in_reply_to. This is the
+        only tool that actually delivers mail; it does not read, search, or
+        organize existing messages.
+      properties: null
+      required: null
+    list_available_accounts:
+      description: "List email accounts. No params."
+      usageIntent: null
+      discoveryHint: |
+        List every configured email account with masked credentials.
+        Use this to discover which account names are available before
+        calling send_email or any other tool that requires an account_name,
+        or when the user asks what email accounts are set up, connected,
+        or configured. Takes no parameters.
+      properties: null
+      required: null
+    list_emails_metadata:
+      description: "List emails. account_name required. Returns email_id."
+      usageIntent: null
+      discoveryHint: |
+        List, browse, or check recent emails in an inbox without reading
+        full message bodies. Use this when the user asks what's in their
+        inbox, whether new mail has arrived, or wants a quick summary of
+        recent senders and subjects. Returns email_id values needed by
+        get_emails_content to read a specific message in full. Supports
+        filtering by sender, subject, date range, and read status.
+      properties: null
+      required: null
+    get_emails_content:
+      description: "Get email body. account_name, email_ids(list) required."
+      usageIntent: null
+      discoveryHint: |
+        Read, open, or retrieve the full text of one or more specific
+        emails by their email_id. Use this after list_emails_metadata has
+        identified which messages to read in detail, for example when the
+        user asks to read a message, see what an email says, or check the
+        contents of a specific email. Requires the email_id values returned
+        by list_emails_metadata.
+      properties: null
+      required: null
+  modelSemantics: {}
