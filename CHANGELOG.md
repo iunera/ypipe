@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.2] - Production Blueprint Catalog Update
+
+### 🚀 Key Features / Added Blueprints
+* **Gmail MCP Blueprint**: Graduated from experimental status and added to the production blueprint catalog.
+* **Custom Email Blueprint**: Graduated from experimental status and added to the production blueprint catalog.
+
+### 🐛 Bug Fixes
+* **Gemma 4 12B Model Manifest & Verification**: Fixed model download and checksum verification for `gemma-4-12b` (`sys-ggml-org-gemma-4-12b-it-q4km-vlm`) by updating outdated SHA-256 checksums, enabling staging module cache reuse in `DownloadService`, adding automated catalog hash verification, and displaying explicit error messages prompting the user to update the `.model.ypipe` checksum when hashes mismatch.
+* **Headless Launcher Port Parameter Handling & Auto Workspace Sync**: Fixed startup failure caused by multiple or forwarded `--server.port` / `--mcp.port` CLI arguments being merged into invalid comma-separated port strings in the MCP Controller and Coordinator. Added automatic workspace synchronization on startup to ensure all active SmartPipes, YAgents, and model manifests from `${ypipe.data}/workspace/repos/` are loaded immediately upon boot in headless mode.
+
 ## [1.3.1] - Directory Architecture & Migration Bugfix
 
 ### 🚀 Changes
@@ -20,7 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * **Task Trace UUID & File Cleanup**: Fixed Task Trace UUID mismatches and enabled automatic directory deletion when clearing runs (`DELETE /runs/{taskId}`) or deleting flows (`DELETE /{namespace}/{slug}`).
 * **Migration Bootstrapping**: Resolved v1.2.4 upgrade issues via persistent version tracking under `${ypipe.data}/config/version`.
 * **Structured Logging**: Replaced raw console output in chat handling with structured logging.
-* **Fix Version**: Addressed issues with versioning. You might need to download the new version manually. 
+* **Fix Version**: Addressed issues with versioning. You might need to download the new version manually.
 
 ## [1.3.0] - Headless Deployment, Visual Smart Pipes Builder & Agentic Workflows
 
@@ -118,7 +128,7 @@ This release significantly optimizes the YPipe startup time by introducing concu
 
 This release builds upon the Unified GitOps Workspace by introducing zero-downtime hot-reloading and automated manifest generation. It ensures that the YPipe engine can dynamically adapt to file system changes, imports, and forks instantly without requiring an application restart, while aggressively protecting shared hardware resources.
 In addition it's introduces the brand-new **Couplings** view. It formally introduces declarative `McpIntegration` and `McpIntegrationBlueprint` resource Kinds, providing a native management UI for MCP servers with granular control over tool naming, descriptions, and active status.
-Last but not least we YPipe now supports the latest awesome Gemma4 12B model. 
+Last but not least we YPipe now supports the latest awesome Gemma4 12B model.
 
 ### 🚀 Key Features
 * **"Couplings" MCP Integration View:** Introduced a complete, native management UI ("Couplings") for MCP servers. Backed by declarative `McpIntegration` and `McpIntegrationBlueprint` resource Kinds, it grants granular control to customize tool names, rewrite descriptions, toggle individual tools on/off, and dynamically persist configurations on the fly.
