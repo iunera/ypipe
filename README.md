@@ -77,10 +77,10 @@ jbang ypipe@iunera/ypipe
 
 Grab the latest binaries for your OS at [ypipe.com](https://ypipe.com) or download them directly from the [GitHub Releases](https://github.com/iunera/ypipe/releases):
 
-*   **Windows:** [Installer (.msi)](https://github.com/iunera/ypipe/releases/download/windows/v1.3.1/YPipe-1.3.1.msi) or [AppImage (.zip)](https://github.com/iunera/ypipe/releases/download/windows/v1.3.1/ypipe-1.3.1-app-image.zip)
-*   **macOS:** [Apple Silicon (.dmg)](https://github.com/iunera/ypipe/releases/download/macos/v1.3.1/YPipe-1.3.1.dmg)
-*   **Linux:** [Ubuntu (.deb)](https://github.com/iunera/ypipe/releases/download/linux/v1.3.1/ypipe_1.3.1_amd64.deb), [RedHat (.rpm)](https://github.com/iunera/ypipe/releases/download/linux/v1.3.1/ypipe-1.3.1.x86_64.rpm), or [Tarball (.tar.gz)](https://github.com/iunera/ypipe/releases/download/linux/v1.3.1/YPipe-1.3.1-linux-amd64.tar.gz)
-*   **Universal:** [Executable JAR](https://github.com/iunera/ypipe/releases/download/jar/v1.3.1/ypipe-1.3.1.jar) for any Java-enabled environment.
+*   **Windows:** [Installer (.msi)](https://github.com/iunera/ypipe/releases/download/windows/v1.3.2/YPipe-1.3.2.msi) or [AppImage (.zip)](https://github.com/iunera/ypipe/releases/download/windows/v1.3.2/ypipe-1.3.2-app-image.zip)
+*   **macOS:** [Apple Silicon (.dmg)](https://github.com/iunera/ypipe/releases/download/macos/v1.3.2/YPipe-1.3.2.dmg)
+*   **Linux:** [Ubuntu (.deb)](https://github.com/iunera/ypipe/releases/download/linux/v1.3.2/ypipe_1.3.2_amd64.deb), [RedHat (.rpm)](https://github.com/iunera/ypipe/releases/download/linux/v1.3.2/ypipe-1.3.2.x86_64.rpm), or [Tarball (.tar.gz)](https://github.com/iunera/ypipe/releases/download/linux/v1.3.2/YPipe-1.3.2-linux-amd64.tar.gz)
+*   **Universal:** [Executable JAR](https://github.com/iunera/ypipe/releases/download/jar/v1.3.2/ypipe-1.3.2.jar) for any Java-enabled environment.
 
 ---
 

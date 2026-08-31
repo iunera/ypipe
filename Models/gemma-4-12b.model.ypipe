@@ -34,7 +34,7 @@ spec:
       downloads:
       - "https://huggingface.co/ggml-org/gemma-4-12B-it-GGUF/resolve/main/gemma-4-12B-it-Q4_0.gguf"
       checksums:
-        - sha256: "4e950c7e74afbfd934bd2ebf4164506ab43fb8775aa262e669e2b03b18bdc2e3"
+        - sha256: "3712b9bd32cae83a22f67ee7a4466d8d7a4f21646ac8a07d19bf9418e8767a70"
       target-extension: gguf
     - identifier: VISION
       mandatory: true
@@ -44,7 +44,7 @@ spec:
       downloads:
       - "https://huggingface.co/ggml-org/gemma-4-12B-it-GGUF/resolve/main/mmproj-gemma-4-12B-it-Q8_0.gguf"
       checksums:
-        - sha256: "f94d5a699adc70518178630a95b0893e42e67bf4c5d3a682dbaa9eb4e64b164c"
+        - sha256: "59e62255435dda870e2d1de97cc031330b31a898bac12b38a182cecff9cd3738"
       target-extension: gguf
   provisioning: NEVER
   total-parameter-size-in-millions: 12000

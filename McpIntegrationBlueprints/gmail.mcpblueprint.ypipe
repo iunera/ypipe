@@ -1,0 +1,193 @@
+apiVersion: "mcp.ypipe.com/v1"
+kind: "McpIntegrationBlueprint"
+metadata:
+  name: "gmail-email"
+  namespace: "system"
+spec:
+  displayName: "Gmail"
+  description: "Send and manage Gmail email via SMTP/IMAP with an App Password. Local, no OAuth2, no cloud dependency."
+  source: "https://github.com/wh1isper/mcp-email-server"
+  configurationSchema:
+    ACCOUNT_NAME:
+      type: "string"
+      required: true
+      default: "gmail"
+      description: "A short name for this account, e.g. 'gmail' or 'work-gmail'."
+      sensitive: false
+    EMAIL_ADDRESS:
+      type: "string"
+      required: true
+      default: ""
+      description: "Your full Gmail address, e.g. you@gmail.com"
+      sensitive: false
+    APP_PASSWORD:
+      type: "string"
+      required: true
+      default: ""
+      description: |
+        Gmail App Password (not your normal Google password). Requires
+        2-Step Verification enabled. Generate one at
+        myaccount.google.com/apppasswords
+      sensitive: true
+  mcpConfig:
+    type: "stdio"
+    command: "uvx"
+    args:
+    - "mcp-email-server@latest"
+    - "stdio"
+    env:
+      MCP_EMAIL_SERVER_ACCOUNT_NAME: "${ACCOUNT_NAME}"
+      MCP_EMAIL_SERVER_EMAIL_ADDRESS: "${EMAIL_ADDRESS}"
+      MCP_EMAIL_SERVER_PASSWORD: "${APP_PASSWORD}"
+      MCP_EMAIL_SERVER_IMAP_HOST: "imap.gmail.com"
+      MCP_EMAIL_SERVER_IMAP_PORT: "993"
+      MCP_EMAIL_SERVER_IMAP_SSL: "true"
+      MCP_EMAIL_SERVER_SMTP_HOST: "smtp.gmail.com"
+      MCP_EMAIL_SERVER_SMTP_PORT: "465"
+      MCP_EMAIL_SERVER_SMTP_SSL: "true"
+    url: null
+    headers: null
+  disabledTools:
+  - "delete_emails"
+  - "move_emails"
+  - "archive_emails"
+  - "list_allowed_senders"
+  - "save_to_mailbox"
+  suggestions:
+  - id: "gmail-list-last-5-emails"
+    title: "Gmail: List Recent Emails"
+    label: "List my last 5 emails from my INBOX"
+    action: "List my last 5 emails from my gmail INBOX."
+    actionType: null
+    target: null
+  - id: "gmail-send-hello-ypipe"
+    title: "Gmail: Send Hello YPipe Team"
+    label: "Send a Hello YPipe Team email to contact@iunera.com"
+    action: "Send an email to ypipe@iunera.com with subject 'Hello YPipe Team' and body containing the current date and which model you are"
+    actionType: null
+    target: null
+  tools:
+    send_email:
+      description: "Send email. account_name ('${ACCOUNT_NAME}'), recipients(list), subject, body required."
+      usageIntent: "Use for any send/draft/deliver email request."
+      discoveryHint: |
+        Write Email, Send Email, compose, or dispatch an email message through
+        Gmail SMTP. Use this tool whenever the user requests to send an email, mail a recipient,
+        deliver a written message, transmit an electronic letter, notify someone via email, forward
+        information as an email, or dispatch communications to an email address. Synonyms include
+        emailing, mailing, sending, writing a mail, notifying, dispatching, and contacting by mail.
+        Requires account_name (use '${ACCOUNT_NAME}'), recipients list, subject line, and body text.
+        Supports optional CC, BCC, HTML body formatting, file attachments, and in_reply_to threading.
+        This is the primary tool for sending new outbound emails.
+      properties: null
+      required: null
+    list_available_accounts:
+      description: "List email accounts. No params."
+      usageIntent: "Use to list all configured email accounts."
+      discoveryHint: |
+        List and discover all configured email accounts and connections registered with the system.
+        Use this tool when the user asks what email accounts are connected, which mailboxes are setup,
+        what accounts are available, or to inspect configured email accounts and credentials before calling
+        tools that require an account_name parameter. Takes no arguments.
+      properties: null
+      required: null
+    list_emails_metadata:
+      description: "List emails. account_name ('${ACCOUNT_NAME}') required. Returns email_id."
+      usageIntent: "Use to browse email headers, subjects, senders, and metadata."
+      discoveryHint: |
+        List, browse, search, or check recent emails, headers, senders, dates, and metadata in an inbox
+        or mailbox folder without reading full bodies. Use this tool when the user asks what emails arrived,
+        wants to search inbox messages, see recent senders, check for new mail, inspect message headers,
+        or find an email_id before calling get_emails_content to read the body in detail. Requires account_name
+        (use '${ACCOUNT_NAME}'). Supports filtering by query, sender, subject, date ranges, and read status.
+      properties: null
+      required: null
+    get_emails_content:
+      description: "Get email body. account_name ('${ACCOUNT_NAME}'), email_ids(list) required."
+      usageIntent: "Use to retrieve full body content of specific emails by email_id."
+      discoveryHint: |
+        Read, open, fetch, or inspect the complete body text and content of specific email messages by their email_id.
+        Use this tool after list_emails_metadata has identified relevant email_id values, or when the user explicitly
+        asks to read an email, check what a message says, view full email content, or inspect body text. Requires
+        account_name (use '${ACCOUNT_NAME}') and a list of email_ids.
+      properties: null
+      required: null
+    list_allowed_recipients:
+      description: "List allowed recipients. account_name ('${ACCOUNT_NAME}') optional."
+      usageIntent: "Use to check white-listed or allowed recipient addresses."
+      discoveryHint: |
+        List allowed recipient email addresses and domain whitelist rules configured for sending mail.
+        Use this tool to verify recipient restrictions or check security policy compliance before dispatching sensitive emails.
+        Takes optional account_name (use '${ACCOUNT_NAME}').
+      properties: null
+      required: null
+    list_mailboxes:
+      description: "List IMAP mailboxes/folders. account_name ('${ACCOUNT_NAME}') required."
+      usageIntent: "Use to discover mailbox folders such as INBOX, Sent, Trash, Drafts."
+      discoveryHint: |
+        List all available IMAP mailboxes, directories, and folders for an email account (e.g. INBOX, Sent, Drafts, Junk, Trash).
+        Use this tool when the user wants to see available email folders, locate custom mailbox folders, or list directory paths.
+        Requires account_name (use '${ACCOUNT_NAME}').
+      properties: null
+      required: null
+    save_to_mailbox:
+      description: "Save email to mailbox/folder. account_name ('${ACCOUNT_NAME}'), mailbox, raw_message required."
+      usageIntent: "Use to save raw message content or drafts directly into an IMAP folder."
+      discoveryHint: |
+        Save an email message directly into a specific IMAP mailbox or folder (e.g., Drafts, Sent, Archive) without sending it over SMTP.
+        Use this tool for saving draft messages, backing up email records, or storing synthesized messages in local mailboxes.
+        Requires account_name (use '${ACCOUNT_NAME}'), target mailbox name, and raw_message content.
+      properties: null
+      required: null
+    set_email_flags:
+      description: "Set email flags (e.g. \\Seen, \\Flagged). account_name ('${ACCOUNT_NAME}'), email_ids(list), flags(list) required."
+      usageIntent: "Use to set or clear IMAP flags on emails."
+      discoveryHint: |
+        Update, set, or modify IMAP flags on specific email messages (e.g. marking messages as starred, flagged, seen, answered, or draft).
+        Use this tool when organizing, starring, or updating flags on messages in an IMAP folder. Requires account_name (use '${ACCOUNT_NAME}'),
+        email_ids list, and flags list.
+      properties: null
+      required: null
+    mark_emails_as_read:
+      description: "Mark emails as read or unread. account_name ('${ACCOUNT_NAME}'), email_ids(list) required."
+      usageIntent: "Use to toggle read/unread status on messages."
+      discoveryHint: |
+        Mark one or multiple email messages as read or unread in the IMAP mailbox using email_id identifiers.
+        Use this tool when the user requests to mark messages as read, clear unread indicators, or mark emails as unread for later review.
+        Requires account_name (use '${ACCOUNT_NAME}') and a list of email_ids.
+      properties: null
+      required: null
+    download_attachment:
+      description: "Download email attachment. account_name ('${ACCOUNT_NAME}'), email_id, attachment_id required."
+      usageIntent: "Use to fetch and download binary file attachments from an email."
+      discoveryHint: |
+        Download, extract, and save specific binary file attachments (PDFs, images, documents, archives) from an email by email_id and attachment_id.
+        Use this tool when the user asks to download attachments, open files sent in an email, save email attachments, or inspect attached files.
+        Requires account_name (use '${ACCOUNT_NAME}'), email_id, and attachment_id.
+      properties: null
+      required: null
+    delete_emails:
+      description: "Delete emails. account_name ('${ACCOUNT_NAME}'), email_ids(list) required."
+      usageIntent: "Use to permanently remove or delete emails."
+      discoveryHint: |
+        Delete or permanently remove one or multiple email messages from a mailbox using email_ids.
+        Requires account_name (use '${ACCOUNT_NAME}') and email_ids list.
+      properties: null
+      required: null
+    move_emails:
+      description: "Move emails to destination mailbox. account_name ('${ACCOUNT_NAME}'), email_ids(list), destination_mailbox required."
+      usageIntent: "Use to relocate emails to another IMAP folder."
+      discoveryHint: |
+        Move or transfer one or multiple email messages into a target destination IMAP folder (e.g. Trash, Archive, Custom Folder).
+        Requires account_name (use '${ACCOUNT_NAME}'), email_ids list, and destination_mailbox.
+      properties: null
+      required: null
+    archive_emails:
+      description: "Archive emails. account_name ('${ACCOUNT_NAME}'), email_ids(list) required."
+      usageIntent: "Use to move emails into the archive mailbox."
+      discoveryHint: |
+        Archive one or multiple email messages by moving them into the archive folder.
+        Requires account_name (use '${ACCOUNT_NAME}') and email_ids list.
+      properties: null
+      required: null
+  modelSemantics: {}

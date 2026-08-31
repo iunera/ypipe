@@ -139,7 +139,7 @@ spec:
 | `configurationSchema` | ❌ Optional | `Map<String, PropertyDefinition>` | Declarative config variables representing inputs needed to provision this server. |
 | `mcpConfig` | ✅ Yes | `McpConfig` | Configuration details specifying how to boot the MCP server client. |
 | `disabledTools` | ❌ Optional | `List<String>` | List of tool names to block entirely from the model. |
-| `suggestions` | ❌ Optional | `List<Suggestion>` | Declarative suggestions to bootstrap user prompts in the chat UI. |
+| `suggestions` | ❌ Optional | `List<Suggestion>` | Declarative suggestions to bootstrap user prompts in the chat UI. Supports `${metadata.name}` and variable substitution. |
 | `tools` | ❌ Optional | `Map<String, ToolOverride>` | Tool description enrichments and parameter adjustments. |
 | `modelSemantics` | ❌ Optional | `Map<String, ModelSemanticOverride>` | Custom system prompt overrides grouped by model ID. |
 
@@ -176,12 +176,16 @@ You can define semantic changes or security parameters for each tool under the `
 
 ### Tool Override Fields
 
-* `description`: Replaces the description sent to the model entirely. Keep it concise, action-oriented, and in the semantic domain of the tool.
+* `description`: Replaces the description sent to the model entirely. Keep it concise, action-oriented, and in the semantic domain of the tool. Placeholders such as `${VARIABLE_NAME}` (defined in `configurationSchema` or `mcpConfig.env`) are automatically substituted at runtime.
 * `usageIntent`: Explains *when* the model should choose this tool.
-* `discoveryHint`: Detailed text used to index the tool in a Vector Store for semantic search. Because the AI model performs semantic search to discover tools dynamically, discovery hints should be highly descriptive and rich in keywords. Include synonyms, related terminology, common user intent scenarios, system components involved, and target questions the tool solves. A longer, comprehensive hint significantly improves tool discovery and query matching accuracy.
+* `discoveryHint`: Detailed text used to index the tool in a Vector Store for semantic search. Placeholders such as `${VARIABLE_NAME}` are automatically substituted at runtime. Because the AI model performs semantic search to discover tools dynamically, discovery hints should be highly descriptive and rich in keywords. Include synonyms, related terminology, common user intent scenarios, system components involved, and target questions the tool solves. A longer, comprehensive hint significantly improves tool discovery and query matching accuracy.
 * `required`: List of parameters that are strictly required.
 * `properties`: Map of property name → `ToolPropertyOverride` to modify parameters:
   * `type`: Override parameter type.
   * `description`: Change description of the parameter.
   * `x-ypipe-inject`: Dynamically inject a system property/variable value.
   * `x-ypipe-hidden`: Hide this property from the AI model (useful if it's injected).
+
+> [!TIP]
+> **Variable Substitution in Tool Descriptions and Suggestions**: 
+> You can reference configuration schema variables and system metadata inside tool `description`, `discoveryHint`, and `suggestions` fields using `${VARIABLE_NAME}` syntax (e.g., `description: "Send email. account_name ('${ACCOUNT_NAME}') required."` or `${metadata.name}`). YPipe resolves these placeholders dynamically when instantiating the MCP server instance, providing the AI model and UI with exact, concrete values.
