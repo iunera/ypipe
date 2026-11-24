@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>Germany in AGI Land (1988–2026) — Playable AI Jump &amp; Run | YPipe</title>
     <meta name="description" content="Steer Z1 through Germany's real 1988–2026 AI timeline: 27 milestones, 36 German wins, endless Industry Moat &amp; the Orbital Neuro-Symbolic AGI Boss. Play free in English &amp; German.">
     <meta name="keywords" content="Germany in AGI Land, Deutschland im AGI-Land, Neuro-Symbolic AI, YPipe, iunera, Sovereign AI, German AI Race, Hallucination Breaker, Z1">
@@ -79,13 +82,25 @@
             --font-body: 'Inter', sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
         }
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+        html, body {
+            overscroll-behavior: none;
+            -webkit-text-size-adjust: 100%;
+        }
         body {
             font-family: var(--font-body);
             background: linear-gradient(180deg, #0b101d 0%, #111827 55%, #0f172a 100%);
             min-height: 100vh;
-            overscroll-behavior: none;
+            min-height: 100dvh;
+            padding-top: max(0.5rem, env(safe-area-inset-top));
+            padding-bottom: max(0.625rem, env(safe-area-inset-bottom));
+            padding-left: max(0.5rem, env(safe-area-inset-left));
+            padding-right: max(0.5rem, env(safe-area-inset-right));
             user-select: none;
             -webkit-user-select: none;
+            -webkit-touch-callout: none;
             color: #f1f5f9;
         }
         .font-display { font-family: var(--font-display); }
@@ -95,40 +110,88 @@
             position: relative;
             width: 100%;
             aspect-ratio: 16 / 8.5;
-            min-height: 300px;
+            min-height: 220px;
             max-height: 540px;
-            border-radius: 1.25rem;
+            border-radius: 1rem;
             overflow: hidden;
             box-shadow:
                 0 22px 50px -12px rgba(0, 0, 0, 0.72),
-                0 0 0 3px #1e293b,
-                0 0 0 6px rgba(56, 189, 248, 0.35);
+                0 0 0 2.5px #1e293b,
+                0 0 0 5px rgba(56, 189, 248, 0.35);
             background-color: #0b101d;
+        }
+        @media (max-width: 640px) {
+            .canvas-shell {
+                aspect-ratio: 16 / 10.6;
+                min-height: 236px;
+                max-height: 50dvh;
+                border-radius: 0.875rem;
+            }
+        }
+            @media (max-height: 500px) and (orientation: landscape) {
+            html, body {
+                height: 100%;
+                max-height: 100%;
+                overflow: hidden;
+            }
+            body {
+                padding-top: max(0.2rem, env(safe-area-inset-top)) !important;
+                padding-bottom: max(0.2rem, env(safe-area-inset-bottom)) !important;
+                justify-content: flex-start !important;
+                min-height: 0 !important;
+            }
+            main {
+                height: 100%;
+                gap: 0.25rem !important;
+            }
+            .mobile-compact-hide, #uiSubtitle, footer { display: none !important; }
+            .landscape-compact-hide { display: none !important; }
+            .landscape-compact-show { display: inline !important; }
+            header { gap: 0.35rem !important; flex-wrap: nowrap !important; }
+            header h1 { font-size: 1.05rem !important; }
+            header + section + div { flex: 1; min-height: 0; height: 100%; }
+            header + section + div > div { height: 100%; min-height: 0; justify-content: space-between; }
+            .canvas-shell {
+                aspect-ratio: auto !important;
+                flex: 1 1 auto !important;
+                height: auto !important;
+                min-height: 140px !important;
+                max-height: none !important;
+            }
+            .touch-action-btn {
+                padding-top: 0.35rem !important;
+                padding-bottom: 0.35rem !important;
+                font-size: 0.875rem !important;
+            }
         }
         canvas { display: block; width: 100%; height: 100%; touch-action: none; cursor: pointer; }
 
+        .giant-jump-btn, .fly-up-btn, .fly-down-btn {
+            touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+        }
         .giant-jump-btn, .fly-up-btn {
             font-family: var(--font-display);
             background: linear-gradient(180deg, #38bdf8 0%, #0284c7 60%, #0369a1 100%);
             color: #ffffff;
             border: 3px solid #bae6fd;
-            box-shadow: 0 7px 0 #075985, 0 12px 24px rgba(2, 132, 199, 0.35);
-            transition: transform 0.07s ease, box-shadow 0.07s ease;
-            touch-action: manipulation;
+            box-shadow: 0 6px 0 #075985, 0 10px 20px rgba(2, 132, 199, 0.35);
+            transition: transform 0.06s ease, box-shadow 0.06s ease;
         }
         .giant-jump-btn:active, .giant-jump-btn.is-pressed,
-        .fly-up-btn:active, .fly-up-btn.is-pressed { transform: translateY(5px); box-shadow: 0 2px 0 #075985; }
+        .fly-up-btn:active, .fly-up-btn.is-pressed { transform: translateY(4px); box-shadow: 0 2px 0 #075985; }
 
         .fly-down-btn {
             font-family: var(--font-display);
             background: linear-gradient(180deg, #fb923c 0%, #f97316 60%, #ea580c 100%);
             color: #ffffff;
             border: 3px solid #fed7aa;
-            box-shadow: 0 7px 0 #9a3412, 0 12px 22px rgba(234, 88, 12, 0.34);
-            transition: transform 0.07s ease, box-shadow 0.07s ease;
-            touch-action: manipulation;
+            box-shadow: 0 6px 0 #9a3412, 0 10px 20px rgba(234, 88, 12, 0.34);
+            transition: transform 0.06s ease, box-shadow 0.06s ease;
         }
-        .fly-down-btn:active, .fly-down-btn.is-pressed { transform: translateY(5px); box-shadow: 0 2px 0 #9a3412; }
+        .fly-down-btn:active, .fly-down-btn.is-pressed { transform: translateY(4px); box-shadow: 0 2px 0 #9a3412; }
 
         .util-btn {
             font-family: var(--font-display);
@@ -136,6 +199,7 @@
             color: #e2e8f0;
             border: 1.5px solid #334155;
             box-shadow: 0 3px 0 #0f172a;
+            min-height: 36px;
             transition: transform 0.08s ease, box-shadow 0.08s ease, border-color 0.15s ease;
             touch-action: manipulation;
         }
@@ -144,29 +208,37 @@
         .level-pill-active { background: linear-gradient(180deg, #0ea5e9 0%, #0284c7 100%); color: #ffffff; border-color: #38bdf8; }
 
         .choice-overlay {
-            position: absolute;
+            position: fixed;
             inset: 0;
             background: rgba(7, 11, 22, 0.92);
             backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             display: flex;
-            align-items: center;
+            align-items: safe center;
             justify-content: center;
-            padding: 0.75rem;
-            z-index: 30;
+            padding: max(0.75rem, env(safe-area-inset-top)) max(0.75rem, env(safe-area-inset-right)) max(0.75rem, env(safe-area-inset-bottom)) max(0.75rem, env(safe-area-inset-left));
+            z-index: 50;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
+        }
+        @media (min-width: 641px) and (min-height: 520px) {
+            .choice-overlay {
+                position: absolute;
+            }
         }
     </style>
 </head>
-<body class="flex flex-col items-center justify-center p-2.5 sm:p-4">
+<body class="flex flex-col items-center justify-start sm:justify-center p-2 sm:p-4">
 
-    <main class="w-full max-w-7xl mx-auto flex flex-col items-center gap-2.5">
+    <main class="w-full max-w-7xl mx-auto flex flex-col items-center gap-1.5 sm:gap-2.5">
 
         <!-- Header, Level Switcher & Controls -->
-        <header class="w-full flex flex-wrap items-center justify-between gap-2 px-1">
-            <div class="flex items-center gap-3">
-                <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-slate-900 via-red-600 to-amber-400 p-0.5 shadow-md flex items-center justify-center shrink-0">
+        <header class="w-full flex flex-wrap items-center justify-between gap-1.5 sm:gap-2 px-0.5 sm:px-1">
+            <div class="flex items-center gap-2 sm:gap-3 min-w-0">
+                <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-slate-900 via-red-600 to-amber-400 p-0.5 shadow-md flex items-center justify-center shrink-0">
                     <div id="headerBadgeEmoji" class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center overflow-hidden" title="Regierungsflieger with German Flag">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" class="w-10 h-10" aria-label="Regierungsflieger with German Flag">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" class="w-8 h-8 sm:w-10 sm:h-10" aria-label="Regierungsflieger with German Flag">
                             <!-- Trailing Waving German Flag behind the jet -->
                             <path d="M4 28 Q11 25 18 28 L18 33 Q11 30 4 33 Z" fill="#111827" stroke="#94a3b8" stroke-width="0.7"/>
                             <path d="M4 33 Q11 30 18 33 L18 37 Q11 34 4 37 Z" fill="#dc2626"/>
@@ -186,100 +258,102 @@
                         </svg>
                     </div>
                 </div>
-                <div>
-                    <h1 class="font-display text-lg sm:text-2xl font-bold tracking-tight text-white leading-none">
-                        <span id="uiTitleMain">Germany in AGI Land</span> <span class="text-amber-400 text-sm sm:text-base font-mono-ui">(1988–2026)</span>
+                <div class="min-w-0">
+                    <h1 class="font-display text-base sm:text-2xl font-bold tracking-tight text-white leading-tight truncate">
+                        <span id="uiTitleMain">Germany in AGI Land</span> <span class="text-amber-400 text-xs sm:text-base font-mono-ui">(1988–2026)</span>
                     </h1>
-                    <p id="uiSubtitle" class="text-[11px] sm:text-xs font-medium text-sky-400 mt-0.5 font-mono-ui">
+                    <p id="uiSubtitle" class="hidden sm:block text-[11px] sm:text-xs font-medium text-sky-400 mt-0.5 font-mono-ui truncate">
                         STEER Z1 (ZUSE'S LEGACY) • JUMP &amp; DUCK 1988–2026 • GROW YOUR GERMAN INDUSTRY MOAT
                     </p>
                 </div>
             </div>
 
-            <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+            <div class="flex flex-wrap sm:flex-nowrap items-center gap-1 sm:gap-1.5 shrink-0">
                 <div class="hidden bg-slate-900 p-1 rounded-xl flex items-center gap-1 border border-slate-700" aria-hidden="true">
                     <button id="btnSelectLv1" type="button" class="util-btn level-pill-active px-2 py-1 rounded-lg text-xs font-bold">Lv.1 Ground</button>
                     <button id="btnSelectLv2" type="button" class="util-btn px-2 py-1 rounded-lg text-xs font-bold">Lv.2 Jet</button>
                     <button id="btnSelectBoss" type="button" class="util-btn px-2 py-1 rounded-lg text-xs font-bold text-rose-300">Boss Arena</button>
                 </div>
                 <a href="https://github.com/iunera/ypipe" target="_blank" rel="noopener noreferrer"
-                   class="util-btn px-2.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 text-amber-300 border-amber-400/50 hover:border-amber-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-3.5 h-3.5 fill-current" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.1-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .97-.31 3.17 1.18a10.98 10.98 0 0 1 5.78 0c2.2-1.49 3.16-1.18 3.16-1.18.63 1.58.24 2.75.12 3.04.74.8 1.18 1.83 1.18 3.08 0 4.41-2.69 5.39-5.25 5.67.41.36.78 1.06.78 2.14 0 1.55-.01 2.8-.01 3.18 0 .31.21.66.79.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
-                    <span id="uiHeaderGithub">★ Star us on GitHub</span>
+                   aria-label="Star us on GitHub"
+                   class="util-btn px-2 sm:px-2.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 text-amber-300 border-amber-400/50 hover:border-amber-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-3.5 h-3.5 fill-current shrink-0" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.1-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .97-.31 3.17 1.18a10.98 10.98 0 0 1 5.78 0c2.2-1.49 3.16-1.18 3.16-1.18.63 1.58.24 2.75.12 3.04.74.8 1.18 1.83 1.18 3.08 0 4.41-2.69 5.39-5.25 5.67.41.36.78 1.06.78 2.14 0 1.55-.01 2.8-.01 3.18 0 .31.21.66.79.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+                    <span class="sm:hidden landscape-compact-show">★</span>
+                    <span id="uiHeaderGithub" class="hidden sm:inline landscape-compact-hide">★ Star us on GitHub</span>
                 </a>
                 <button id="langToggleBtn" type="button" class="util-btn px-2 py-1.5 rounded-lg text-xs font-bold text-sky-300" title="Switch language / Sprache wechseln">
                     <span id="langLabel">EN</span>
                 </button>
-                <button id="paceBtn" type="button" class="util-btn px-2.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1">
+                <button id="paceBtn" type="button" class="util-btn px-2 sm:px-2.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1">
                     <span id="paceLabel">Normal</span>
                 </button>
-                <button id="muteBtn" type="button" class="util-btn px-2.5 py-1.5 rounded-lg text-xs font-bold">
+                <button id="muteBtn" type="button" class="util-btn px-2 sm:px-2.5 py-1.5 rounded-lg text-xs font-bold">
                     <span id="muteIcon">♪ ON</span>
                 </button>
-                <button id="resetRunBtn" type="button" class="util-btn px-2.5 py-1.5 rounded-lg text-xs font-bold text-rose-300 border-rose-500/40">
+                <button id="resetRunBtn" type="button" class="util-btn px-2 sm:px-2.5 py-1.5 rounded-lg text-xs font-bold text-rose-300 border-rose-500/40">
                     <span id="uiRestartLabel">↻ Restart</span>
                 </button>
             </div>
         </header>
 
         <!-- 4-Card Telemetry HUD -->
-        <section class="w-full grid grid-cols-2 lg:grid-cols-4 gap-2">
-            <div class="bg-slate-900/90 border border-slate-700 rounded-xl px-3 py-1.5 flex flex-col justify-between">
-                <div class="flex items-center justify-between text-xs font-display font-bold text-sky-300">
+        <section class="mobile-compact-hide w-full grid grid-cols-2 lg:grid-cols-4 gap-1.5 sm:gap-2">
+            <div class="bg-slate-900/90 border border-slate-700 rounded-xl px-2.5 sm:px-3 py-1 sm:py-1.5 flex flex-col justify-between min-w-0">
+                <div class="flex items-center justify-between gap-1 text-[11px] sm:text-xs font-display font-bold text-sky-300">
                     <span id="hudStageTitle" class="truncate">1988–2013: Lost Origins</span>
-                    <span id="hudYearBadge" class="text-amber-400 font-mono-ui">1988</span>
+                    <span id="hudYearBadge" class="text-amber-400 font-mono-ui shrink-0">1988</span>
                 </div>
-                <div class="flex items-center justify-between text-[11px] font-mono-ui text-slate-400 mt-0.5">
-                    <span id="hudCountdown">Milestone 0 / 27</span>
-                    <span id="hudBest" class="text-amber-400 font-bold">Best: 0/27</span>
+                <div class="flex items-center justify-between gap-1 text-[10px] sm:text-[11px] font-mono-ui text-slate-400 mt-0.5">
+                    <span id="hudCountdown" class="truncate">Milestone 0 / 27</span>
+                    <span id="hudBest" class="text-amber-400 font-bold shrink-0">Best: 0/27</span>
                 </div>
-                <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden mt-1">
+                <div class="w-full h-1 sm:h-1.5 bg-slate-800 rounded-full overflow-hidden mt-1">
                     <div id="hudProgressBar" class="h-full rounded-full bg-gradient-to-r from-rose-500 via-amber-400 to-emerald-400 transition-all duration-150" style="width: 3%;"></div>
                 </div>
             </div>
 
             <!-- Endless German Industry Moat (Flag) Lifeline -->
-            <div class="bg-slate-900/90 border border-amber-500/50 rounded-xl px-3 py-1.5 flex flex-col justify-between">
-                <div class="flex items-center justify-between text-xs font-display font-bold text-amber-300">
-                    <span id="uiMoatTitle">⚑ German Industry Moat</span>
-                    <span id="hudMoatValue" class="text-emerald-400 font-mono-ui text-sm">1.0</span>
+            <div class="bg-slate-900/90 border border-amber-500/50 rounded-xl px-2.5 sm:px-3 py-1 sm:py-1.5 flex flex-col justify-between min-w-0">
+                <div class="flex items-center justify-between gap-1 text-[11px] sm:text-xs font-display font-bold text-amber-300">
+                    <span id="uiMoatTitle" class="truncate">⚑ German Industry Moat</span>
+                    <span id="hudMoatValue" class="text-emerald-400 font-mono-ui text-xs sm:text-sm shrink-0">1.0</span>
                 </div>
-                <div class="flex items-center justify-between text-[11px] text-slate-400 mt-0.5">
-                    <span id="hudMoatDesc">Flag = Industry Moat</span>
-                    <span id="hudPatents" class="text-cyan-400 font-mono-ui">0 Wins</span>
+                <div class="flex items-center justify-between gap-1 text-[10px] sm:text-[11px] text-slate-400 mt-0.5">
+                    <span id="hudMoatDesc" class="truncate">Flag = Industry Moat</span>
+                    <span id="hudPatents" class="text-cyan-400 font-mono-ui shrink-0">0 Wins</span>
                 </div>
-                <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden mt-1">
+                <div class="w-full h-1 sm:h-1.5 bg-slate-800 rounded-full overflow-hidden mt-1">
                     <div id="hudMoatBar" class="h-full rounded-full bg-gradient-to-r from-rose-500 via-amber-400 to-emerald-400 transition-all duration-150" style="width: 55%;"></div>
                 </div>
             </div>
 
             <!-- Tokens/Heartbeat & Boss Survival Timer -->
-            <div class="bg-slate-900/90 border border-slate-700 rounded-xl px-3 py-1.5 flex flex-col justify-between">
-                <div class="flex items-center justify-between text-xs font-display font-bold text-cyan-300">
-                    <span id="hudSpeedLabel">⚡ Tokens/Heartbeat</span>
-                    <span id="hudSpeedKmh" class="text-sky-400 font-mono-ui text-sm">18 tok/beat</span>
+            <div class="bg-slate-900/90 border border-slate-700 rounded-xl px-2.5 sm:px-3 py-1 sm:py-1.5 flex flex-col justify-between min-w-0">
+                <div class="flex items-center justify-between gap-1 text-[11px] sm:text-xs font-display font-bold text-cyan-300">
+                    <span id="hudSpeedLabel" class="truncate">⚡ Tokens/Heartbeat</span>
+                    <span id="hudSpeedKmh" class="text-sky-400 font-mono-ui text-xs sm:text-sm shrink-0">18 tok/beat</span>
                 </div>
-                <div class="flex items-center justify-between text-[11px] text-slate-400 mt-0.5">
-                    <span id="hudSpeedTier">Readable Speed</span>
-                    <span id="hudScore" class="text-amber-300 font-mono-ui">0 Tokens</span>
+                <div class="flex items-center justify-between gap-1 text-[10px] sm:text-[11px] text-slate-400 mt-0.5">
+                    <span id="hudSpeedTier" class="truncate">Readable Speed</span>
+                    <span id="hudScore" class="text-amber-300 font-mono-ui shrink-0">0 Tokens</span>
                 </div>
             </div>
 
             <!-- Token Burn & Next Hurdle -->
-            <div class="bg-slate-900/90 border border-slate-700 rounded-xl px-3 py-1.5 flex flex-col justify-between">
-                <div class="flex items-center justify-between text-xs font-display font-bold text-rose-300">
-                    <span id="uiBurnTitle">◈ Token Burn</span>
-                    <span id="hudBurnEur" class="text-rose-400 font-mono-ui text-sm">0M</span>
+            <div class="bg-slate-900/90 border border-slate-700 rounded-xl px-2.5 sm:px-3 py-1 sm:py-1.5 flex flex-col justify-between min-w-0">
+                <div class="flex items-center justify-between gap-1 text-[11px] sm:text-xs font-display font-bold text-rose-300">
+                    <span id="uiBurnTitle" class="truncate">◈ Token Burn</span>
+                    <span id="hudBurnEur" class="text-rose-400 font-mono-ui text-xs sm:text-sm shrink-0">0M</span>
                 </div>
-                <div class="flex items-center justify-between text-[11px] text-slate-400 mt-0.5">
+                <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-slate-400 mt-0.5">
                     <span id="hudNextObstacle" class="truncate text-slate-300 font-mono-ui">Next: 1988 DFKI</span>
                 </div>
             </div>
         </section>
 
         <!-- Main Workspace Grid: Left = Game Canvas & Controls | Right = Live Timeline Mistake Explainer -->
-        <div class="w-full grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-3 items-start">
-            <div class="flex flex-col items-center gap-2.5 w-full min-w-0">
+        <div class="w-full grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-2 sm:gap-3 items-start">
+            <div class="flex flex-col items-center gap-1.5 sm:gap-2.5 w-full min-w-0">
                 <!-- Main Game Canvas + Boss Defeat Choice / Outcome Overlays -->
                 <div class="canvas-shell" id="canvasContainer">
                     <canvas id="gameCanvas" aria-label="Germany in AGI Land Game Canvas"></canvas>
@@ -373,6 +447,10 @@
                                         class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white font-display font-bold text-xs sm:text-sm transition">
                                     <span id="uiPlayAgainLabel">↻ Play Again</span>
                                 </button>
+                                <button id="btnNativeShare" type="button"
+                                        class="hidden px-3 py-2 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-display font-bold text-xs sm:text-sm transition">
+                                    <span id="uiNativeShareLabel">↗ Share</span>
+                                </button>
                                 <button id="btnShareX" type="button"
                                         class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-white text-slate-950 font-display font-bold text-xs sm:text-sm transition">
                                     𝕏 Post
@@ -393,39 +471,39 @@
 
                 <!-- LEVEL 1 CONTROLS (Z1 JUMP & DUCK) -->
                 <section id="controlsLevel1" class="w-full flex flex-col items-center gap-1.5 pt-0.5">
-                    <div class="w-full max-w-xl grid grid-cols-2 gap-3">
+                    <div class="w-full max-w-xl grid grid-cols-2 gap-2.5 sm:gap-3">
                         <button id="giantJumpBtn" type="button"
-                                class="giant-jump-btn py-3 px-4 rounded-2xl text-lg sm:text-xl font-bold tracking-wide flex items-center justify-center gap-2 select-none">
+                                class="touch-action-btn giant-jump-btn py-3 sm:py-3 px-2.5 sm:px-4 rounded-2xl text-[14px] sm:text-xl font-bold tracking-tight sm:tracking-wide whitespace-nowrap flex items-center justify-center gap-1 sm:gap-2 select-none">
                             <span>▲</span><span id="uiJumpBtnLabel">JUMP (Double)</span>
                         </button>
                         <button id="duckBtn" type="button"
-                                class="fly-down-btn py-3 px-4 rounded-2xl text-lg sm:text-xl font-bold tracking-wide flex items-center justify-center gap-2 select-none">
+                                class="touch-action-btn fly-down-btn py-3 sm:py-3 px-2.5 sm:px-4 rounded-2xl text-[14px] sm:text-xl font-bold tracking-tight sm:tracking-wide whitespace-nowrap flex items-center justify-center gap-1 sm:gap-2 select-none">
                             <span>▼</span><span id="uiDuckBtnLabel">DUCK / SLIDE</span>
                         </button>
                     </div>
-                    <p id="uiLv1Hint" class="text-[11px] sm:text-xs font-medium text-slate-400 text-center px-2">
-                        <strong class="text-sky-300">Steer Z1 (Lv.1, 1988–2024):</strong> <strong class="text-sky-300">Space/Up</strong> to Jump &amp; Double-Jump • Hold <strong class="text-amber-300">Down/S</strong> to <strong class="text-amber-300">DUCK</strong> under overhead arms/beams • Catch <strong class="text-emerald-300">★ Win Coins</strong>!
+                    <p id="uiLv1Hint" class="mobile-compact-hide text-[10.5px] sm:text-xs font-medium text-slate-400 text-center px-1 sm:px-2 leading-snug">
+                        <strong class="text-sky-300">Steer Z1 (Lv.1, 1988–2024):</strong> <strong class="text-sky-300">Tap/Space</strong> to Jump &amp; Double-Jump • <strong class="text-amber-300">Hold Duck / Swipe Down</strong> under beams • Catch <strong class="text-emerald-300">★ Win Coins</strong>!
                     </p>
                 </section>
 
                 <!-- LEVEL 2 & SPACE BOSS CONTROLS -->
                 <section id="controlsLevel2" class="hidden w-full flex flex-col items-center gap-1.5 pt-0.5">
-                    <div class="w-full max-w-xl grid grid-cols-2 gap-3">
-                        <button id="flyUpBtn" type="button" class="fly-up-btn py-3 px-4 rounded-2xl text-lg sm:text-xl font-bold tracking-wide flex items-center justify-center gap-2 select-none">
+                    <div class="w-full max-w-xl grid grid-cols-2 gap-2.5 sm:gap-3">
+                        <button id="flyUpBtn" type="button" class="touch-action-btn fly-up-btn py-3 sm:py-3 px-2.5 sm:px-4 rounded-2xl text-[14px] sm:text-xl font-bold tracking-tight sm:tracking-wide whitespace-nowrap flex items-center justify-center gap-1 sm:gap-2 select-none">
                             <span>▲</span><span id="uiFlyUpLabel">THRUST UP</span>
                         </button>
-                        <button id="flyDownBtn" type="button" class="fly-down-btn py-3 px-4 rounded-2xl text-lg sm:text-xl font-bold tracking-wide flex items-center justify-center gap-2 select-none">
+                        <button id="flyDownBtn" type="button" class="touch-action-btn fly-down-btn py-3 sm:py-3 px-2.5 sm:px-4 rounded-2xl text-[14px] sm:text-xl font-bold tracking-tight sm:tracking-wide whitespace-nowrap flex items-center justify-center gap-1 sm:gap-2 select-none">
                             <span>▼</span><span id="uiFlyDownLabel">DIVE DOWN</span>
                         </button>
                     </div>
-                    <p id="uiLv2Hint" class="text-[11px] sm:text-xs font-medium text-slate-400 text-center px-2">
-                        <strong class="text-amber-300">Level 2 Jet → Space Rocket Boss:</strong> Grab <strong class="text-amber-300">★ German Win Coins</strong> (FLUX, JUPITER, Isar Aerospace...) &amp; dodge the Orbital Starlink Datacenter Monster!
+                    <p id="uiLv2Hint" class="mobile-compact-hide text-[10.5px] sm:text-xs font-medium text-slate-400 text-center px-1 sm:px-2 leading-snug">
+                        <strong class="text-amber-300">Level 2 Jet → Space Rocket Boss:</strong> Drag on canvas or hold Thrust/Dive • Grab <strong class="text-amber-300">★ German Win Coins</strong> &amp; dodge the AGI Monster!
                     </p>
                 </section>
             </div>
 
             <!-- RIGHT SIDEBAR: LIVE TIMELINE EXPLAINER FEED (MISTAKES & GERMAN WINS) -->
-            <aside class="w-full bg-slate-900/95 border border-slate-700 rounded-2xl p-3 flex flex-col gap-2 lg:h-[575px]">
+            <aside class="mobile-compact-hide w-full bg-slate-900/95 border border-slate-700 rounded-2xl p-2.5 sm:p-3 flex flex-col gap-2 max-h-[290px] sm:max-h-[360px] lg:max-h-none lg:h-[575px]">
                 <div class="flex items-center justify-between border-b border-slate-800 pb-2">
                     <div>
                         <h2 id="uiSidebarTitle" class="font-display text-sm font-bold text-white leading-tight">German AI Timeline (1988–2026)</h2>
@@ -511,6 +589,7 @@
                 muteOff: '♪ OFF',
                 restart: '↻ Restart',
                 playAgain: '↻ Play Again',
+                nativeShare: '↗ Share',
                 moatTitle: '⚑ German Industry Moat',
                 moatBase: 'Flag = Industry Moat',
                 moatCrit: 'CRITICAL! Near 0!',
@@ -537,8 +616,8 @@
                 duckBtn: 'DUCK / SLIDE',
                 flyUpBtn: 'THRUST UP',
                 flyDownBtn: 'DIVE DOWN',
-                lv1Hint: '<strong class="text-sky-300">Steer Z1 (Lv.1, 1988–2024):</strong> <strong class="text-sky-300">Space/Up</strong> to Jump &amp; Double-Jump • Hold <strong class="text-amber-300">Down/S</strong> to <strong class="text-amber-300">DUCK</strong> under overhead arms/beams • Catch <strong class="text-emerald-300">★ Win Coins</strong>!',
-                lv2Hint: '<strong class="text-amber-300">Level 2 Jet → Space Rocket Boss:</strong> Grab <strong class="text-amber-300">★ German Win Coins</strong> (FLUX, JUPITER, Isar Aerospace...) &amp; dodge the Orbital Starlink Datacenter Monster!',
+                lv1Hint: '<strong class="text-sky-300">Steer Z1 (Lv.1, 1988–2024):</strong> <strong class="text-sky-300">Tap/Space</strong> to Jump &amp; Double-Jump • <strong class="text-amber-300">Hold Duck / Swipe Down</strong> under beams • Catch <strong class="text-emerald-300">★ Win Coins</strong>!',
+                lv2Hint: '<strong class="text-amber-300">Level 2 Jet → Space Rocket Boss:</strong> Drag on canvas or hold Thrust/Dive • Grab <strong class="text-amber-300">★ German Win Coins</strong> &amp; dodge the AGI Monster!',
                 sidebarTitle: 'German AI Timeline (1988–2026)',
                 sidebarSub: 'MISTAKES DODGED • ★ WINS COLLECTED',
                 approaching: 'APPROACHING OBSTACLE',
@@ -605,6 +684,7 @@
                 muteOff: '♪ AUS',
                 restart: '↻ Neustart',
                 playAgain: '↻ Nochmal spielen',
+                nativeShare: '↗ Teilen',
                 moatTitle: '⚑ Deutscher Industrie-Moat',
                 moatBase: 'Flagge = Industrie-Moat',
                 moatCrit: 'KRITISCH! Fast bei 0!',
@@ -631,8 +711,8 @@
                 duckBtn: 'DUCKEN / SLIDE',
                 flyUpBtn: 'HOCHZIEHEN',
                 flyDownBtn: 'ABTAUCHEN',
-                lv1Hint: '<strong class="text-sky-300">Steuere Z1 (Lv.1, 1988–2024):</strong> <strong class="text-sky-300">Leertaste/Hoch</strong> für Sprung &amp; Doppelsprung • <strong class="text-amber-300">Runter/S</strong> halten zum <strong class="text-amber-300">DUCKEN</strong> • Fange <strong class="text-emerald-300">★ Win-Coins</strong>!',
-                lv2Hint: '<strong class="text-amber-300">Level 2 Jet → Weltraum-Rakete:</strong> Fange <strong class="text-amber-300">★ Deutsche Win-Coins</strong> (FLUX, JUPITER, Isar Aerospace…) &amp; weiche dem Starlink-Weltraum-RZ-Monster aus!',
+                lv1Hint: '<strong class="text-sky-300">Steuere Z1 (Lv.1, 1988–2024):</strong> <strong class="text-sky-300">Tippen/Leertaste</strong> für Sprung &amp; 2×-Sprung • <strong class="text-amber-300">Ducken halten / Runterwischen</strong> • Fange <strong class="text-emerald-300">★ Win-Coins</strong>!',
+                lv2Hint: '<strong class="text-amber-300">Level 2 Jet → Weltraum-Rakete:</strong> Auf Spielfeld ziehen oder Tasten halten • Fange <strong class="text-amber-300">★ Win-Coins</strong> &amp; weiche dem AGI-Monster aus!',
                 sidebarTitle: 'Deutsche KI-Chronik (1988–2026)',
                 sidebarSub: 'FEHLER AUSGEWICHEN • ★ SIEGE GESAMMELT',
                 approaching: 'KOMMENDES HINDERNIS',
@@ -887,11 +967,21 @@
         function safeEllipse(ctx, x, y, rx, ry, rot = 0, s = 0, e = Math.PI * 2, ccw = false) { ctx.ellipse(x, y, Math.max(0.5, rx), Math.max(0.5, ry), rot, s, e, ccw); }
 
         class RetroSoundEngine {
-            constructor() { this.ctx = null; this.muted = false; }
+            constructor() { this.ctx = null; this.muted = false; this.unlockedOnce = false; }
             unlock() {
                 try {
                     if (!this.ctx) { const AC = window.AudioContext || window.webkitAudioContext; if (AC) this.ctx = new AC(); }
-                    if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume().catch(() => {});
+                    if (this.ctx && (this.ctx.state === 'suspended' || this.ctx.state === 'interrupted')) {
+                        this.ctx.resume().catch(() => {});
+                    }
+                    if (this.ctx && !this.unlockedOnce) {
+                        this.unlockedOnce = true;
+                        const buf = this.ctx.createBuffer(1, 1, 22050);
+                        const src = this.ctx.createBufferSource();
+                        src.buffer = buf;
+                        src.connect(this.ctx.destination);
+                        src.start(0);
+                    }
                 } catch (e) {}
             }
             toggleMute() { this.muted = !this.muted; return this.muted; }
@@ -925,6 +1015,8 @@
                 this.ctx = canvas.getContext('2d');
                 this.sound = new RetroSoundEngine();
 
+                this.logicalWidth = LOGICAL_WIDTH;
+                this.runnerHomeX = 210;
                 this.scaleX = 1; this.scaleY = 1;
                 this.worldTime = 0;
                 this.slowPaceMode = false;
@@ -932,7 +1024,7 @@
                 this.lastShareText = '';
                 this.screenShake = 0;
 
-                this.input = { upHeld: false, downHeld: false, pointerActive: false, pointerTargetY: null, targetRippleTimer: 0 };
+                this.input = { upHeld: false, downHeld: false, pointerActive: false, activePointerId: null, pointerStartY: 0, canvasDuckSwipe: false, pointerTargetY: null, targetRippleTimer: 0 };
                 this.obstacles = []; this.nodes = []; this.particles = []; this.floatingTexts = []; this.clouds = []; this.starsBg = [];
                 this.boss = null; this.bossChips = []; this.playerPebbles = [];
                 this.speechBubble = null; this.stageBanner = null;
@@ -960,6 +1052,10 @@
                 setTxt('muteIcon', this.sound.muted ? t('muteOff') : t('muteOn'));
                 setTxt('uiRestartLabel', t('restart'));
                 setTxt('uiPlayAgainLabel', t('playAgain'));
+                setTxt('uiNativeShareLabel', t('nativeShare'));
+                if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+                    document.getElementById('btnNativeShare')?.classList.remove('hidden');
+                }
                 setTxt('uiMoatTitle', t('moatTitle'));
                 setTxt('uiBurnTitle', t('burnTitle'));
                 setTxt('uiJumpBtnLabel', t('jumpBtn'));
@@ -971,6 +1067,7 @@
                 setTxt('uiSidebarTitle', t('sidebarTitle'));
                 setTxt('uiSidebarSub', t('sidebarSub'));
                 setTxt('uiApproachingLbl', t('approaching'));
+                setTxt('bossSummaryPill', t('bossSummaryPill')(this.burnEurM || 0));
                 setTxt('bossChoiceHeading', t('bossChoiceHeading'));
                 setHtml('bossRevealBody', t('bossRevealBody'));
                 setTxt('uiOptAKicker', t('optAKicker'));
@@ -988,20 +1085,34 @@
             updateCanvasDimensions() {
                 const container = this.canvas.parentElement;
                 const rect = container ? container.getBoundingClientRect() : { width: LOGICAL_WIDTH, height: LOGICAL_HEIGHT };
-                const cssW = Math.max(280, rect.width || LOGICAL_WIDTH);
-                const cssH = Math.max(240, rect.height || LOGICAL_HEIGHT);
+                const cssW = Math.max(260, rect.width || LOGICAL_WIDTH);
+                const cssH = Math.max(160, rect.height || LOGICAL_HEIGHT);
                 const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
                 this.canvas.width = Math.max(1, Math.floor(cssW * dpr));
                 this.canvas.height = Math.max(1, Math.floor(cssH * dpr));
-                this.scaleX = this.canvas.width / LOGICAL_WIDTH;
+
+                // STRICT 1:1 UNIFORM SCALING (scaleX === scaleY ALWAYS!):
+                // Lock vertical world height to LOGICAL_HEIGHT (450) and match logicalWidth to the exact container aspect ratio.
+                // Zero horizontal stretching in ultra-wide mobile landscape AND zero horizontal squishing in narrow portrait!
+                const targetAspect = cssW / Math.max(1, cssH);
+                this.logicalWidth = Math.round(Math.max(580, Math.min(1800, LOGICAL_HEIGHT * targetAspect)));
+                const prevHomeX = this.runnerHomeX || 210;
+                this.runnerHomeX = Math.round(Math.min(260, Math.max(115, this.logicalWidth * 0.21)));
+                if (this.runner) this.runner.x = this.runnerHomeX;
+                if (this.boss && prevHomeX !== this.runnerHomeX) {
+                    this.boss.targetX = Math.min(this.runnerHomeX + 540, Math.max(this.runnerHomeX + 320, this.logicalWidth - 198));
+                    if (this.boss.x > this.boss.targetX + 160) this.boss.x = this.logicalWidth + 110;
+                }
+
                 this.scaleY = this.canvas.height / LOGICAL_HEIGHT;
+                this.scaleX = this.scaleY;
             }
 
             initAmbient() {
                 this.clouds = [];
-                for (let i = 0; i < 5; i++) this.clouds.push({ x: i * 210 + 40, y: 72 + (i % 3) * 85, scale: 0.75 + (i % 2) * 0.35 });
+                for (let i = 0; i < 8; i++) this.clouds.push({ x: i * 220 + 40, y: 72 + (i % 3) * 85, scale: 0.75 + (i % 2) * 0.35 });
                 this.starsBg = [];
-                for (let i = 0; i < 42; i++) this.starsBg.push({ x: (i * 89) % LOGICAL_WIDTH, y: 20 + ((i * 53) % 210), r: 1 + (i % 2) * 0.9 });
+                for (let i = 0; i < 72; i++) this.starsBg.push({ x: (i * 89) % 1650, y: 20 + ((i * 53) % 210), r: 1 + (i % 2) * 0.9 });
             }
 
             resetRun(startMode = 1) {
@@ -1030,13 +1141,14 @@
                 this.obstacleTimer = 1.55;
 
                 this.runner = {
-                    x: 210, y: this.level === 2 ? 225 : BASE_GROUND_Y, vy: 0, pitch: 0,
+                    x: this.runnerHomeX || 210, y: this.level === 2 ? 225 : BASE_GROUND_Y, vy: 0, pitch: 0,
                     onGround: this.level === 1, ducking: false, jumpsRemaining: 2, jumpBufferTimer: 0,
                     runCycle: 0, moatB: STARTING_MOAT_B, visualMoatB: STARTING_MOAT_B, invulnTimer: 0
                 };
 
                 this.input.upHeld = false; this.input.downHeld = false;
-                this.input.pointerActive = false; this.input.pointerTargetY = null;
+                this.input.pointerActive = false; this.input.activePointerId = null;
+                this.input.canvasDuckSwipe = false; this.input.pointerTargetY = null;
 
                 this.obstacles = []; this.nodes = []; this.particles = []; this.floatingTexts = [];
                 this.boss = null; this.bossChips = []; this.playerPebbles = [];
@@ -1143,10 +1255,11 @@
             }
 
             spawnStarterNodes(lv) {
+                const offX = (this.runnerHomeX || 210) - 210;
                 if (lv === 1) {
-                    [500, 645].forEach((nx, i) => this.nodes.push({ level: 1, x: nx, y: BASE_GROUND_Y - (i === 0 ? 124 : 168), baseH: i === 0 ? 124 : 168, spin: i * 1.1, win: this.nextGermanWin(1) }));
+                    [500 + offX, 645 + offX].forEach((nx, i) => this.nodes.push({ level: 1, x: nx, y: BASE_GROUND_Y - (i === 0 ? 124 : 168), baseH: i === 0 ? 124 : 168, spin: i * 1.1, win: this.nextGermanWin(1) }));
                 } else {
-                    [490, 645].forEach((nx, i) => {
+                    [490 + offX, 645 + offX].forEach((nx, i) => {
                         const ly = i === 0 ? 102 : 342;
                         this.nodes.push({ level: 2, x: nx, baseY: ly, y: ly, spin: i * 1.1, win: this.nextGermanWin(2) });
                     });
@@ -1181,7 +1294,29 @@
             }
 
             bindEvents() {
-                window.addEventListener('resize', () => { this.updateCanvasDimensions(); this.render(); });
+                const handleResize = () => { this.updateCanvasDimensions(); this.render(); };
+                window.addEventListener('resize', handleResize);
+                window.addEventListener('orientationchange', () => setTimeout(handleResize, 120));
+                if (typeof ResizeObserver !== 'undefined' && this.canvas.parentElement) {
+                    this.resizeObserver = new ResizeObserver(() => handleResize());
+                    this.resizeObserver.observe(this.canvas.parentElement);
+                }
+                document.addEventListener('visibilitychange', () => {
+                    if (document.hidden) {
+                        this.input.upHeld = false;
+                        this.input.downHeld = false;
+                        this.input.pointerActive = false;
+                        this.input.activePointerId = null;
+                        this.input.canvasDuckSwipe = false;
+                        document.getElementById('giantJumpBtn')?.classList.remove('is-pressed');
+                        document.getElementById('duckBtn')?.classList.remove('is-pressed');
+                        document.getElementById('flyUpBtn')?.classList.remove('is-pressed');
+                        document.getElementById('flyDownBtn')?.classList.remove('is-pressed');
+                    } else {
+                        this.sound.unlock();
+                    }
+                });
+                window.addEventListener('touchstart', () => this.sound.unlock(), { passive: true, once: true });
 
                 window.addEventListener('keydown', (e) => {
                     if (['Space', 'ArrowUp', 'KeyW', 'ArrowDown', 'KeyS'].includes(e.code)) { e.preventDefault(); this.sound.unlock(); }
@@ -1216,38 +1351,104 @@
                     }
                 });
 
+                this.canvas.addEventListener('contextmenu', (e) => e.preventDefault());
                 this.canvas.addEventListener('pointerdown', (e) => {
                     e.preventDefault(); this.sound.unlock();
+                    try { this.canvas.setPointerCapture(e.pointerId); } catch (_) {}
                     if (this.state !== 'PLAYING' && this.state !== 'BOSS_FIGHT') return;
-                    if (this.level === 1 && this.state === 'PLAYING') this.handleJumpInput();
-                    else { this.input.pointerActive = true; this.input.pointerTargetY = this.clientToLogicalY(e.clientY); this.input.targetRippleTimer = 0.5; }
-                });
-                this.canvas.addEventListener('pointermove', (e) => {
-                    if ((this.level === 2 || this.state === 'BOSS_FIGHT') && this.input.pointerActive) {
-                        e.preventDefault(); this.input.pointerTargetY = this.clientToLogicalY(e.clientY); this.input.targetRippleTimer = 0.35;
+                    this.input.pointerActive = true;
+                    this.input.activePointerId = e.pointerId;
+                    this.input.pointerStartY = e.clientY;
+                    this.input.canvasDuckSwipe = false;
+                    if (this.level === 1 && this.state === 'PLAYING') {
+                        this.handleJumpInput();
+                    } else {
+                        this.input.pointerTargetY = this.clientToLogicalY(e.clientY);
+                        this.input.targetRippleTimer = 0.5;
                     }
                 });
-                window.addEventListener('pointerup', () => {
-                    this.input.pointerActive = false;
-                    document.getElementById('giantJumpBtn')?.classList.remove('is-pressed');
-                    document.getElementById('duckBtn')?.classList.remove('is-pressed');
-                    document.getElementById('flyUpBtn')?.classList.remove('is-pressed');
-                    document.getElementById('flyDownBtn')?.classList.remove('is-pressed');
+                this.canvas.addEventListener('pointermove', (e) => {
+                    if (!this.input.pointerActive || (this.input.activePointerId !== null && e.pointerId !== this.input.activePointerId)) return;
+                    if (this.level === 1 && this.state === 'PLAYING') {
+                        // Mobile swipe-down & hold on canvas to fast-fall / duck!
+                        if (e.clientY - this.input.pointerStartY > 26) {
+                            e.preventDefault();
+                            this.input.canvasDuckSwipe = true;
+                            this.input.downHeld = true;
+                            document.getElementById('duckBtn')?.classList.add('is-pressed');
+                            if (!this.runner.onGround) this.runner.vy = Math.max(this.runner.vy, 640);
+                        }
+                    } else if (this.level === 2 || this.state === 'BOSS_FIGHT') {
+                        e.preventDefault();
+                        this.input.pointerTargetY = this.clientToLogicalY(e.clientY);
+                        this.input.targetRippleTimer = 0.35;
+                    }
                 });
+                const releaseCanvasPointer = (e) => {
+                    if (this.input.activePointerId !== null && e.pointerId !== this.input.activePointerId) return;
+                    this.input.pointerActive = false;
+                    this.input.activePointerId = null;
+                    if (this.input.canvasDuckSwipe) {
+                        this.input.canvasDuckSwipe = false;
+                        this.input.downHeld = false;
+                        document.getElementById('duckBtn')?.classList.remove('is-pressed');
+                    }
+                };
+                this.canvas.addEventListener('pointerup', releaseCanvasPointer);
+                this.canvas.addEventListener('pointercancel', releaseCanvasPointer);
 
-                const jumpBtn = document.getElementById('giantJumpBtn');
-                jumpBtn?.addEventListener('pointerdown', (e) => { e.preventDefault(); this.sound.unlock(); jumpBtn.classList.add('is-pressed'); this.input.downHeld = false; if (this.state === 'PLAYING' && this.level === 1) this.handleJumpInput(); });
-                const duckBtn = document.getElementById('duckBtn');
-                duckBtn?.addEventListener('pointerdown', (e) => { e.preventDefault(); this.sound.unlock(); duckBtn.classList.add('is-pressed'); this.input.downHeld = true; if (this.level === 1 && !this.runner.onGround) this.runner.vy = Math.max(this.runner.vy, 640); });
-                duckBtn?.addEventListener('pointerup', () => { this.input.downHeld = false; duckBtn.classList.remove('is-pressed'); });
-                duckBtn?.addEventListener('pointerleave', () => { this.input.downHeld = false; duckBtn.classList.remove('is-pressed'); });
-                const upBtn = document.getElementById('flyUpBtn'), downBtn = document.getElementById('flyDownBtn');
-                upBtn?.addEventListener('pointerdown', (e) => { e.preventDefault(); this.sound.unlock(); upBtn.classList.add('is-pressed'); this.input.upHeld = true; this.input.downHeld = false; this.input.pointerTargetY = null; this.runner.vy = Math.min(this.runner.vy, -210); });
-                upBtn?.addEventListener('pointerup', () => { this.input.upHeld = false; upBtn.classList.remove('is-pressed'); });
-                upBtn?.addEventListener('pointerleave', () => { this.input.upHeld = false; upBtn.classList.remove('is-pressed'); });
-                downBtn?.addEventListener('pointerdown', (e) => { e.preventDefault(); this.sound.unlock(); downBtn.classList.add('is-pressed'); this.input.downHeld = true; this.input.upHeld = false; this.input.pointerTargetY = null; this.runner.vy = Math.max(this.runner.vy, 210); });
-                downBtn?.addEventListener('pointerup', () => { this.input.downHeld = false; downBtn.classList.remove('is-pressed'); });
-                downBtn?.addEventListener('pointerleave', () => { this.input.downHeld = false; downBtn.classList.remove('is-pressed'); });
+                const bindHoldBtn = (btn, onDown, onUp) => {
+                    if (!btn) return;
+                    let activePid = null;
+                    btn.addEventListener('contextmenu', (ev) => ev.preventDefault());
+                    btn.addEventListener('pointerdown', (ev) => {
+                        ev.preventDefault();
+                        this.sound.unlock();
+                        activePid = ev.pointerId;
+                        try { btn.setPointerCapture(ev.pointerId); } catch (_) {}
+                        btn.classList.add('is-pressed');
+                        onDown();
+                    });
+                    const finish = (ev) => {
+                        if (activePid !== null && ev.pointerId !== activePid) return;
+                        activePid = null;
+                        btn.classList.remove('is-pressed');
+                        if (onUp) onUp();
+                    };
+                    btn.addEventListener('pointerup', finish);
+                    btn.addEventListener('pointercancel', finish);
+                    btn.addEventListener('lostpointercapture', () => {
+                        if (activePid !== null) {
+                            activePid = null;
+                            btn.classList.remove('is-pressed');
+                            if (onUp) onUp();
+                        }
+                    });
+                };
+
+                bindHoldBtn(document.getElementById('giantJumpBtn'), () => {
+                    this.input.downHeld = false;
+                    document.getElementById('duckBtn')?.classList.remove('is-pressed');
+                    if (this.state === 'PLAYING' && this.level === 1) this.handleJumpInput();
+                });
+                bindHoldBtn(document.getElementById('duckBtn'), () => {
+                    this.input.downHeld = true;
+                    if (this.level === 1 && !this.runner.onGround) this.runner.vy = Math.max(this.runner.vy, 640);
+                }, () => {
+                    this.input.downHeld = false;
+                });
+                bindHoldBtn(document.getElementById('flyUpBtn'), () => {
+                    this.input.upHeld = true; this.input.downHeld = false; this.input.pointerTargetY = null;
+                    this.runner.vy = Math.min(this.runner.vy, -210);
+                }, () => {
+                    this.input.upHeld = false;
+                });
+                bindHoldBtn(document.getElementById('flyDownBtn'), () => {
+                    this.input.downHeld = true; this.input.upHeld = false; this.input.pointerTargetY = null;
+                    this.runner.vy = Math.max(this.runner.vy, 210);
+                }, () => {
+                    this.input.downHeld = false;
+                });
 
                 document.getElementById('btnSelectLv1')?.addEventListener('click', () => { this.sound.unlock(); this.resetRun(1); });
                 document.getElementById('btnSelectLv2')?.addEventListener('click', () => { this.sound.unlock(); this.resetRun(2); });
@@ -1282,6 +1483,7 @@
                 });
                 document.getElementById('btnChooseLose')?.addEventListener('click', () => this.showOutcome('LOSE'));
                 document.getElementById('btnPlayAgain')?.addEventListener('click', () => { this.sound.unlock(); this.resetRun(1); });
+                document.getElementById('btnNativeShare')?.addEventListener('click', () => this.openPlatformShare('native'));
                 document.getElementById('btnShareX')?.addEventListener('click', () => this.openPlatformShare('x'));
                 document.getElementById('btnShareBsky')?.addEventListener('click', () => this.openPlatformShare('bsky'));
                 document.getElementById('btnShareLinkedIn')?.addEventListener('click', () => this.openPlatformShare('linkedin'));
@@ -1338,8 +1540,8 @@
                 this.sound.playBossRoar();
 
                 this.boss = {
-                    x: LOGICAL_WIDTH + 110,
-                    targetX: 722,
+                    x: this.logicalWidth + 110,
+                    targetX: Math.min((this.runnerHomeX || 210) + 540, Math.max((this.runnerHomeX || 210) + 320, this.logicalWidth - 198)),
                     y: 225,
                     targetY: 225,
                     moveTimer: 0,
@@ -1363,7 +1565,7 @@
 
                 const spec = ALL_OBSTACLES[this.spawnIndex];
                 const lspec = locObs(spec);
-                const spawnX = LOGICAL_WIDTH + 95;
+                const spawnX = this.logicalWidth + 95;
                 this.currentYear = spec.year;
 
                 if (spec.stage !== this.currentStage) {
@@ -1439,6 +1641,10 @@
                 const preview = document.getElementById('sharePreviewBox');
                 if (preview) { preview.textContent = shareBody; preview.classList.remove('hidden'); }
                 try { navigator.clipboard?.writeText(shareBody).catch(() => {}); } catch (e) {}
+                if (platform === 'native' && typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+                    navigator.share({ title: document.title, text: shareBody }).catch(() => {});
+                    return;
+                }
                 let shareUrl = '';
                 if (platform === 'x') shareUrl = `https://twitter.com/intent/tweet?text=${txt}`;
                 else if (platform === 'bsky') shareUrl = `https://bsky.app/intent/compose?text=${txt}`;
@@ -1581,7 +1787,7 @@
 
                 for (const c of this.clouds) {
                     c.x -= this.currentSpeed * (this.level === 2 ? 0.3 : 0.12) * dt;
-                    if (c.x < -140) c.x = LOGICAL_WIDTH + 110;
+                    if (c.x < -140) c.x = this.logicalWidth + 110;
                 }
 
                 if (this.level === 1) this.updateLevel1(dt);
@@ -1645,7 +1851,7 @@
                         this.sound.playDeflect();
                         this.floatingTexts.push({ x: b.x - 86, y: b.y - 34, text: t('bossDeflect')(b.fireRateMult.toFixed(1)), color: '#38bdf8', life: 0.82, maxLife: 0.82 });
                     }
-                    if (p.x > LOGICAL_WIDTH + 40 || p.x < -40 || p.y < 0 || p.y > LOGICAL_HEIGHT) this.playerPebbles.splice(i, 1);
+                    if (p.x > this.logicalWidth + 40 || p.x < -40 || p.y < 0 || p.y > LOGICAL_HEIGHT) this.playerPebbles.splice(i, 1);
                 }
 
                 // Randomized AGI Chip attacks — firing FREQUENCY increases with each rocket hit; projectile SPEED stays steady!
@@ -2329,15 +2535,18 @@
 
                 const topTxt = t('bossTopPill');
                 const topW = Math.ceil(ctx.measureText(topTxt).width) + 22;
+                const pillShiftX = Math.min(0, (this.logicalWidth - 10 - b.x) - topW / 2);
+                const topY = this.stageBanner ? -114 : -166;
                 ctx.fillStyle = 'rgba(15, 23, 42, 0.96)'; ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 2;
-                ctx.beginPath(); drawRoundedRect(ctx, -topW / 2, -166, topW, 22, 6); ctx.fill(); ctx.stroke();
-                ctx.fillStyle = '#38bdf8'; ctx.fillText(topTxt, 0, -155);
+                ctx.beginPath(); drawRoundedRect(ctx, pillShiftX - topW / 2, topY, topW, 22, 6); ctx.fill(); ctx.stroke();
+                ctx.fillStyle = '#38bdf8'; ctx.fillText(topTxt, pillShiftX, topY + 11);
 
                 const botTxt = t('bossBotPill')(b.fireRateMult.toFixed(1), b.hitsTaken);
                 const botW = Math.ceil(ctx.measureText(botTxt).width) + 22;
+                const botShiftX = Math.min(0, (this.logicalWidth - 10 - b.x) - botW / 2);
                 ctx.fillStyle = 'rgba(64, 20, 34, 0.96)'; ctx.strokeStyle = '#f43f5e';
-                ctx.beginPath(); drawRoundedRect(ctx, -botW / 2, 146, botW, 22, 6); ctx.fill(); ctx.stroke();
-                ctx.fillStyle = '#fda4af'; ctx.fillText(botTxt, 0, 157);
+                ctx.beginPath(); drawRoundedRect(ctx, botShiftX - botW / 2, 146, botW, 22, 6); ctx.fill(); ctx.stroke();
+                ctx.fillStyle = '#fda4af'; ctx.fillText(botTxt, botShiftX, 157);
                 ctx.restore();
             }
 
@@ -2398,28 +2607,28 @@
                 const cols = [['#0f172a', '#1e293b', '#334155'], ['#1c1917', '#292524', '#44403c'], ['#111827', '#1e1b4b', '#312e81']][Math.min(2, this.currentStage)];
                 const g = ctx.createLinearGradient(0, 0, 0, BASE_GROUND_Y);
                 g.addColorStop(0, cols[0]); g.addColorStop(0.65, cols[1]); g.addColorStop(1, cols[2]);
-                ctx.fillStyle = g; ctx.fillRect(0, 0, LOGICAL_WIDTH, LOGICAL_HEIGHT);
+                ctx.fillStyle = g; ctx.fillRect(0, 0, this.logicalWidth, LOGICAL_HEIGHT);
                 ctx.strokeStyle = 'rgba(148, 163, 184, 0.07)'; ctx.lineWidth = 1;
                 const gs = (this.totalDistance * 0.3) % 40;
-                for (let x = -gs; x < LOGICAL_WIDTH; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, BASE_GROUND_Y); ctx.stroke(); }
+                for (let x = -gs; x < this.logicalWidth; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, BASE_GROUND_Y); ctx.stroke(); }
 
                 const px = (this.totalDistance * 0.08) % 240;
                 ctx.fillStyle = 'rgba(15, 23, 42, 0.52)';
                 if (this.currentStage === 0) {
-                    const tx = 600 - px * 0.4;
+                    const tx = Math.min(600, this.logicalWidth * 0.68) - px * 0.4;
                     ctx.fillRect(tx - 5, BASE_GROUND_Y - 210, 10, 210); ctx.beginPath(); safeArc(ctx, tx, BASE_GROUND_Y - 175, 22); ctx.fill(); ctx.fillRect(tx - 2, BASE_GROUND_Y - 255, 4, 58);
                 } else if (this.currentStage === 1) {
-                    for (let b = 0; b < 4; b++) ctx.fillRect(110 + b * 220 - px * 0.3, BASE_GROUND_Y - 125, 130, 125);
+                    for (let b = 0; b < 8; b++) ctx.fillRect(110 + b * 220 - px * 0.3, BASE_GROUND_Y - 125, 130, 125);
                 } else {
                     const cx = 320 - px * 0.3;
                     ctx.beginPath(); ctx.moveTo(cx - 38, BASE_GROUND_Y); ctx.quadraticCurveTo(cx - 22, BASE_GROUND_Y - 60, cx - 28, BASE_GROUND_Y - 115); ctx.lineTo(cx + 28, BASE_GROUND_Y - 115); ctx.quadraticCurveTo(cx + 22, BASE_GROUND_Y - 60, cx + 38, BASE_GROUND_Y); ctx.closePath(); ctx.fill();
                 }
 
-                ctx.fillStyle = '#0f172a'; ctx.fillRect(0, BASE_GROUND_Y, LOGICAL_WIDTH, LOGICAL_HEIGHT - BASE_GROUND_Y);
-                ctx.fillStyle = '#1e293b'; ctx.fillRect(0, BASE_GROUND_Y, LOGICAL_WIDTH, 18);
-                ctx.fillStyle = '#dc2626'; ctx.fillRect(0, BASE_GROUND_Y + 18, LOGICAL_WIDTH, 4);
-                ctx.fillStyle = '#facc15'; ctx.fillRect(0, BASE_GROUND_Y + 22, LOGICAL_WIDTH, 4);
-                ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(0, BASE_GROUND_Y); ctx.lineTo(LOGICAL_WIDTH, BASE_GROUND_Y); ctx.stroke();
+                ctx.fillStyle = '#0f172a'; ctx.fillRect(0, BASE_GROUND_Y, this.logicalWidth, LOGICAL_HEIGHT - BASE_GROUND_Y);
+                ctx.fillStyle = '#1e293b'; ctx.fillRect(0, BASE_GROUND_Y, this.logicalWidth, 18);
+                ctx.fillStyle = '#dc2626'; ctx.fillRect(0, BASE_GROUND_Y + 18, this.logicalWidth, 4);
+                ctx.fillStyle = '#facc15'; ctx.fillRect(0, BASE_GROUND_Y + 22, this.logicalWidth, 4);
+                ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(0, BASE_GROUND_Y); ctx.lineTo(this.logicalWidth, BASE_GROUND_Y); ctx.stroke();
             }
 
             drawSkyBackground(ctx) {
@@ -2428,25 +2637,25 @@
                 sky.addColorStop(0, isSpace ? '#02030a' : '#020617');
                 sky.addColorStop(0.55, isSpace ? '#0b0e1e' : '#0f172a');
                 sky.addColorStop(1, isSpace ? '#102a4c' : '#0369a1');
-                ctx.fillStyle = sky; ctx.fillRect(0, 0, LOGICAL_WIDTH, LOGICAL_HEIGHT);
+                ctx.fillStyle = sky; ctx.fillRect(0, 0, this.logicalWidth, LOGICAL_HEIGHT);
 
                 ctx.fillStyle = isSpace ? 'rgba(241, 245, 249, 0.85)' : 'rgba(241, 245, 249, 0.55)';
-                for (const s of this.starsBg) { ctx.beginPath(); safeArc(ctx, s.x, s.y, isSpace ? s.r * 1.25 : s.r); ctx.fill(); }
+                for (const s of this.starsBg) { if (s.x <= this.logicalWidth) { ctx.beginPath(); safeArc(ctx, s.x, s.y, isSpace ? s.r * 1.25 : s.r); ctx.fill(); } }
 
                 if (isSpace) {
                     // Curved glowing blue Earth horizon in Deep Space!
-                    const earthGrad = ctx.createRadialGradient(LOGICAL_WIDTH * 0.5, 1180, 740, LOGICAL_WIDTH * 0.5, 1180, 815);
+                    const earthGrad = ctx.createRadialGradient(this.logicalWidth * 0.5, 1180, 740, this.logicalWidth * 0.5, 1180, 815);
                     earthGrad.addColorStop(0, '#0284c7');
                     earthGrad.addColorStop(0.75, '#0ea5e9');
                     earthGrad.addColorStop(0.95, 'rgba(56, 189, 248, 0.45)');
                     earthGrad.addColorStop(1, 'rgba(56, 189, 248, 0)');
                     ctx.fillStyle = earthGrad;
-                    ctx.beginPath(); safeArc(ctx, LOGICAL_WIDTH * 0.5, 1180, 815); ctx.fill();
+                    ctx.beginPath(); safeArc(ctx, this.logicalWidth * 0.5, 1180, 815); ctx.fill();
                 } else {
                     for (const c of this.clouds) { ctx.save(); ctx.translate(c.x, c.y); ctx.scale(c.scale, c.scale); ctx.fillStyle = 'rgba(148, 163, 184, 0.14)'; ctx.beginPath(); safeArc(ctx, 0, 0, 22); safeArc(ctx, 26, -7, 26); safeArc(ctx, 54, 0, 20); ctx.fill(); ctx.restore(); }
-                    ctx.fillStyle = '#0369a1'; ctx.fillRect(0, SKY_FLOOR_Y, LOGICAL_WIDTH, LOGICAL_HEIGHT - SKY_FLOOR_Y);
+                    ctx.fillStyle = '#0369a1'; ctx.fillRect(0, SKY_FLOOR_Y, this.logicalWidth, LOGICAL_HEIGHT - SKY_FLOOR_Y);
                     ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 3; ctx.beginPath();
-                    for (let wx = 0; wx <= LOGICAL_WIDTH; wx += 30) { const wy = SKY_FLOOR_Y + Math.sin(wx * 0.04 + this.worldTime * 4) * 3.5; if (wx === 0) ctx.moveTo(wx, wy); else ctx.lineTo(wx, wy); }
+                    for (let wx = 0; wx <= this.logicalWidth; wx += 30) { const wy = SKY_FLOOR_Y + Math.sin(wx * 0.04 + this.worldTime * 4) * 3.5; if (wx === 0) ctx.moveTo(wx, wy); else ctx.lineTo(wx, wy); }
                     ctx.stroke();
                 }
             }
@@ -2536,17 +2745,21 @@
                 const alpha = sb.life < 0.25 ? Math.max(0, sb.life / 0.25) : 1;
                 const col = sb.kind === 'hit' ? '#f43f5e' : '#38bdf8';
                 ctx.save(); ctx.globalAlpha = alpha;
-                ctx.translate(Math.min(LOGICAL_WIDTH - 140, Math.max(140, this.runner.x + 28)), Math.max(48, this.runner.y - (this.level === 2 ? 44 : 76)));
                 ctx.font = '700 14px Space Grotesk, sans-serif';
-                const w = Math.max(120, ctx.measureText(sb.text).width + 24);
+                const w = Math.min(this.logicalWidth - 24, Math.max(120, ctx.measureText(sb.text).width + 24));
+                const bx = Math.min(this.logicalWidth - w / 2 - 12, Math.max(w / 2 + 12, this.runner.x + 28));
+                ctx.translate(bx, Math.max(48, this.runner.y - (this.level === 2 ? 44 : 76)));
                 ctx.fillStyle = '#0f172a'; ctx.strokeStyle = col; ctx.lineWidth = 2.6;
                 ctx.beginPath(); drawRoundedRect(ctx, -w / 2, -32, w, 32, 12); ctx.fill(); ctx.stroke();
-                ctx.fillStyle = '#f8fafc'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(sb.text, 0, -16); ctx.restore();
+                ctx.fillStyle = '#f8fafc'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(sb.text, 0, -16, w - 16); ctx.restore();
             }
 
             drawParticlesAndText(ctx) {
                 for (const p of this.particles) { ctx.save(); ctx.globalAlpha = Math.max(0, p.life / p.maxLife); ctx.fillStyle = p.color; ctx.beginPath(); safeArc(ctx, p.x, p.y, p.r); ctx.fill(); ctx.restore(); }
-                for (const f of this.floatingTexts) { ctx.save(); ctx.globalAlpha = Math.max(0, f.life / f.maxLife); ctx.font = '700 13.5px JetBrains Mono, monospace'; ctx.textAlign = 'center'; ctx.lineWidth = 4; ctx.strokeStyle = '#0f172a'; ctx.strokeText(f.text, f.x, f.y); ctx.fillStyle = f.color; ctx.fillText(f.text, f.x, f.y); ctx.restore(); }
+                for (const f of this.floatingTexts) {
+                    const fx = Math.max(75, Math.min(this.logicalWidth - 75, f.x));
+                    ctx.save(); ctx.globalAlpha = Math.max(0, f.life / f.maxLife); ctx.font = '700 13.5px JetBrains Mono, monospace'; ctx.textAlign = 'center'; ctx.lineWidth = 4; ctx.strokeStyle = '#0f172a'; ctx.strokeText(f.text, fx, f.y); ctx.fillStyle = f.color; ctx.fillText(f.text, fx, f.y); ctx.restore();
+                }
             }
 
             drawStageBanner(ctx) {
@@ -2554,12 +2767,17 @@
                 const b = this.stageBanner;
                 const alpha = b.life < 0.4 ? Math.max(0, b.life / 0.4) : 1;
                 ctx.save(); ctx.globalAlpha = alpha;
-                const cx = LOGICAL_WIDTH / 2, w = 590;
+                const cx = this.logicalWidth / 2;
+                ctx.font = '700 14px Space Grotesk, sans-serif';
+                const tW = ctx.measureText(b.title).width;
+                ctx.font = '500 11px Inter, sans-serif';
+                const sW = ctx.measureText(b.sub).width;
+                const w = Math.min(this.logicalWidth - 20, Math.max(300, Math.max(tW, sW) + 34));
                 ctx.fillStyle = 'rgba(15, 23, 42, 0.94)'; ctx.strokeStyle = this.state === 'BOSS_FIGHT' ? '#f43f5e' : '#38bdf8'; ctx.lineWidth = 2.5;
                 ctx.beginPath(); drawRoundedRect(ctx, cx - w / 2, 12, w, 50, 14); ctx.fill(); ctx.stroke();
                 ctx.textAlign = 'center';
-                ctx.fillStyle = '#f8fafc'; ctx.font = '700 14.5px Space Grotesk, sans-serif'; ctx.fillText(b.title, cx, 30);
-                ctx.fillStyle = '#94a3b8'; ctx.font = '500 11px Inter, sans-serif'; ctx.fillText(b.sub, cx, 48); ctx.restore();
+                ctx.fillStyle = '#f8fafc'; ctx.font = '700 14px Space Grotesk, sans-serif'; ctx.fillText(b.title, cx, 30, w - 22);
+                ctx.fillStyle = '#94a3b8'; ctx.font = '500 11px Inter, sans-serif'; ctx.fillText(b.sub, cx, 48, w - 22); ctx.restore();
             }
         }
 
