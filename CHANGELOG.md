@@ -5,6 +5,67 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - Neuro-Symbolic Manifold Engine, KnowledgePipes RAG, Multi-Modal Workflows & Engine Foundry Rework
+
+YPipe 2.0.0 establishes **The Sovereign Local-First AI Platform** powered by the **Neuro-Symbolic `ypipe` Manifold Engine**—enabling compact local models (`800M`–`32B`) to reliably execute deterministic tool chains and verifiable safety policies while running 100% locally or on-premise. This major release also introduces declarative **KnowledgePipes** RAG, multi-modal audio and vision workflows in **SmartPipes**, tamper-evident EU AI Act audit logging, and a completely reworked **Engine Foundry**—bridging IT-affine business users and IT/DevOps through Kubernetes-style `.ypipe` YAML manifests.
+
+### 🚀 Key Features
+
+* **Neuro-Symbolic ypipe Manifold Engine:**
+  * **Deterministic Tool Calling & Chaining:** Enables compact local models (starting at `800M` parameters) to reliably discover schemas and autonomously chain multi-step MCP tool calls in a single turn—eliminating small-model tool-calling loops.
+  * **Safe Abstention & Grounded Answers:** Prevents silent parameter guessing when required inputs are missing and keeps final responses grounded in verified facts and tool outputs.
+  * **Consistent Multi-Turn Memory & Resource Efficiency:** Preserves conversation facts and active rules across long multi-turn sessions with a low memory footprint on standard hardware.
+  * **Explainable Safety & Policy Guardrails:** Enforces domain rules, clinical contraindication checks, and cumulative posology limits with transparent step-by-step reasoning traces.
+  * **Live Conversational Rule Learning:** Teach YPipe operational rules in plain English directly in chat; the Manifold Engine extracts, deduplicates, and enforces them immediately.
+  * **Auto-Gear Hardware Optimization:** Automatically inspects system CPU, RAM, and GPU topology to recommend and switch between fast compact models and deep reasoning models on a vanilla OS.
+* **KnowledgePipes — Declarative Local & On-Premise RAG:**
+  * **Three-Layer RAG Architecture:** Cleanly separates storage credentials (**KnowledgePipe Store**), scoped retrieval boundaries (**KnowledgePipe Context**), and document chunking (**KnowledgePipe Asset**).
+  * **Vector & Zero-ETL SQL Stores:** Supports local **Embedded H2**, **PostgreSQL (`pgvector`)**, and **MariaDB Vector** stores alongside **Zero-ETL Read-Only Relational SQL Stores** with parameterized SQL joins and autocomplete.
+  * **SmartPipe RAG Sink:** Automatically chunk, embed, and index workflow outputs directly into a KnowledgePipe Store.
+* **Image Generation & Image Description:**
+  * Added native local image generation powered by Stable Diffusion (`stable-diffusion.cpp`).
+  * Integrated vision model inference for multi-modal image description and visual understanding workflows.
+* **Audio Intelligence (TTS & STT):**
+  * **Meeting & System Audio Capture:** Easily record live audio from meetings, applications, or browser tabs with one click for direct transcription.
+  * **Text-to-Speech (TTS):** Added high-speed, local speech synthesis using lightweight VITS / Piper ONNX models via `sherpa-onnx`.
+  * **Speech-to-Text (STT):** Integrated local audio transcription via `whisper.cpp` *(beta, with ongoing latency optimizations)*.
+* **SmartPipes Multi-Modal Workflows & System Templates:**
+  * **Three-Way Automatic Exposure:** Every SmartPipe automatically exposes a **Human Web Form**, a **Production REST Webhook**, and a reusable **MCP Tool** for other agents.
+  * **Tool Calling & Chained Inference Steps:** Enabled dynamic MCP tool calling and multi-step chained inference handoffs across LLMs, vision/image generators, audio models, and deterministic transforms in a single flow.
+  * **New Built-In System Templates:** Added ready-to-run templates covering meeting audio recording (`audiorecord`), image generation & vision description (`bilder-gen-and-explain`, `landscape`), Apache Druid health checks (`druid-health`), hardware diagnostics (`hardwaregerman`), structured receipt JSON extraction (`json-receipt-scanner`), and local TTS (`tts-tell-a-joke`).
+* **Complete Engine Foundry UI Rework:**
+  * Redesigned and overhauled the entire user interface of the **Engine Foundry**, offering an intuitive view to inspect, monitor, and manage running inference runtimes, loaded models, assigned ports, and active lifecycle states.
+* **Enterprise Audit Trail & EU AI Act Compliance:**
+  * **One-Click Workflow & Global Controls:** Easily turn audit logging on or off for individual SmartPipes directly in the editor, or enable it globally across all workflows and chat sessions from the settings panel. Live status badges make it clear at a glance when logging is active.
+  * **Comprehensive Run History:** Automatically captures a full, untruncated record of every execution—including prompts, model responses, reasoning steps, tool calls, and generated media (images and audio)—stored conveniently alongside each run's artifacts.
+  * **Tamper-Evident Verification:** Every log entry is cryptographically chained so you can verify that logs have not been altered, manipulated, or deleted after execution, satisfying EU AI Act record-keeping standards (Article 12).
+  * **Execution Context & Traceability:** Automatically logs the exact model used, system environment, and execution steps for every run, making post-run review, troubleshooting, and compliance audits straightforward.
+  * **Retention & Storage Management:** Keep logs for as long as required by compliance policies (such as the EU AI Act 6-month mandate) with automated retention settings and easy cleanup options to purge older runs when you need to free up storage.
+
+### 🛠 Improvements & Runtimes
+* **Expanded Self-Contained Runtimes & Multi-Arch Packaging:**
+  * Integrated dedicated, managed runtimes for Whisper (`whisper.cpp`), Stable Diffusion (`stable-diffusion.cpp`), and `sherpa-onnx`, upgraded `llama.cpp` (`b10775`), and added **Linux ARM64** packages.
+* **SmartPipe Execution UI & Real-Time Step Progress:**
+  * Added live SSE event streaming to task output and run views so step status (`In Progress...`, `Completed`, `Pending`) updates in real time as each step executes.
+  * Extracted and modernized standalone React/JSX components for execution output, replacing legacy controller HTML templates with dedicated pages.
+  * Added collapsible execution details panels on output pages to inspect per-step progress and task metadata on demand.
+  * Cleaned up execution view to hide empty parameter blocks when input payloads contain no values.
+* **Redesigned File Writer Step:** A clean, intuitive editor for saving pipeline results to files with built-in path presets, automatic folder creation, and quick variable insertion.
+
+### 🐛 Bug Fixes
+* **SmartPipe Execution & Output Page Fixes:**
+  * Fixed an issue where form submissions remained stuck on the "Starting Process..." button by pre-generating client-side Task IDs and navigating immediately to the live output view.
+  * Fixed output completion detection and polling hangs when `returnOnlyLastResult` is enabled.
+  * Improved audio output extraction to reliably parse generated audio URLs from markdown links, direct audio URLs, and response objects.
+  * Resolved undefined reference and iterable errors in form and stream response processing.
+* **Runtime & Catalog Fixes:**
+  * Resolved runtime path and execution issues across background inference processes.
+  * Corrected model catalog configurations, SHA-256 checksum verifications, and parameter resolution.
+  * General stability fixes across the SmartPipes execution engine and proxy services.
+
+### 📦 Upgrade Notes
+* Existing `1.3.x` Kubernetes-style `.ypipe` manifests (models, Couplings, and SmartPipes) remain compatible when upgrading to `2.0.0`.
+
 ## [1.3.2] - Production Blueprint Catalog Update
 
 ### 🚀 Key Features / Added Blueprints
