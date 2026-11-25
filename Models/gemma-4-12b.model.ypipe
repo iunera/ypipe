@@ -23,7 +23,10 @@ spec:
     3. **Markdown Only:** Always format tool results into clean Markdown tables.
     4. **No Chatter:** Do not talk about tools, just generate the necessary required tags.
     5. Action: tool call , function call
-  family: VLM
+  engine: llamacpp
+  capabilities:
+    - CHAT
+    - VISION
   format: GGUF
   modules:
     - identifier: WEIGHTS
@@ -44,7 +47,7 @@ spec:
       downloads:
       - "https://huggingface.co/ggml-org/gemma-4-12B-it-GGUF/resolve/main/mmproj-gemma-4-12B-it-Q8_0.gguf"
       checksums:
-        - sha256: "59e62255435dda870e2d1de97cc031330b31a898bac12b38a182cecff9cd3738"
+        - sha256: "6b1088334bda27d7f293dcf426c0efaf1f1f20b65415ea354b695dbed9a0d65d"
       target-extension: gguf
   provisioning: NEVER
   total-parameter-size-in-millions: 12000

@@ -1,0 +1,31 @@
+apiVersion: "coordinator.ypipe.com/v1"
+kind: Model
+metadata:
+  name: whisper-small-q8-0
+  namespace: system
+spec:
+  label: "[STT] Whisper Small Q8_0"
+  engine: whispercpp
+  capabilities:
+    - AUTOMATIC_SPEECH_RECOGNITION
+    - STT
+  format: GGUF
+  provisioning: OPTIONAL
+  modules:
+    - identifier: WEIGHTS
+      mandatory: true
+      module-type: WEIGHTS
+      properties:
+        quantization: Q8_0
+      downloads:
+        - "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-small-q8_0.bin"
+      checksums:
+        - sha256: "49c8fb02b65e6049d5fa6c04f81f53b867b5ec9540406812c643f177317f779f"
+      target-extension: bin
+  execution-parameters:
+    whispercpp:
+      language: auto
+      step-ms: 3000
+      length-ms: 10000
+      keep-ms: 200
+      keep-context: true

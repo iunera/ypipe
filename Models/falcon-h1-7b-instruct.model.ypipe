@@ -14,7 +14,9 @@ spec:
     ### CRITICAL RULES
     1. **No Guessing:** Never guess parameters or tool names. If you lack required data, ask the user or use `searchTools`.
     2. **Markdown Only:** Always format tool results into clean Markdown tables.
-  family: LLM
+  engine: llamacpp
+  capabilities:
+    - CHAT
   format: GGUF
   modules:
     - identifier: WEIGHTS

@@ -21,7 +21,9 @@ spec:
     3. If you have already executed a tool and received a <tool_response>, your tool-calling phase is over. You MUST transition to answering the user.
     4. When answering the user based on tool data, use clean Markdown format. Then stop. 
     5. If no listed tools can help, simply reply: "I am stuck". 
-  family: LLM
+  engine: llamacpp
+  capabilities:
+    - CHAT
   format: GGUF
   modules:
   - identifier: WGT

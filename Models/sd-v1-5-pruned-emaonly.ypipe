@@ -1,0 +1,28 @@
+apiVersion: "coordinator.ypipe.com/v1"
+kind: Model
+metadata:
+  name: sd-v1-5-pruned-emaonly
+  namespace: system
+spec:
+  label: "[IMG] Stable Diffusion v1.5 Pruned GGUF"
+  engine: sdcpp
+  capabilities:
+    - IMAGE_GEN
+  format: GGUF
+  provisioning: OPTIONAL
+  modules:
+    - identifier: WEIGHTS
+      mandatory: true
+      module-type: WEIGHTS
+      properties:
+        quantization: Q4_0
+      downloads:
+        - "https://huggingface.co/second-state/stable-diffusion-v1-5-GGUF/resolve/main/stable-diffusion-v1-5-pruned-emaonly-Q4_0.gguf"
+      checksums:
+        - sha256: "b8944e9fe0b69b36ae1b5bb0185b3a7b8ef14347fe0fa9af6c64c4829022261f"
+      target-extension: gguf
+  execution-parameters:
+    sdcpp:
+      sampling_method: euler_a
+      steps: 20
+      cfg_scale: 7.0

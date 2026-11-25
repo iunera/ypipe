@@ -1,0 +1,48 @@
+apiVersion: "coordinator.ypipe.com/v1"
+kind: Model
+metadata:
+  name: chroma1-hd
+  namespace: system
+spec:
+  label: "[IMG] Chroma1-HD (unfiltered)"
+  engine: sdcpp
+  capabilities:
+    - IMAGE_GEN
+  format: GGUF
+  provisioning: OPTIONAL
+  modules:
+    - identifier: WEIGHTS
+      mandatory: true
+      module-type: WEIGHTS
+      properties:
+        quantization: Q4_0
+      downloads:
+        - "https://huggingface.co/silveroxides/Chroma-GGUF/resolve/main/Chroma1-HD/Chroma1-HD-Q4_0.gguf"
+      checksums:
+        - sha256: "1aa9f3c059a415320bb9b8b6231ea14e118df26653b5bb937c92e00cf0cc127e"
+      target-extension: gguf
+    - identifier: T5_TEXT_ENCODER
+      mandatory: true
+      module-type: T5_TEXT_ENCODER
+      properties:
+        quantization: Q8_0
+      downloads:
+        - "https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf/resolve/main/t5-v1_1-xxl-encoder-Q8_0.gguf"
+      checksums:
+        - sha256: "9ec60f6028534b7fe5af439fcb535d75a68592a9ca3fcdeb175ef89e3ee99825"
+      target-extension: gguf
+    - identifier: VAE
+      mandatory: true
+      module-type: VAE
+      downloads:
+        - "https://huggingface.co/lodestones/Chroma1-HD/resolve/main/vae/diffusion_pytorch_model.safetensors?download=true"
+      checksums:
+        - sha256: "f5b59a26851551b67ae1fe58d32e76486e1e812def4696a4bea97f16604d40a3"
+      target-extension: safetensors
+  execution-parameters:
+    sdcpp:
+      sampling_method: euler
+      steps: 26
+      cfg_scale: 4.0
+      flags:
+        "--model-args": "chroma_use_dit_mask=false"

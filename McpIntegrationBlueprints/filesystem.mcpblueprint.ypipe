@@ -45,7 +45,7 @@ spec:
     title: "${metadata.name}: Directory Tree"
     label: "Tree of all Files and Directories"
     action: |
-      Run ${metadata.name}_list_allowed_directories to the get the allowed directoryname and then use ${metadata.name}_directory_tree on my home.dir
+      Run ${metadata.name}_list_allowed_directories to the get the allowed directoryname and then use ${metadata.name}_directory_tree it
     actionType: null
     target: null
   tools:

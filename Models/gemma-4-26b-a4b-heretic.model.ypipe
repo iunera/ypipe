@@ -25,7 +25,10 @@ spec:
     1. **No Guessing:** Never guess parameters or tool names. If you lack required data, ask the user or use `searchTools`.
     2. **Markdown Only:** Always format tool results into clean Markdown tables.
     3. **No Chatter:** Do not talk about tools, just generate the necessary required tags.
-  family: VLM
+  engine: llamacpp
+  capabilities:
+    - CHAT
+    - VISION
   format: GGUF
   modules:
     - identifier: WEIGHTS

@@ -22,7 +22,10 @@ spec:
     ## Formatting
     - Direct Answer: Markdown text.
     - Action: function call, tool call
-  family: VLM
+  engine: llamacpp
+  capabilities:
+    - CHAT
+    - VISION
   format: GGUF
   modules:
     - identifier: WEIGHTS

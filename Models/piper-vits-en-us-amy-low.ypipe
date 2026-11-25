@@ -1,0 +1,23 @@
+apiVersion: "coordinator.ypipe.com/v1"
+kind: Model
+metadata:
+  name: piper-vits-en-us-amy-low
+  namespace: system
+spec:
+  label: "[TTS] Piper VITS Amy Low (en_US)"
+  engine: sherpaonnx
+  capabilities:
+    - TEXT_TO_SPEECH
+    - TTS
+  format: ONNX
+  provisioning: OPTIONAL
+  modules:
+    - identifier: WEIGHTS
+      mandatory: true
+      module-type: WEIGHTS
+      downloads:
+        - "https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/vits-piper-en_US-amy-low.tar.bz2"
+      target-extension: tar.bz2
+  execution-parameters:
+    sherpaonnx:
+      sid: 0

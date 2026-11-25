@@ -1,0 +1,47 @@
+apiVersion: "coordinator.ypipe.com/v1"
+kind: Model
+metadata:
+  name: flux-2-klein-base-4b
+  namespace: system
+spec:
+  label: "[IMG] FLUX.2 Klein Base 4B GGUF"
+  engine: sdcpp
+  capabilities:
+    - IMAGE_GEN
+  format: GGUF
+  provisioning: OPTIONAL
+  modules:
+    - identifier: WEIGHTS
+      mandatory: true
+      module-type: WEIGHTS
+      properties:
+        quantization: Q4_0
+      downloads:
+        - "https://huggingface.co/unsloth/FLUX.2-klein-4B-GGUF/resolve/main/flux-2-klein-4b-Q4_0.gguf"
+      checksums:
+        - sha256: "d7d4c306c1ad9568a26d33cfd32a35aefdb180ca134e76e40d7acdf04b7e62f5"
+      target-extension: gguf
+    - identifier: LLM_TEXT_ENCODER
+      mandatory: true
+      module-type: LLM_TEXT_ENCODER
+      properties:
+        quantization: Q4_K_M
+      downloads:
+        - "https://huggingface.co/nerualdreming/flux2-klein-4b-uncensored-text-encoder/resolve/main/flux2-klein-4b-uncensored-q4_k_m.gguf"
+      checksums:
+        - sha256: "97dac4e931ffb1fed023c564aa2d73b1de82795612548369810478c2d69a3e49"
+      target-extension: gguf
+    - identifier: VAE
+      mandatory: true
+      module-type: VAE
+      downloads:
+        - "https://huggingface.co/black-forest-labs/FLUX.2-klein-4B/resolve/main/vae/diffusion_pytorch_model.safetensors?download=true"
+      checksums:
+        - sha256: "ca70d2202afe6415bdbcb8793ba8cd99fd159cfe6192381504d6c4d3036e0f04"
+      target-extension: safetensors
+  execution-parameters:
+    sdcpp:
+      defaults:
+        sampling_method: euler_a
+        steps: 4
+        cfg_scale: 1.0

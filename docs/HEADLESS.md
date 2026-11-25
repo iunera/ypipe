@@ -37,6 +37,36 @@ ypipe
 
 ---
 
+### Windows Execution (`ypipe-cmd.exe` vs `YPipe.exe`)
+
+On Windows, the packaged installation provides two executables:
+
+* **`ypipe-cmd.exe` (CLI / Console Launcher - Recommended for Headless & Scripts):**
+  Built as a console subsystem application (`win-console=true`). When executed from Windows PowerShell, Command Prompt, or background scripts, it attaches directly to your active console session, streaming log outputs, stack traces, and exit codes in real-time.
+  
+  ```powershell
+  # PowerShell / CMD
+  .\ypipe-cmd.exe --headless --ypipe.data="C:\ypipedata" --ypipe.autodownload=true
+  ```
+
+* **`YPipe.exe` (GUI Desktop Launcher):**
+  Built as a Windows GUI subsystem application (`IMAGE_SUBSYSTEM_WINDOWS_GUI`). By default, Windows detaches GUI applications from the console, so running `.\YPipe.exe --headless` will return your command prompt immediately without showing terminal logs.
+  
+  If you must use `YPipe.exe` in headless or script contexts and want to observe live logs or redirect output, you can pipe it to `Out-Host` or write to a log file:
+  
+  ```powershell
+  # Stream live stdout/stderr to PowerShell console
+  .\YPipe.exe --headless | Out-Host
+
+  # Or redirect output to a log file
+  .\YPipe.exe --headless > run.log 2>&1
+  ```
+
+> [!TIP]
+> For CI/CD, headless automation, system services, and CLI usage on Windows, always prefer **`ypipe-cmd.exe`** over `YPipe.exe` so console logs and process exit codes are handled natively.
+
+---
+
 ## 2. Advanced Configuration Mapping
 
 Spring Boot automatically translates environment variables to property keys using standard relaxed binding rules:
@@ -46,6 +76,8 @@ Spring Boot automatically translates environment variables to property keys usin
 | `--headless` | `YPIPE_HEADLESS=true` | Bypasses JavaFX UI startup.                                                                                |
 | `--ypipe.data` | `YPIPE_DATA` | Configures the central storage directory.                                                                  |
 | `--ypipe.autodownload=true` | `YPIPE_AUTODOWNLOAD=true` | Downloads missing runtimes/models on startup.                                                              |
+| `--ypipe.ui.webmode.enabled=true` | `YPIPE_UI_WEBMODE_ENABLED=true` | Enables the browser-based Web Mode top navigation bar across all YPipe web frontends. |
+| `--ypipe.ui.webmode.tabs` | `YPIPE_UI_WEBMODE_TABS` | Comma-separated list of tabs shown in the Web Mode navigation bar (e.g., `chat,smartpipes,knowledgepipes,llm,mcp,about`). |
 | `--ypipe.coordinator.llm.models.active.tasks.chat.model` | `YPIPE_COORDINATOR_LLM_MODELS_ACTIVE_TASKS_CHAT_MODEL` | Sets the default active model.                                                                             |
 | `--ypipe.coordinator.llm.models.active.tasks.chat.startup` | `YPIPE_COORDINATOR_LLM_MODELS_ACTIVE_TASKS_CHAT_STARTUP` | Configures model startup boot mode (`LAZY`, `EAGER`, `MANUAL`).                                            |
 | `--ypipe.engine.llm.runtimes.active.variant` | `YPIPE_ENGINE_LLM_RUNTIMES_ACTIVE_VARIANT` | Sets active llama.cpp runtime variant.                                                                     |
@@ -55,7 +87,37 @@ Spring Boot automatically translates environment variables to property keys usin
 
 ---
 
-## 3. Auto-Download on Vanilla Systems
+## 3. Web Mode (Browser-Based UI Navigation)
+
+When running YPipe in headless mode (on a server, VM, or inside Docker) or accessing YPipe directly from a web browser instead of the desktop JavaFX shell, you can enable **Web Mode** (`ypipe.ui.webmode.enabled=true`).
+
+Web Mode renders a persistent top navigation bar (`YPipeWebModeTabBar`) inside the web frontend so you can switch between all YPipe subsystems in a single browser tab—providing the same full-featured experience as the desktop application:
+
+```bash
+ypipe --headless \
+      --server.address=0.0.0.0 \
+      --server.port=12000 \
+      --ypipe.ui.webmode.enabled=true \
+      --ypipe.ui.webmode.tabs=chat,smartpipes,knowledgepipes,llm,mcp,about
+```
+
+### Available Web Mode Tabs (`ypipe.ui.webmode.tabs`)
+
+You can customize which sections are exposed in the Web Mode header bar by passing a comma-separated list of tab identifiers to `ypipe.ui.webmode.tabs`:
+
+| Tab Identifier (or Alias) | UI Label | Browser Route | Purpose |
+| --- | --- | --- | --- |
+| `chat` | **Chat** | `/chat` | Interactive local LLM chat and YAgent conversations. |
+| `smartpipes` | **SmartPipes** | `/smartpipes` | Visual DAG workflow builder, execution history, and webform triggers. |
+| `knowledgepipes` | **KnowledgePipes** | `/knowledgepipes` | Manage RAG Stores, Assets, and Contexts. |
+| `models` (or `llm`) | **Models & Runtimes** | `/models` (or `/llm`) | Engine Foundry: download/import GGUF models, manage `llama.cpp` runtimes, and inspect hardware acceleration. |
+| `mcp` | **MCP Integrations** | `/mcpintegrations` | Install, configure, and monitor Model Context Protocol (MCP) servers and blueprints. |
+| `scenarios` | **Demo Scenarios** | `/scenarios` | Guided 1-click end-to-end RAG and workflow demo scenarios. |
+| `about` (or `source`) | **About** | `/about` | Application version, UI theme (`LIGHT` / `DARK` / `SYSTEM`), EU AI Act Audit Trail toggle, metrics settings, and third-party licenses. |
+
+---
+
+## 4. Auto-Download on Vanilla Systems
 
 When `autodownload` is enabled in headless mode, the system follows a **Self-Provisioning sequence** on startup:
 
@@ -81,7 +143,7 @@ When `YPIPE_AUTODOWNLOAD=true` is enabled:
 
 ---
  
-## 4. Manual Provisioning
+## 5. Manual Provisioning
 
 If you are running in restricted, firewalled, or completely offline environments where `YPIPE_AUTODOWNLOAD=false` is desired, you can manually provision the required resources within your designated `YPIPE_DATA` directory.
 
@@ -128,7 +190,7 @@ If you are deploying custom [Models](https://github.com/iunera/ypipe/tree/main/M
 
 ---
 
-## 5. Deploying Custom Models (Non-Catalog)
+## 6. Deploying Custom Models (Non-Catalog)
 
 If you are using custom models that are not part of the standard catalog, you must provide a local manifest definition so the self-provisioning bootstrapper knows where to download the weights.
 
@@ -143,7 +205,7 @@ The manifest should define the Hugging Face download URL (or other source locati
 
 ---
 
-## 6. Portable Deployments ("Copy-Paste")
+## 7. Portable Deployments ("Copy-Paste")
 
 YPipe is built with **portable design principles**. All runtimes, configurations, downloaded models, and agent drafts are fully self-contained inside the directory specified by `ypipe.data` (defaulting to `~/.ypipe`).
 

@@ -28,7 +28,7 @@ jbang ypipe@iunera/ypipe
 ```
 
 ### Option B: Run via Binary
-Download the appropriate package for your system from the [Releases](https://github.com/iunera/ypipe/releases) page (Windows `.msi`, macOS `.dmg`, Linux `.deb`/`.rpm`, or cross-platform `.jar`) and launch the application.
+Download the appropriate package for your system from the [Releases](https://github.com/iunera/ypipe/releases) page (Windows `.exe`, macOS `.dmg`, Linux `.deb`/`.tar.gz`, or cross-platform `.jar`) and launch the application.
 
 By default, Ypipe's coordinator starts its HTTP server on port `12000` (or `12001` if `12000` is occupied) and binds the MCP gateway to `/mcp`.
 
