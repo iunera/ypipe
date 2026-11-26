@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1] - Faster Startup & Smaller Downloads
+
+### 🚀 Improvements
+* **Noticeably Faster Startup & First Response:** Built-in AI models are now stored once in your YPipe data folder and reused across restarts instead of being unpacked from scratch every time you launch the app—significantly cutting startup and first-message load times (especially on Windows) while keeping your temporary folder clean. Whenever YPipe ships updated models in a future release, they refresh automatically.
+* **Smaller, Cleaner Downloads Across All Platforms:**
+  * Trimmed duplicate runtime files from the Windows, macOS, and Linux installers so downloads are noticeably lighter and faster.
+  * Reduced the size of the cross-platform `.jar` / JBang package by automatically fetching only the native runtime needed for your operating system on first launch, while keeping all AI models included out of the box.
+
 ## [2.0.0] - Neuro-Symbolic Manifold Engine, KnowledgePipes RAG, Multi-Modal Workflows & Engine Foundry Rework
 
 YPipe 2.0.0 establishes **The Sovereign Local-First AI Platform** powered by the **Neuro-Symbolic `ypipe` Manifold Engine**—enabling compact local models (`800M`–`32B`) to reliably execute deterministic tool chains and verifiable safety policies while running 100% locally or on-premise. This major release also introduces declarative **KnowledgePipes** RAG, multi-modal audio and vision workflows in **SmartPipes**, tamper-evident EU AI Act audit logging, and a completely reworked **Engine Foundry**—bridging IT-affine business users and IT/DevOps through Kubernetes-style `.ypipe` YAML manifests.
