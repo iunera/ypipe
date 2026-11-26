@@ -25,11 +25,10 @@ jbang --fresh ypipe@iunera/ypipe
 ### Download Desktop Client — Community Edition
 Grab the free Community Edition binaries for your OS at **[ypipe.com](https://ypipe.com)** or download them directly from **[GitHub Releases](https://github.com/iunera/ypipe/releases)** *(for Enterprise Edition & custom rollouts, [contact our architecture team](#skip-the-learning-curve))*:
 
-<!-- TODO: Temporary download links pointing to Hetzner Object Storage (due to GitHub's 2 GiB release asset limit). Will be adjusted later. -->
-*   **Windows:** [Installer (.exe — x64 / amd64)](https://ypiperesources.fsn1.your-objectstorage.com/releases/Windows/2.0.0/ypipe-2.0.0-windows-x64.exe) | [AppImage (.zip — x64 / amd64)](https://ypiperesources.fsn1.your-objectstorage.com/releases/Windows/2.0.0/ypipe-2.0.0-windows-x64.zip)
-*   **macOS:** [Disk Image (.dmg — Apple Silicon)](https://ypiperesources.fsn1.your-objectstorage.com/releases/macOS/2.0.0/ypipe-2.0.0-macos-arm64.dmg)
-*   **Linux:** [Package (.tar.gz — amd64 / x64)](https://ypiperesources.fsn1.your-objectstorage.com/releases/Linux/2.0.0/ypipe-2.0.0-linux-x64.tar.gz) | [Package (.tar.gz — arm64)](https://ypiperesources.fsn1.your-objectstorage.com/releases/Linux/2.0.0/ypipe-2.0.0-linux-arm64.tar.gz) | [Ubuntu (.deb — amd64)](https://ypiperesources.fsn1.your-objectstorage.com/releases/Linux/2.0.0/ypipe_2.0.0_amd64.deb) | [Ubuntu (.deb — arm64)](https://ypiperesources.fsn1.your-objectstorage.com/releases/Linux/2.0.0/ypipe_2.0.0_arm64.deb)
-*   **Any (Java):** [Executable (.jar — Cross-Platform)](https://ypiperesources.fsn1.your-objectstorage.com/releases/Jar/2.0.0/ypipe-2.0.0.jar)
+*   **Windows:** [Installer (.exe — x64 / amd64)](https://github.com/iunera/ypipe/releases/download/windows/v2.0.1/ypipe-2.0.1-windows-x64.exe) | [AppImage (.zip — x64 / amd64)](https://github.com/iunera/ypipe/releases/download/windows/v2.0.1/ypipe-2.0.1-windows-x64.zip)
+*   **macOS:** [Disk Image (.dmg — Apple Silicon)](https://github.com/iunera/ypipe/releases/download/macos/v2.0.1/ypipe-2.0.1-macos-arm64.dmg)
+*   **Linux:** [Package (.tar.gz — amd64 / x64)](https://github.com/iunera/ypipe/releases/download/linux/v2.0.1/ypipe-2.0.1-linux-x64.tar.gz) | [Package (.tar.gz — arm64)](https://github.com/iunera/ypipe/releases/download/linux/v2.0.1/ypipe-2.0.1-linux-arm64.tar.gz) | [Ubuntu (.deb — amd64)](https://github.com/iunera/ypipe/releases/download/linux/v2.0.1/ypipe_2.0.1_amd64.deb) | [Ubuntu (.deb — arm64)](https://github.com/iunera/ypipe/releases/download/linux/v2.0.1/ypipe_2.0.1_arm64.deb)
+*   **Any (Java):** [Executable (.jar — Cross-Platform)](https://github.com/iunera/ypipe/releases/download/jar/v2.0.1/ypipe-2.0.1.jar)
 
 ---
 
@@ -124,14 +123,13 @@ YPipe ships self-contained native inference engines (`llama.cpp`, `whisper.cpp`,
   <em>Click to watch YPipe — Neuro-Symbolic Local AI, Everywhere (Hardware &amp; OS Showcase) on YouTube</em>
 </p>
 
-<!-- TODO: Temporary download links pointing to Hetzner Object Storage (due to GitHub's 2 GiB release asset limit). Will be adjusted later. -->
 | Platform & Architecture | Native Runtime Target | Supported Hardware & Acceleration |
 | :--- | :--- | :--- |
-| **macOS · Apple Silicon** | `macos-arm64` | MacBook Air, MacBook Pro & Mac Studio — native **Apple Silicon Metal** ([`.dmg`](https://ypiperesources.fsn1.your-objectstorage.com/releases/macOS/2.0.0/ypipe-2.0.0-macos-arm64.dmg)) |
-| **Windows 11 · x64** | `windows-x64` | Everyday business laptops (**800M Zero-GPU / AVX2**) up to workstation GPUs (**Vulkan**, **OpenVINO**, **CUDA 12/13**, **ROCm 7**, **SYCL**) ([`.exe`](https://ypiperesources.fsn1.your-objectstorage.com/releases/Windows/2.0.0/ypipe-2.0.0-windows-x64.exe), [`.zip`](https://ypiperesources.fsn1.your-objectstorage.com/releases/Windows/2.0.0/ypipe-2.0.0-windows-x64.zip)) |
+| **macOS · Apple Silicon** | `macos-arm64` | MacBook Air, MacBook Pro & Mac Studio — native **Apple Silicon Metal** ([`.dmg`](https://github.com/iunera/ypipe/releases/download/macos/v2.0.1/ypipe-2.0.1-macos-arm64.dmg)) |
+| **Windows 11 · x64** | `windows-x64` | Everyday business laptops (**800M Zero-GPU / AVX2**) up to workstation GPUs (**Vulkan**, **OpenVINO**, **CUDA 12/13**, **ROCm 7**, **SYCL**) ([`.exe`](https://github.com/iunera/ypipe/releases/download/windows/v2.0.1/ypipe-2.0.1-windows-x64.exe), [`.zip`](https://github.com/iunera/ypipe/releases/download/windows/v2.0.1/ypipe-2.0.1-windows-x64.zip)) |
 | **Windows 11 · ARM64** | `windows-arm64` | **Snapdragon X Elite** Copilot+ laptops (**Adreno OpenCL** & **Vulkan**) |
-| **Linux · x86_64** | `linux-x86_64` | Ubuntu, Debian & RHEL laptops, workstations & servers (**CPU/AVX2**, **Vulkan**, **OpenVINO**, **CUDA 12.8/13.4**, **ROCm 7**) ([`.deb`](https://ypiperesources.fsn1.your-objectstorage.com/releases/Linux/2.0.0/ypipe_2.0.0_amd64.deb), [`.tar.gz`](https://ypiperesources.fsn1.your-objectstorage.com/releases/Linux/2.0.0/ypipe-2.0.0-linux-x64.tar.gz), `Docker`) |
-| **Linux · ARM64** | `linux-arm64` | ARM64 workstations, cloud instances & edge nodes (**CPU**, **Vulkan**, **CUDA 13.4**, **Snapdragon**) ([`.deb`](https://ypiperesources.fsn1.your-objectstorage.com/releases/Linux/2.0.0/ypipe_2.0.0_arm64.deb), [`.tar.gz`](https://ypiperesources.fsn1.your-objectstorage.com/releases/Linux/2.0.0/ypipe-2.0.0-linux-arm64.tar.gz), `Docker`) |
+| **Linux · x86_64** | `linux-x86_64` | Ubuntu, Debian & RHEL laptops, workstations & servers (**CPU/AVX2**, **Vulkan**, **OpenVINO**, **CUDA 12.8/13.4**, **ROCm 7**) ([`.deb`](https://github.com/iunera/ypipe/releases/download/linux/v2.0.1/ypipe_2.0.1_amd64.deb), [`.tar.gz`](https://github.com/iunera/ypipe/releases/download/linux/v2.0.1/ypipe-2.0.1-linux-x64.tar.gz), `Docker`) |
+| **Linux · ARM64** | `linux-arm64` | ARM64 workstations, cloud instances & edge nodes (**CPU**, **Vulkan**, **CUDA 13.4**, **Snapdragon**) ([`.deb`](https://github.com/iunera/ypipe/releases/download/linux/v2.0.1/ypipe_2.0.1_arm64.deb), [`.tar.gz`](https://github.com/iunera/ypipe/releases/download/linux/v2.0.1/ypipe-2.0.1-linux-arm64.tar.gz), `Docker`) |
 | **Dedicated GPUs & NPUs** | `Auto-Gear` | **AMD Ryzen AI Max+ Halo** (`gfx1151`) & **Radeon RX** (`ROCm 7` / `Vulkan`), **NVIDIA RTX** (`CUDA 12 & 13`), **Intel Core Ultra & Arc** (`OpenVINO` / `SYCL`) |
 
 ---

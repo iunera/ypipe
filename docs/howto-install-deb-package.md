@@ -10,10 +10,10 @@ To install the `.deb` package on Debian or Ubuntu:
 
 ```bash
 # For standard Intel / AMD 64-bit systems (x64 / amd64)
-sudo dpkg -i ypipe_2.0.0_amd64.deb
+sudo dpkg -i ypipe_2.0.1_amd64.deb
 
 # For ARM64 systems (e.g. Raspberry Pi 5, Azure ARM64, Ampere, Apple Silicon Linux VM — v2.0.0+)
-sudo dpkg -i ypipe_2.0.0_arm64.deb
+sudo dpkg -i ypipe_2.0.1_arm64.deb
 ```
 
 ---
